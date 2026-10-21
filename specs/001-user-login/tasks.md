@@ -41,9 +41,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T006 [P] [US1] Create Username & Password form component with Show/Hide password toggle in src/components/auth/CredentialLogin.tsx
-- [ ] T007 [US1] Implement credential submission logic with client-side validation and loading state in src/components/auth/CredentialLogin.tsx
-- [ ] T008 [US1] Integrate CredentialLogin into login page at src/app/(auth)/login/page.tsx with redirect to dashboard upon success
+- [x] T006 [P] [US1] Create Username & Password form component with Show/Hide password toggle in src/components/auth/CredentialLogin.tsx
+- [x] T007 [US1] Implement credential submission logic with client-side validation and loading state in src/components/auth/CredentialLogin.tsx
+- [x] T008 [US1] Integrate CredentialLogin into login page at src/app/(auth)/login/page.tsx with redirect to dashboard upon success
 
 **Checkpoint**: User Story 1 ใช้งานและทดสอบเดี่ยวได้สมบูรณ์ (MVP)
 
