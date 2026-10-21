@@ -1,9 +1,8 @@
 <!--
 # Sync Impact Report
-- Version change: 1.2.0 → 1.3.0
+- Version change: 1.3.0 → 1.3.1
 - Modified principles:
-  - 5.1 แหล่งข้อมูลและสัญญาการเชื่อมต่อ: ห้ามจำลองข้อมูลเองโดยเด็ดขาด ให้ใช้ข้อมูลจาก API จริงเป็นหลัก หากไม่แน่ใจให้สอบถาม และกรณีปรับแก้หน้าบ้านแล้วกระทบหรือต้องปรับแก้ API ให้สรุปเป็นไฟล์รายละเอียดเพื่อส่งต่อทีม API
-  - 13. ข้อกำหนดสำหรับ AI Coding Agent: เพิ่มข้อห้ามจำลองข้อมูลเอง และเพิ่มข้อกำหนดให้สรุปรายละเอียดการปรับแก้ API เป็นไฟล์เมื่อมีผลกระทบ
+  - 14. Tech Stack ของโปรเจกต์: บันทึกข้อมูลเทคโนโลยีเพิ่มเติม (App Router, โครงสร้าง src/, Tailwind CSS v4, ESLint)
 - Added sections: None
 - Removed sections: None
 - Follow-up TODOs: Remaining details marked as [ระบุภายหลัง] in Section 14 to be finalized as architecture choices are confirmed.
@@ -265,9 +264,9 @@ AI ต้องไม่:
 ### 14.3 สถาปัตยกรรมและการจัดการสถานะ
 - รูปแบบสถาปัตยกรรม: [ระบุภายหลัง]
 - State Management: [ระบุภายหลัง]
-- Routing / Navigation: [ระบุภายหลัง]
+- Routing / Navigation: Next.js App Router
 - Dependency Injection: [ระบุภายหลัง]
-- แนวทางจัดโครงสร้างโฟลเดอร์: [ระบุภายหลัง]
+- แนวทางจัดโครงสร้างโฟลเดอร์: `src/` directory (Import alias `@/*`)
 
 ### 14.4 การเชื่อมต่อและจัดการข้อมูล
 - API Client / HTTP Library: [ระบุภายหลัง]
@@ -279,8 +278,8 @@ AI ต้องไม่:
 
 ### 14.5 UI/UX และการออกแบบ
 - Design System / UI Component Library: [ระบุภายหลัง]
-- Styling / Theme: [ระบุภายหลัง]
-- Responsive Strategy: [ระบุภายหลัง]
+- Styling / Theme: Tailwind CSS v4
+- Responsive Strategy: Mobile & Tablet Responsive
 - Localization / ภาษา: [ระบุภายหลัง]
 - Accessibility Requirements: [ระบุภายหลัง]
 
@@ -288,8 +287,8 @@ AI ต้องไม่:
 - Unit Testing: [ระบุภายหลัง]
 - Integration / Widget Testing: [ระบุภายหลัง]
 - End-to-End Testing: [ระบุภายหลัง]
-- Formatter / Linter: [ระบุภายหลัง]
-- Static Analysis: [ระบุภายหลัง]
+- Formatter / Linter: ESLint (eslint-config-next)
+- Static Analysis: TypeScript Strict Mode
 - CI/CD: [ระบุภายหลัง]
 
 ### 14.7 เครื่องมือและบริการเพิ่มเติม
@@ -336,4 +335,4 @@ AI ต้องไม่:
   - MINOR: มีการเพิ่มหมวดหมู่หรือขยายแนวทางปฏิบัติใหม่
   - PATCH: แก้ไขคำผิด ปรับปรุงถ้อยคำ หรือชี้แจงรายละเอียดโดยไม่เปลี่ยนหลักการเดิม
 
-**Version**: 1.3.0 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
+**Version**: 1.3.1 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
