@@ -18,6 +18,11 @@ import { PosProductGrid } from '@/components/pos/PosProductGrid';
 import { PosCartPanel } from '@/components/pos/PosCartPanel';
 import { PosScanToast } from '@/components/pos/PosScanToast';
 import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
+import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
+import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
+import { shiftService } from '@/services/shift.service';
+import { ShiftInfo } from '@/types/shift';
+import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
 
@@ -31,6 +36,59 @@ function PosTerminalInner() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
+
+  // ข้อมูลสถานะกะการขายปัจจุบัน
+  const [activeShift, setActiveShift] = useState<ShiftInfo | null>(null);
+  const [isLoadingShift, setIsLoadingShift] = useState<boolean>(true);
+  const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
+
+  // ตรวจสอบสถานะกะการขายจาก API
+  useEffect(() => {
+    let isMounted = true;
+    async function checkShift() {
+      if (!branch?.id) return;
+      setIsLoadingShift(true);
+      try {
+        const res = await shiftService.getActiveShift(branch.id);
+        if (isMounted) {
+          setActiveShift(res.data || null);
+        }
+      } catch (err) {
+        console.error('Failed to load active shift:', err);
+        if (isMounted) {
+          setActiveShift(null);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingShift(false);
+        }
+      }
+    }
+    checkShift();
+    return () => {
+      isMounted = false;
+    };
+  }, [branch?.id]);
+
+  // การดำเนินการเมื่อคลิกปุ่มชำระเงิน (สกัดกั้นหากยังไม่ได้เปิดกะ)
+  const handleCheckout = () => {
+    if (!activeShift) {
+      setIsOpenShiftModalOpen(true);
+      addToast({
+        type: 'ERROR',
+        title: 'ยังไม่ได้เปิดกะการขาย',
+        message: 'กรุณาเปิดกะและบันทึกเงินสดเริ่มต้นในลิ้นชักก่อนคิดเงิน',
+      });
+      playErrorBuzzer();
+      return;
+    }
+
+    addToast({
+      type: 'SUCCESS',
+      title: 'พร้อมรับชำระเงิน',
+      message: 'ระบบพร้อมสำหรับการรับชำระเงินและพิมพ์ใบเสร็จ',
+    });
+  };
 
   // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
   const handleSelectProduct = (product: Product) => {
@@ -168,6 +226,13 @@ function PosTerminalInner() {
         </div>
       </div>
 
+      {/* แถบสถานะกะการขาย (Shift Banner) */}
+      <PosShiftBanner
+        shift={activeShift}
+        isLoading={isLoadingShift}
+        onOpenShiftClick={() => setIsOpenShiftModalOpen(true)}
+      />
+
       {/* โครงสร้างเลย์เอาต์หลัก 2 คอลัมน์ (ซ้าย 60-65% แคตตาล็อก, ขวา 35-40% ตะกร้าและคิดเงิน) */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden">
         {/* คอลัมน์ซ้าย: แคตตาล็อกสินค้า (สัดส่วน 7 จาก 12 คอลัมน์ ≈ 60%) */}
@@ -211,7 +276,10 @@ function PosTerminalInner() {
 
         {/* คอลัมน์ขวา: ตะกร้าขายสินค้า (สัดส่วน 5 จาก 12 คอลัมน์ ≈ 40%) */}
         <div id="pos-cart-container" className="lg:col-span-5 xl:col-span-4 flex flex-col h-full overflow-hidden bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl">
-          <PosCartPanel />
+          <PosCartPanel
+            onCheckout={handleCheckout}
+            isShiftActive={!!activeShift}
+          />
         </div>
       </div>
 
@@ -223,6 +291,21 @@ function PosTerminalInner() {
         isOpen={isCameraModalOpen}
         onClose={() => setIsCameraModalOpen(false)}
         onScan={handleBarcodeScanned}
+      />
+
+      {/* หน้าต่างเปิดกะการขาย */}
+      <PosOpenShiftModal
+        isOpen={isOpenShiftModalOpen}
+        branchId={branch?.id}
+        onClose={() => setIsOpenShiftModalOpen(false)}
+        onSuccess={(newShift) => {
+          setActiveShift(newShift);
+          addToast({
+            type: 'SUCCESS',
+            title: 'เปิดกะการขายสำเร็จ',
+            message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${(newShift.startingCash / 100).toLocaleString()}`,
+          });
+        }}
       />
     </div>
   );

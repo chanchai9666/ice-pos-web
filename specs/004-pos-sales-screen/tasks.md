@@ -91,9 +91,9 @@
 
 **Independent Test**: เข้าหน้า POS เมื่อยังไม่มีกะ แถบเตือนสีส้มแสดงขึ้น เลือกสินค้าใส่ตะกร้าได้ แต่เมื่อกด "ชำระเงิน" จะมี Modal เปิดกะขึ้นมาให้บันทึกเงินทอนเริ่มต้น
 
-- [ ] T021 [P] [US5] Create Active Shift Warning Banner in `src/components/pos/PosShiftBanner.tsx` (orange banner, active cashier/shift details or "ยังไม่ได้เปิดกะขาย" warning)
-- [ ] T022 [US5] Create Open Shift Modal in `src/components/pos/PosOpenShiftModal.tsx` (starting cash input with `VirtualNumericKeypad`, submit to `shiftService.openShift`)
-- [ ] T023 [US5] Integrate Shift Check & Checkout Gate in `src/components/pos/PosCartPanel.tsx` (verify `activeShift`, trigger OpenShiftModal if no active shift on checkout click)
+- [x] T021 [P] [US5] Create Active Shift Warning Banner in `src/components/pos/PosShiftBanner.tsx` (orange banner, active cashier/shift details or "ยังไม่ได้เปิดกะขาย" warning)
+- [x] T022 [US5] Create Open Shift Modal in `src/components/pos/PosOpenShiftModal.tsx` (starting cash input with `VirtualNumericKeypad`, submit to `shiftService.openShift`)
+- [x] T023 [US5] Integrate Shift Check & Checkout Gate in `src/components/pos/PosCartPanel.tsx` (verify `activeShift`, trigger OpenShiftModal if no active shift on checkout click)
 
 **Checkpoint**: ระบบควบคุมความถูกต้องทางบัญชีเงินสด ป้องกันการขายโดยไม่ระบุเงินทอนเริ่มต้น
 

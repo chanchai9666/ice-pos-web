@@ -17,9 +17,10 @@ import { Icons } from '@/components/ui/Icons';
 
 interface PosCartPanelProps {
   onCheckout?: () => void;
+  isShiftActive?: boolean;
 }
 
-export function PosCartPanel({ onCheckout }: PosCartPanelProps) {
+export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelProps) {
   const { items, summary, updateQuantity, removeItem, clearCart } = usePosCart();
 
   const [editingItem, setEditingItem] = useState<CartItem | null>(null);
@@ -126,13 +127,24 @@ export function PosCartPanel({ onCheckout }: PosCartPanelProps) {
           disabled={items.length === 0}
           onClick={onCheckout}
           className={`w-full min-h-[56px] rounded-2xl font-black text-lg flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg ${
-            items.length > 0
-              ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 shadow-emerald-500/20 active:scale-[0.99]'
-              : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed opacity-60'
+            items.length === 0
+              ? 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed opacity-60'
+              : !isShiftActive
+              ? 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 shadow-amber-500/20 active:scale-[0.99]'
+              : 'bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 shadow-emerald-500/20 active:scale-[0.99]'
           }`}
         >
-          <Icons.Check className="w-6 h-6 stroke-[3]" />
-          <span>ชำระเงิน (Checkout)</span>
+          {!isShiftActive && items.length > 0 ? (
+            <>
+              <Icons.AlertTriangle className="w-6 h-6 text-slate-950" />
+              <span>เปิดกะขายเพื่อคิดเงิน</span>
+            </>
+          ) : (
+            <>
+              <Icons.Check className="w-6 h-6 stroke-[3]" />
+              <span>ชำระเงิน (Checkout)</span>
+            </>
+          )}
         </button>
       </div>
 

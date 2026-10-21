@@ -263,5 +263,11 @@ export const Icons = {
       <line x1="12" y1="17" x2="12.01" y2="17" />
     </svg>
   ),
+  Clock: ({ className = 'w-5 h-5', size }: IconProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  ),
 };
 
