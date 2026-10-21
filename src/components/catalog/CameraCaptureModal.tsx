@@ -185,8 +185,7 @@ export function CameraCaptureModal({
   const handleAccept = () => {
     if (!capturedBlob) return;
 
-    const fileName = `product-photo-${Date.now()}.jpg`;
-    const file = new File([capturedBlob], fileName, { type: 'image/jpeg' });
+    const file = new File([capturedBlob], 'product-photo.jpg', { type: 'image/jpeg' });
 
     onCapture(file);
     handleClose();

@@ -75,9 +75,9 @@
 
 **Purpose**: ตรวจสอบมาตรฐานการออกแบบและความสมบูรณ์ของระบบ
 
-- [ ] T013 [P] ตรวจสอบและปรับแต่งขนาด Touch Target ปุ่มควบคุมทั้งหมด ($\ge 48$px และชัตเตอร์ $\ge 64$px) ตามมาตรฐาน Elderly-Friendly ใน `src/components/catalog/CameraCaptureModal.tsx`
-- [ ] T014 [P] อัปเดต ProductFormDrawer ให้รองรับการถ่ายภาพและการแสดงผลทันทีให้สอดคล้องกัน ใน `src/components/catalog/ProductFormDrawer.tsx`
-- [ ] T015 ดำเนินการทดสอบระบบแบบ End-to-End ตามขั้นตอนใน `specs/003-edit-product-photo/quickstart.md`
+- [x] T013 [P] ตรวจสอบและปรับแต่งขนาด Touch Target ปุ่มควบคุมทั้งหมด ($\ge 48$px และชัตเตอร์ $\ge 64$px) ตามมาตรฐาน Elderly-Friendly ใน `src/components/catalog/CameraCaptureModal.tsx`
+- [x] T014 [P] อัปเดต ProductFormDrawer ให้รองรับการถ่ายภาพและการแสดงผลทันทีให้สอดคล้องกัน ใน `src/components/catalog/ProductFormDrawer.tsx`
+- [x] T015 ดำเนินการทดสอบระบบแบบ End-to-End ตามขั้นตอนใน `specs/003-edit-product-photo/quickstart.md`
 
 ---
 
