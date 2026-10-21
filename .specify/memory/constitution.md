@@ -1,11 +1,11 @@
 <!--
 # Sync Impact Report
-- Version change: 1.0.0 → 1.1.0
+- Version change: 1.1.0 → 1.2.0
 - Modified principles:
-  - 13. ข้อกำหนดสำหรับ AI Coding Agent: เพิ่มข้อกำหนดการดำเนินงานด้วย /speckit-implement ให้ดำเนินการทีละ phase (หรือหลาย phase เมื่อจำเป็น) และทำ git commit พร้อมระบุรายละเอียดการเปลี่ยนแปลงเป็นภาษาไทยก่อนเริ่ม phase ถัดไป
+  - 14.2 เทคโนโลยีหลัก: กำหนดภาษาโปรแกรมเป็น TypeScript และ Framework เป็น Next.js (React) บน Node.js (npm)
 - Added sections: None
 - Removed sections: None
-- Follow-up TODOs: Details marked as [ระบุภายหลัง] in Section 14 to be finalized as architecture choices are confirmed.
+- Follow-up TODOs: Remaining details marked as [ระบุภายหลัง] in Section 14 to be finalized as architecture choices are confirmed.
 -->
 
 # ice-pos-web Constitution (ธรรมนูญการพัฒนาระบบส่วนหน้าบ้าน)
@@ -252,11 +252,11 @@ AI ต้องไม่:
 - กลุ่มผู้ใช้งาน: [ระบุภายหลัง]
 
 ### 14.2 เทคโนโลยีหลัก
-- ภาษาโปรแกรม: [ระบุภายหลัง]
-- Framework / UI Library: [ระบุภายหลัง]
-- Runtime / SDK: [ระบุภายหลัง]
-- Package Manager: [ระบุภายหลัง]
-- เวอร์ชันที่กำหนด: [ระบุภายหลัง]
+- ภาษาโปรแกรม: TypeScript
+- Framework / UI Library: Next.js (React)
+- Runtime / SDK: Node.js
+- Package Manager: npm
+- เวอร์ชันที่กำหนด: Next.js 16+
 
 ### 14.3 สถาปัตยกรรมและการจัดการสถานะ
 - รูปแบบสถาปัตยกรรม: [ระบุภายหลัง]
@@ -332,4 +332,4 @@ AI ต้องไม่:
   - MINOR: มีการเพิ่มหมวดหมู่หรือขยายแนวทางปฏิบัติใหม่
   - PATCH: แก้ไขคำผิด ปรับปรุงถ้อยคำ หรือชี้แจงรายละเอียดโดยไม่เปลี่ยนหลักการเดิม
 
-**Version**: 1.1.0 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
+**Version**: 1.2.0 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
