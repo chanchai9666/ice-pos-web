@@ -130,12 +130,31 @@
 
 ---
 
-## Phase 9: Polish & Cross-Cutting Concerns
+## Phase 9: User Story 7 - การใช้งานบนหน้าจอสัมผัสและการป้อนข้อมูลสำหรับผู้สูงอายุ (Elderly-Friendly & Touchscreen Experience) (Priority: P1)
+
+**Goal**: ออกแบบและปรับปรุง UX/UI ทั้งระบบให้เหมาะสมกับผู้สูงอายุและหน้าจอสัมผัส POS ตามธรรมนูญโครงการหมวด 6.5 (Touch Targets >= 48px, Typography >= 16px, Contrast WCAG 2.1 AA, Virtual Numeric Keypad, Immediate Feedback)
+
+**Independent Test**: สามารถทดสอบด้วยการใช้นิ้วสัมผัสบนจอสัมผัส ตรวจวัดขนาดพื้นที่สัมผัสของทุกปุ่มและอินพุตไม่ต่ำกว่า 48x48px ตัวอักษรและตัวเลขราคาอ่านง่ายชัดเจน แตะช่องราคา/ต้นทุนเพื่อเปิด Virtual Numeric Keypad และป้อนข้อมูลได้อย่างแม่นยำ
+
+### Implementation for User Story 7
+
+- [ ] T036 [P] [US7] Create VirtualNumericKeypad component with 60x60px buttons, decimal, Clear, Backspace, and immediate visual feedback in `src/components/ui/VirtualNumericKeypad.tsx`
+- [ ] T037 [US7] Integrate VirtualNumericKeypad into price and cost inputs in `src/components/catalog/ProductFormDrawer.tsx`
+- [ ] T038 [P] [US7] Audit and update touch targets across all buttons, tabs, inputs, and action buttons to meet minimum 48x48px in `src/components/catalog/ProductToolbar.tsx`, `src/components/catalog/ProductTable.tsx`, and `src/components/catalog/CategoryList.tsx`
+- [ ] T039 [P] [US7] Verify and enforce typography >= 16px, large bold price numbers, and WCAG 2.1 AA contrast ratio (>= 4.5:1, no faint gray) in `src/components/catalog/ProductTable.tsx` and `src/components/catalog/ProductFormDrawer.tsx`
+- [ ] T040 [US7] Enhance DeleteConfirmModal with prominent confirmation and cancellation buttons, high-contrast colors, and clear non-technical Thai wording in `src/components/catalog/DeleteConfirmModal.tsx`
+- [ ] T041 [US7] Add debouncing / rapid touch prevention on action buttons to prevent accidental double-tap submission in `src/components/catalog/ProductFormDrawer.tsx` and `src/components/catalog/CategoryFormModal.tsx`
+
+**Checkpoint**: ระบบผ่านเกณฑ์ Elderly-Friendly & Touchscreen Optimized ครบถ้วนตามธรรมนูญโครงการ v1.4.0
+
+---
+
+## Phase 10: Polish & Cross-Cutting Concerns
 
 **Purpose**: ปรับแต่งรายละเอียดความสมบูรณ์ ความลื่นไหล และการทดสอบตามคู่มือ Quickstart
 
 - [X] T030 [P] Validate 100% Thai localization and user-friendly error messages across all catalog components
-- [X] T031 [P] Verify touch-screen interaction on tablet resolution (minimum 44x44px touch targets) in `src/app/globals.css`
+- [X] T031 [P] Verify touch-screen interaction on tablet resolution (minimum 48x48px touch targets) in `src/app/globals.css`
 - [X] T032 Run full validation walkthrough per `specs/002-product-catalog/quickstart.md`
 - [X] T033 Run ESLint and TypeScript typecheck across all modified files
 
@@ -152,7 +171,8 @@
 - **Phase 6 (US4 - Categories)**: ขึ้นกับ Phase 4 (แท็บที่สองใน Catalog page)
 - **Phase 7 (US5 - Image Upload)**: ขึ้นกับ Phase 5 (ผูกในฟอร์มสินค้า)
 - **Phase 8 (US6 - Status & Safe Delete)**: ขึ้นกับ Phase 4 และ 5
-- **Phase 9 (Polish)**: ขึ้นกับทุก User Story
+- **Phase 9 (US7 - Elderly & Touch Experience)**: ขึ้นกับ Phase 4, 5, 6, 8 (ต่อยอดคอมโพเนนต์ Catalog ให้สมบูรณ์ตามหมวด 6.5)
+- **Phase 10 (Polish)**: ขึ้นกับทุก User Story
 
 ### Parallel Opportunities
 - T001, T002, T003 ใน Phase 1 สามารถทำพร้อมกันได้
@@ -161,13 +181,15 @@
 - T013, T015 ใน Phase 4 สามารถทำพร้อมกันได้
 - T021, T022 ใน Phase 6 สามารถทำพร้อมกันได้
 - T024, T026 ใน Phase 7 สามารถทำพร้อมกันได้
+- T036, T038, T039 ใน Phase 9 สามารถทำพร้อมกันได้
 
 ---
 
-## Phase 10: Convergence
+## Phase 11: Convergence
 
 **Purpose**: แก้ไขช่องว่างและจุดบกพร่องจากการประเมินระบบที่ตรวจพบระหว่างการเชื่อมต่อ App Shell และ Login Flow
 
 - [X] T034 [US1] Fix post-login navigation for ADMIN and MANAGER roles to route to valid App Shell page (/pos or /catalog) and add /dashboard redirect per FR-001, US1/AC1 (partial)
 - [X] T035 [US1] Resolve SSR hydration mismatch in LoginForm by safely syncing client-side login mode after mount per Constitution I (partial)
+
 

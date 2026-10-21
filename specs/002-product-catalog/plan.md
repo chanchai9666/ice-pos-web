@@ -35,6 +35,7 @@
 | **5.1 สัญญา API** | ใช้ Standard Envelope `{ code, message, data, meta }` | **ผ่าน** | ใช้งานผ่าน `src/services/api.ts` และ Interface ที่ตรงกับ Schema |
 | **5.3 ความถูกต้องข้อมูล** | แปลงหน่วยเงิน Satang (Integer) ↔ Baht อย่างแม่นยำ | **ผ่าน** | ใช้ยูทิลิตี `formatSatangToBaht` และ `bahtToSatang` |
 | **6. มาตรฐาน UI/UX** | รองรับ Responsive & Touchscreen สำหรับเครื่อง POS | **ผ่าน** | ออกแบบ Collapsible Sidebar และ Slide-over Drawer |
+| **6.5 ผู้สูงอายุและจอสัมผัส** | Touch Target >= 48px, คอนทราสต์ WCAG 2.1 AA, ฟอนต์ >= 16px, แป้นตัวเลขสัมผัส (Virtual Keypad) | **ผ่าน** | เพิ่ม `VirtualNumericKeypad`, ปุ่มขนาดใหญ่ >= 48px, คอนทราสต์สูง และ Visual Feedback ชัดเจน |
 | **7. ความปลอดภัย** | ซ่อนเมนูตามสิทธิ์ + มี Route Protection กำกับ | **ผ่าน** | ซ่อนเมนูสำหรับ CASHIER และมี Route Guard ป้องกัน |
 
 ## Project Structure
@@ -81,7 +82,9 @@ src/
 │   │   ├── CategoryFormModal.tsx        # Modal Dialog for Create & Edit category
 │   │   ├── ImageUploader.tsx            # Product image upload & preview component
 │   │   └── DeleteConfirmModal.tsx       # Safe deletion & deactivation confirmation dialog
-│   └── ui/                              # Reusable UI primitives (Tabs, Badge, Button, Modal)
+│   └── ui/                              # Reusable UI primitives (Tabs, Badge, Button, Modal, VirtualNumericKeypad)
+│       └── VirtualNumericKeypad.tsx     # Touchscreen Virtual Numeric Keypad for Elderly & POS
+
 ├── services/
 │   ├── api.ts                           # Base API client
 │   ├── catalog.service.ts               # Product & Category API service functions
