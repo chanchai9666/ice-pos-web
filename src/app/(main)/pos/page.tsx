@@ -1,72 +1,166 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
-import { Icons } from '@/components/ui/Icons';
-import { Badge } from '@/components/ui/Badge';
+/**
+ * หน้าจอจุดขายสินค้าหน้าร้าน (POS Terminal)
+ * โครงการ ice-pos-web
+ *
+ * ออกแบบตามมาตรฐาน Elderly-Friendly (เลย์เอาต์ 2 คอลัมน์, เป้าหมายสัมผัส >= 48px, คอนทราสต์สูง)
+ */
 
-export default function PosPage() {
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { PosCartProvider, usePosCart } from '@/context/PosCartContext';
+import { catalogService } from '@/services/catalog.service';
+import { Category, Product } from '@/types/catalog';
+import { PosSearchBar } from '@/components/pos/PosSearchBar';
+import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
+import { PosProductGrid } from '@/components/pos/PosProductGrid';
+import { Icons } from '@/components/ui/Icons';
+
+function PosTerminalInner() {
   const { user, branch } = useAuth();
+  const { addItem } = usePosCart();
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('ALL');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
+
+  // ดึงข้อมูลหมวดหมู่สินค้า
+  useEffect(() => {
+    let isMounted = true;
+    async function loadCategories() {
+      try {
+        const res = await catalogService.getCategories({ pageSize: 100 });
+        if (isMounted && res.data) {
+          setCategories(res.data.filter((c) => c.isActive !== false));
+        }
+      } catch (err) {
+        console.error('Failed to load categories:', err);
+      }
+    }
+    loadCategories();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // ดึงข้อมูลรายการสินค้า
+  const loadProducts = useCallback(async () => {
+    setIsLoadingCatalog(true);
+    try {
+      const res = await catalogService.getProducts({
+        isActive: true,
+        pageSize: 100,
+      });
+      if (res.data) {
+        setProducts(res.data);
+      }
+    } catch (err) {
+      console.error('Failed to load products:', err);
+    } finally {
+      setIsLoadingCatalog(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  // กรองรายการสินค้าตามหมวดหมู่และคำค้นหา
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      // กรองตามหมวดหมู่
+      if (selectedCategoryId !== 'ALL' && product.categoryId !== selectedCategoryId) {
+        return false;
+      }
+      // กรองตามคำค้นหา (ชื่อสินค้า, รหัส SKU หรือ บาร์โค้ด)
+      if (searchQuery.trim()) {
+        const query = searchQuery.trim().toLowerCase();
+        const matchName = product.name?.toLowerCase().includes(query);
+        const matchSku = product.sku?.toLowerCase().includes(query);
+        const matchBarcode = product.barcode?.toLowerCase().includes(query);
+        if (!matchName && !matchSku && !matchBarcode) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [products, selectedCategoryId, searchQuery]);
+
+  // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
+  const handleSelectProduct = (product: Product) => {
+    addItem(product, 1);
+  };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Title Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+    <div className="flex flex-col h-[calc(100vh-5rem)] max-w-[1920px] mx-auto gap-4">
+      {/* ส่วนหัวหน้าจอ POS */}
+      <div className="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Icons.ShoppingCart className="w-6 h-6 text-cyan-400" />
-            หน้าจอขายหน้าร้าน (POS Terminal)
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
+            <Icons.ShoppingCart className="w-7 h-7 text-cyan-400" />
+            จุดขายสินค้าหน้าร้าน (POS Terminal)
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-xs text-slate-400 mt-0.5">
             สาขา: <span className="text-slate-200 font-medium">{branch?.name || '-'}</span> • แคชเชียร์: <span className="text-slate-200 font-medium">{user?.fullName || user?.username}</span>
           </p>
         </div>
-
-        <div className="flex items-center gap-2">
-          <Badge variant="warning">
-            ยังไม่ได้เปิดกะขาย
-          </Badge>
-          {user?.role !== 'CASHIER' && (
-            <Link
-              href="/catalog"
-              className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 flex items-center gap-1.5 transition-colors"
-            >
-              <Icons.Package className="w-4 h-4 text-cyan-400" />
-              จัดการสินค้า
-            </Link>
-          )}
-        </div>
       </div>
 
-      {/* POS Ready Status Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center max-w-xl mx-auto my-12 space-y-4 shadow-xl">
-        <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mx-auto text-cyan-400">
-          <Icons.ShoppingCart className="w-8 h-8" />
-        </div>
-        <h2 className="text-xl font-bold text-white">
-          พร้อมสำหรับการขายหน้าร้าน
-        </h2>
-        <p className="text-sm text-slate-400 leading-relaxed">
-          หน้าจอขายหน้าร้านกำลังเชื่อมต่อกับระบบจัดการสินค้าและแคตตาล็อก คุณสามารถเข้าสู่ระบบจัดการสินค้าเพื่อตรวจสอบรายการสินค้า ราคา และสต็อกได้ทันที
-        </p>
+      {/* โครงสร้างเลย์เอาต์หลัก 2 คอลัมน์ (ซ้าย 60-65% แคตตาล็อก, ขวา 35-40% ตะกร้าและคิดเงิน) */}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden">
+        {/* คอลัมน์ซ้าย: แคตตาล็อกสินค้า (สัดส่วน 7 จาก 12 คอลัมน์ ≈ 60%) */}
+        <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-full overflow-hidden bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 space-y-4">
+          {/* ช่องค้นหาด่วน */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <PosSearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+                onClear={() => setSearchQuery('')}
+              />
+            </div>
+          </div>
 
-        {user?.role !== 'CASHIER' ? (
-          <div className="pt-4">
-            <Link
-              href="/catalog"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-sm shadow-lg shadow-cyan-500/20 transition-all cursor-pointer"
-            >
-              <Icons.Package className="w-4 h-4" />
-              เข้าสู่ระบบจัดการสินค้าและหมวดหมู่
-            </Link>
+          {/* แถบเลือกหมวดหมู่ */}
+          <PosCategoryTabs
+            categories={categories}
+            selectedCategoryId={selectedCategoryId}
+            onSelectCategory={setSelectedCategoryId}
+          />
+
+          {/* ตารางการ์ดสินค้า */}
+          <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-700">
+            <PosProductGrid
+              products={filteredProducts}
+              onSelectProduct={handleSelectProduct}
+              isLoading={isLoadingCatalog}
+            />
           </div>
-        ) : (
-          <div className="pt-2 text-xs text-slate-500">
-            * สิทธิ์แคชเชียร์สามารถใช้งานหน้าขายและเปิดกะการทำงานได้
+        </div>
+
+        {/* คอลัมน์ขวา: ตะกร้าขายสินค้า (สัดส่วน 5 จาก 12 คอลัมน์ ≈ 40%) */}
+        <div id="pos-cart-container" className="lg:col-span-5 xl:col-span-4 flex flex-col h-full overflow-hidden bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl">
+          {/* จะถูกแทนที่ด้วย PosCartPanel ใน Phase 4 */}
+          <div className="flex-1 p-6 flex flex-col items-center justify-center text-center text-slate-400 space-y-3">
+            <Icons.ShoppingCart className="w-12 h-12 text-slate-600" />
+            <p className="text-base font-semibold text-slate-300">ตะกร้าสินค้าว่างเปล่า</p>
+            <p className="text-xs text-slate-500">แตะที่รายการสินค้าฝั่งซ้าย หรือยิงบาร์โค้ดเพื่อเพิ่มรายการลงบิล</p>
           </div>
-        )}
+        </div>
       </div>
     </div>
+  );
+}
+
+export default function PosPage() {
+  const { branch } = useAuth();
+
+  return (
+    <PosCartProvider branchId={branch?.id}>
+      <PosTerminalInner />
+    </PosCartProvider>
   );
 }

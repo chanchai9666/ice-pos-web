@@ -33,10 +33,10 @@
 
 **Independent Test**: สามารถเปิดหน้า POS เลือกหมวดหมู่ ค้นหาสินค้า แตะการ์ดสินค้า และสินค้าถูกเพิ่มลงในตะกร้าพร้อมเสียง Beep ตอบรับ
 
-- [ ] T007 [P] [US1] Create Quick Search Bar component in `src/components/pos/PosSearchBar.tsx` (>=48px touch height, clear button, instant debounce)
-- [ ] T008 [P] [US1] Create Category Selection Tabs component in `src/components/pos/PosCategoryTabs.tsx` (scrollable pills, min 48px touch target, active indicator)
-- [ ] T009 [US1] Create Product Catalog Card and Grid in `src/components/pos/PosProductGrid.tsx` (large touch card >=160px, product image, name, price, stock status, tap-to-add)
-- [ ] T010 [US1] Integrate Manual Catalog selection into main POS page layout in `src/app/(main)/pos/page.tsx`
+- [x] T007 [P] [US1] Create Quick Search Bar component in `src/components/pos/PosSearchBar.tsx` (>=48px touch height, clear button, instant debounce)
+- [x] T008 [P] [US1] Create Category Selection Tabs component in `src/components/pos/PosCategoryTabs.tsx` (scrollable pills, min 48px touch target, active indicator)
+- [x] T009 [US1] Create Product Catalog Card and Grid in `src/components/pos/PosProductGrid.tsx` (large touch card >=160px, product image, name, price, stock status, tap-to-add)
+- [x] T010 [US1] Integrate Manual Catalog selection into main POS page layout in `src/app/(main)/pos/page.tsx`
 
 **Checkpoint**: แคชเชียร์สามารถค้นหาและจิ้มเลือกสินค้าลงบิลได้สำเร็จเป็นส่วนแรกของ MVP
 
