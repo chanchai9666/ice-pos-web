@@ -177,21 +177,26 @@ export function ProductTable({
                   <td className="py-3 px-4 text-center">
                     <button
                       type="button"
+                      role="switch"
+                      aria-checked={product.isActive}
                       onClick={() => onToggleStatus(product)}
-                      title={product.isActive ? 'คลิกเพื่อปิดจำหน่าย' : 'คลิกเพื่อเปิดจำหน่าย'}
-                      className="cursor-pointer inline-flex items-center"
+                      title={product.isActive ? 'คลิกเพื่อปิดจำหน่ายชั่วคราว' : 'คลิกเพื่อเปิดจำหน่าย'}
+                      className="cursor-pointer inline-flex items-center gap-2 group/toggle py-1 px-1.5 rounded-lg hover:bg-slate-800/60 transition-colors min-h-[36px]"
                     >
-                      <Badge
-                        variant={product.isActive ? 'success' : 'neutral'}
-                        size="sm"
+                      <div
+                        className={`w-9 h-5 rounded-full transition-colors relative flex items-center p-0.5 ${
+                          product.isActive ? 'bg-cyan-500' : 'bg-slate-700'
+                        }`}
                       >
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            product.isActive ? 'bg-emerald-400' : 'bg-slate-400'
+                        <div
+                          className={`w-4 h-4 rounded-full bg-white shadow-md transform transition-transform ${
+                            product.isActive ? 'translate-x-4' : 'translate-x-0'
                           }`}
                         />
+                      </div>
+                      <span className={`text-[11px] font-medium ${product.isActive ? 'text-emerald-400' : 'text-slate-500'}`}>
                         {product.isActive ? 'เปิดขาย' : 'ปิดชั่วคราว'}
-                      </Badge>
+                      </span>
                     </button>
                   </td>
 

@@ -8,6 +8,7 @@ import { ProductTable } from '@/components/catalog/ProductTable';
 import { ProductFormDrawer } from '@/components/catalog/ProductFormDrawer';
 import { CategoryList } from '@/components/catalog/CategoryList';
 import { CategoryFormModal } from '@/components/catalog/CategoryFormModal';
+import { DeleteConfirmModal } from '@/components/catalog/DeleteConfirmModal';
 import { Pagination } from '@/components/ui/Pagination';
 import { Icons } from '@/components/ui/Icons';
 
@@ -29,6 +30,10 @@ export default function CatalogPage() {
   // Modal Create / Edit State (หมวดหมู่สินค้า)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [selectedCategoryForEdit, setSelectedCategoryForEdit] = useState<Category | null>(null);
+
+  // Modal Delete State (ลบสินค้าอย่างปลอดภัย)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   // Pagination & ตัวกรองสินค้า
   const [search, setSearch] = useState('');
@@ -140,6 +145,23 @@ export default function CatalogPage() {
     } catch (err: unknown) {
       const error = err as Error;
       showToast(error.message || 'ไม่สามารถเปลี่ยนสถานะสินค้าได้', 'error');
+    }
+  };
+
+  // จัดการยืนยันการลบสินค้าถาวร (Safe Delete with Backend Error Interception)
+  const handleConfirmDeleteProduct = async (product: Product) => {
+    try {
+      await catalogService.deleteProduct(product.id);
+      setProducts((prev) => prev.filter((p) => p.id !== product.id));
+      setTotalItems((prev) => Math.max(0, prev - 1));
+      showToast(`ลบสินค้า "${product.name}" เรียบร้อยแล้ว`, 'success');
+    } catch (err: unknown) {
+      const error = err as Error;
+      showToast(
+        `ไม่สามารถลบสินค้าได้: ${error.message} แนะนำให้สลับเป็น "ปิดการจำหน่าย" แทนเพื่อรักษาประวัติข้อมูล`,
+        'error'
+      );
+      throw error;
     }
   };
 
@@ -269,8 +291,8 @@ export default function CatalogPage() {
               setIsProductDrawerOpen(true);
             }}
             onDeleteProduct={(prod) => {
-              const event = new CustomEvent('open-delete-modal', { detail: { product: prod } });
-              window.dispatchEvent(event);
+              setProductToDelete(prod);
+              setIsDeleteModalOpen(true);
             }}
             onToggleStatus={handleToggleProductStatus}
             onResetSearch={() => {
@@ -341,6 +363,22 @@ export default function CatalogPage() {
         category={selectedCategoryForEdit}
         parentOptions={categories}
         onSuccess={handleCategorySuccess}
+      />
+
+      {/* Modal Dialog ยืนยันการลบสินค้าอย่างปลอดภัย */}
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        product={productToDelete}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setProductToDelete(null);
+        }}
+        onConfirmDelete={handleConfirmDeleteProduct}
+        onDeactivateInstead={async (prod) => {
+          await handleToggleProductStatus(prod);
+          setIsDeleteModalOpen(false);
+          setProductToDelete(null);
+        }}
       />
     </div>
   );

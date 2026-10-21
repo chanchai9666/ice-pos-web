@@ -122,9 +122,9 @@
 
 ### Implementation for User Story 6
 
-- [ ] T027 [P] [US6] Create DeleteConfirmModal dialog with warning explanation in `src/components/catalog/DeleteConfirmModal.tsx`
-- [ ] T028 [US6] Implement Active/Inactive status toggle switch in `src/components/catalog/ProductTable.tsx`
-- [ ] T029 [US6] Connect safe delete handler with backend error interception (suggest deactivation if in-use) in `src/app/(main)/catalog/page.tsx`
+- [X] T027 [P] [US6] Create DeleteConfirmModal dialog with warning explanation in `src/components/catalog/DeleteConfirmModal.tsx`
+- [X] T028 [US6] Implement Active/Inactive status toggle switch in `src/components/catalog/ProductTable.tsx`
+- [X] T029 [US6] Connect safe delete handler with backend error interception (suggest deactivation if in-use) in `src/app/(main)/catalog/page.tsx`
 
 **Checkpoint**: ควบคุมสถานะและลบสินค้าได้อย่างปลอดภัยตามหลักการ Data Integrity
 
