@@ -20,8 +20,8 @@
 
 **Purpose**: โครงสร้างพื้นฐานหลักของการจัดการสถานะตะกร้าสินค้าและการเชื่อมต่อข้อมูลกะการขาย (Blocking prerequisites for user stories)
 
-- [ ] T005 Implement Shift API Service in `src/services/shift.service.ts` (`getActiveShift`, `openShift`, `closeShift`)
-- [ ] T006 Implement POS Cart State Context in `src/context/PosCartContext.tsx` (cart items management, add item, update quantity, remove item, clear cart, total calculations)
+- [x] T005 Implement Shift API Service in `src/services/shift.service.ts` (`getActiveShift`, `openShift`, `closeShift`)
+- [x] T006 Implement POS Cart State Context in `src/context/PosCartContext.tsx` (cart items management, add item, update quantity, remove item, clear cart, total calculations)
 
 **Checkpoint**: โครงสร้างสถานะและยูทิลิตีพร้อมสำหรับการสร้างหน้าจอและ Component ของแต่ละ User Story
 
