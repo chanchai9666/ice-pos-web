@@ -106,9 +106,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T024 [P] [US5] Create ImageUploader component with file drop zone, validation (JPG, PNG, WebP <= 5MB), and instant preview in `src/components/catalog/ImageUploader.tsx`
-- [ ] T025 [US5] Integrate ImageUploader into ProductFormDrawer with upload API endpoint in `src/components/catalog/ProductFormDrawer.tsx`
-- [ ] T026 [P] [US5] Implement Default Product Image Placeholder fallback in `src/components/catalog/ProductTable.tsx`
+- [X] T024 [P] [US5] Create ImageUploader component with file drop zone, validation (JPG, PNG, WebP <= 5MB), and instant preview in `src/components/catalog/ImageUploader.tsx`
+- [X] T025 [US5] Integrate ImageUploader into ProductFormDrawer with upload API endpoint in `src/components/catalog/ProductFormDrawer.tsx`
+- [X] T026 [P] [US5] Implement Default Product Image Placeholder fallback in `src/components/catalog/ProductTable.tsx`
 
 **Checkpoint**: ระบบรูปภาพสินค้าทำงานสมบูรณ์ทั้งการอัปโหลดและแสดงภาพตัวอย่าง
 

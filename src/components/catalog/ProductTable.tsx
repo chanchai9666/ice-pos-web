@@ -15,6 +15,30 @@ export interface ProductTableProps {
   onResetSearch?: () => void;
 }
 
+function ProductImageThumbnail({ src, alt }: { src?: string; alt: string }) {
+  const [hasError, setHasError] = React.useState(false);
+
+  if (!src || hasError) {
+    return (
+      <div className="w-10 h-10 rounded-lg bg-slate-800/80 border border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 shadow-inner">
+        <Icons.Package className="w-5 h-5 text-slate-500" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center shadow-inner">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover"
+        onError={() => setHasError(true)}
+      />
+    </div>
+  );
+}
+
 export function ProductTable({
   products,
   isLoading,
@@ -85,22 +109,7 @@ export function ProductTable({
                   {/* รูปภาพ + ชื่อสินค้า */}
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center">
-                        {product.imageUrl ? (
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          <img
-                            src={product.imageUrl}
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              // Fallback เมื่อรูปภาพโหลดไม่ผ่าน
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <Icons.Package className="w-5 h-5 text-slate-500" />
-                        )}
-                      </div>
+                      <ProductImageThumbnail src={product.imageUrl} alt={product.name} />
                       <div className="min-w-0">
                         <div className="font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors truncate max-w-[220px]">
                           {product.name}

@@ -5,6 +5,7 @@ import { Drawer } from '@/components/ui/Drawer';
 import { Product, Category, Uom, Tax, ProductType } from '@/types/catalog';
 import { catalogService } from '@/services/catalog.service';
 import { bahtToSatang, satangToBahtNumber } from '@/utils/currency';
+import { ImageUploader } from '@/components/catalog/ImageUploader';
 import { Icons } from '@/components/ui/Icons';
 
 export interface ProductFormDrawerProps {
@@ -229,44 +230,23 @@ export function ProductFormDrawer({
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* รูปภาพสินค้า */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <label className="block text-xs font-semibold text-slate-300">
-            รูปภาพสินค้า (JPG, PNG, WebP ขนาดไม่เกิน 5MB)
+            รูปภาพสินค้า
           </label>
-          <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-xl bg-slate-800 border-2 border-dashed border-slate-700 flex items-center justify-center overflow-hidden shrink-0 relative group">
-              {imagePreview ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={imagePreview}
-                  alt="ตัวอย่างรูปสินค้า"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <Icons.Image className="w-8 h-8 text-slate-500" />
-              )}
-            </div>
-
-            <div className="flex-1 space-y-1.5">
-              <label
-                htmlFor="product-image-input"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 cursor-pointer transition-colors"
-              >
-                <Icons.Upload className="w-4 h-4 text-cyan-400" />
-                <span>{imagePreview ? 'เปลี่ยนรูปภาพ' : 'อัปโหลดรูปภาพ'}</span>
-              </label>
-              <input
-                id="product-image-input"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-              <p className="text-[11px] text-slate-500">
-                ระบบจะปรับขนาดและแปลงเป็น WebP อัตโนมัติเมื่อบันทึก
-              </p>
-            </div>
-          </div>
+          <ImageUploader
+            currentImageUrl={imagePreview || imageUrl}
+            onImageSelected={(file) => {
+              setImageFile(file);
+              if (file) {
+                const objectUrl = URL.createObjectURL(file);
+                setImagePreview(objectUrl);
+              } else {
+                setImagePreview('');
+                setImageUrl('');
+              }
+            }}
+          />
         </div>
 
         {/* ข้อมูลพื้นฐาน */}
