@@ -177,23 +177,51 @@ export function ProductFormModal({
 
       if (isEditing && product?.id) {
         const res = await catalogService.updateProduct(product.id, payload);
-        savedProduct = res.data;
+        savedProduct = { ...res.data };
 
         if (imageFile) {
           try {
-            await catalogService.uploadProductImage(product.id, imageFile);
+            const uploadRes = await catalogService.uploadProductImage(product.id, imageFile);
+            const uploadData = uploadRes.data as unknown as Record<string, unknown> | null;
+            const newImageUrl = (uploadData?.imageUrl as string) || (uploadData?.image_url as string);
+            savedProduct = {
+              ...savedProduct,
+              imageUrl: newImageUrl || savedProduct.imageUrl || imagePreview,
+              imageTimestamp: Date.now(),
+            };
           } catch {
-            // ไม่บล็อกการแก้ไขข้อมูลหลัก
+            // ไม่บล็อกการแก้ไขข้อมูลหลัก แต่แสดงภาพพรีวิวพร้อม timestamp เพื่อให้ตารางเห็นภาพทันที
+            if (imagePreview) {
+              savedProduct = {
+                ...savedProduct,
+                imageUrl: imagePreview,
+                imageTimestamp: Date.now(),
+              };
+            }
           }
+        } else if (!imageUrl) {
+          // กรณีผู้ใช้กดลบรูป
+          savedProduct = {
+            ...savedProduct,
+            imageUrl: '',
+            imageTimestamp: Date.now(),
+          };
         }
         onSuccess(savedProduct, false);
       } else {
         const res = await catalogService.createProduct(payload);
-        savedProduct = res.data;
+        savedProduct = { ...res.data };
 
         if (imageFile && savedProduct?.id) {
           try {
-            await catalogService.uploadProductImage(savedProduct.id, imageFile);
+            const uploadRes = await catalogService.uploadProductImage(savedProduct.id, imageFile);
+            const uploadData = uploadRes.data as unknown as Record<string, unknown> | null;
+            const newImageUrl = (uploadData?.imageUrl as string) || (uploadData?.image_url as string);
+            savedProduct = {
+              ...savedProduct,
+              imageUrl: newImageUrl || savedProduct.imageUrl || imagePreview,
+              imageTimestamp: Date.now(),
+            };
           } catch {
             // ไม่บล็อกการสร้างสินค้า
           }

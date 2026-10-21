@@ -14,8 +14,21 @@ export interface ProductTableProps {
   onResetSearch?: () => void;
 }
 
-function ProductImageThumbnail({ src, alt }: { src?: string; alt: string }) {
+function ProductImageThumbnail({
+  src,
+  alt,
+  timestamp,
+}: {
+  src?: string;
+  alt: string;
+  timestamp?: number;
+}) {
   const [hasError, setHasError] = React.useState(false);
+
+  // รีเซ็ตสถานะข้อผิดพลาดเมื่อ src หรือ timestamp เปลี่ยนแปลง
+  React.useEffect(() => {
+    setHasError(false);
+  }, [src, timestamp]);
 
   if (!src || hasError) {
     return (
@@ -25,11 +38,14 @@ function ProductImageThumbnail({ src, alt }: { src?: string; alt: string }) {
     );
   }
 
+  // เติม Query Parameter timestamp เพื่อป้องกันเบราว์เซอร์แคชภาพเดิมไว้
+  const imageSrc = timestamp ? `${src}${src.includes('?') ? '&' : '?'}t=${timestamp}` : src;
+
   return (
     <div className="w-12 h-12 rounded-xl bg-slate-800 border-2 border-slate-700 overflow-hidden shrink-0 flex items-center justify-center shadow-inner">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        src={imageSrc}
         alt={alt}
         className="w-full h-full object-cover"
         onError={() => setHasError(true)}
@@ -108,7 +124,11 @@ export function ProductTable({
                   {/* รูปภาพ + ชื่อสินค้า */}
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-3">
-                      <ProductImageThumbnail src={product.imageUrl} alt={product.name} />
+                      <ProductImageThumbnail
+                        src={product.imageUrl}
+                        alt={product.name}
+                        timestamp={product.imageTimestamp}
+                      />
                       <div className="min-w-0">
                         <div className="font-bold text-base text-slate-100 group-hover:text-cyan-300 transition-colors truncate max-w-[240px]">
                           {product.name}

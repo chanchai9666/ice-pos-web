@@ -47,9 +47,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] ปรับปรุงลำดับการบันทึกข้อมูลและอัปโหลดรูปภาพใน ProductFormModal เพื่อส่งข้อมูลสินค้าที่อัปเดตสมบูรณ์พร้อม URL รูปภาพใหม่กลับไปยัง callback ใน `src/components/catalog/ProductFormModal.tsx`
-- [ ] T008 [US2] จัดการ Reactive State อัปเดตตารางรายการสินค้าทันทีพร้อม Timestamp สำหรับ Cache-Busting ใน `src/app/(main)/catalog/page.tsx`
-- [ ] T009 [P] [US2] ปรับปรุง ProductImageThumbnail ใน ProductTable ให้รองรับ Cache-Busting Query Parameter ป้องกันเบราว์เซอร์แสดงภาพเก่าค้าง ใน `src/components/catalog/ProductTable.tsx`
+- [x] T007 [US2] ปรับปรุงลำดับการบันทึกข้อมูลและอัปโหลดรูปภาพใน ProductFormModal เพื่อส่งข้อมูลสินค้าที่อัปเดตสมบูรณ์พร้อม URL รูปภาพใหม่กลับไปยัง callback ใน `src/components/catalog/ProductFormModal.tsx`
+- [x] T008 [US2] จัดการ Reactive State อัปเดตตารางรายการสินค้าทันทีพร้อม Timestamp สำหรับ Cache-Busting ใน `src/app/(main)/catalog/page.tsx`
+- [x] T009 [P] [US2] ปรับปรุง ProductImageThumbnail ใน ProductTable ให้รองรับ Cache-Busting Query Parameter ป้องกันเบราว์เซอร์แสดงภาพเก่าค้าง ใน `src/components/catalog/ProductTable.tsx`
 
 **Checkpoint**: User Story 2 ทำงานได้สมบูรณ์ ตารางสินค้าอัปเดตภาพใหม่ทันที 0ms หลังบันทึก
 

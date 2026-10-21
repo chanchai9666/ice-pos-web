@@ -345,13 +345,17 @@ export default function CatalogPage() {
         uoms={uoms}
         taxes={taxes}
         onSuccess={(savedProduct, isNew) => {
+          const timestampedProduct = {
+            ...savedProduct,
+            imageTimestamp: savedProduct.imageTimestamp || Date.now(),
+          };
           if (isNew) {
-            setProducts((prev) => [savedProduct, ...prev]);
+            setProducts((prev) => [timestampedProduct, ...prev]);
             setTotalItems((prev) => prev + 1);
             showToast(`สร้างสินค้า "${savedProduct.name}" สำเร็จ`, 'success');
           } else {
             setProducts((prev) =>
-              prev.map((p) => (p.id === savedProduct.id ? savedProduct : p))
+              prev.map((p) => (p.id === savedProduct.id ? timestampedProduct : p))
             );
             showToast(`แก้ไขข้อมูลสินค้า "${savedProduct.name}" สำเร็จ`, 'success');
           }
