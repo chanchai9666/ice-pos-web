@@ -17,6 +17,7 @@ import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
 import { PosProductGrid } from '@/components/pos/PosProductGrid';
 import { PosCartPanel } from '@/components/pos/PosCartPanel';
 import { PosScanToast } from '@/components/pos/PosScanToast';
+import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
 
@@ -29,6 +30,7 @@ function PosTerminalInner() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
+  const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
 
   // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
   const handleSelectProduct = (product: Product) => {
@@ -170,7 +172,7 @@ function PosTerminalInner() {
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden">
         {/* คอลัมน์ซ้าย: แคตตาล็อกสินค้า (สัดส่วน 7 จาก 12 คอลัมน์ ≈ 60%) */}
         <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-full overflow-hidden bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 space-y-4">
-          {/* ช่องค้นหาด่วน */}
+          {/* ช่องค้นหาด่วน และปุ่มเปิดกล้องสแกนบาร์โค้ด */}
           <div className="flex items-center gap-3">
             <div className="flex-1">
               <PosSearchBar
@@ -179,6 +181,15 @@ function PosTerminalInner() {
                 onClear={() => setSearchQuery('')}
               />
             </div>
+            <button
+              type="button"
+              onClick={() => setIsCameraModalOpen(true)}
+              className="h-12 px-4 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-2.5 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0"
+              title="เปิดกล้องสแกนบาร์โค้ด"
+            >
+              <Icons.Camera className="w-5 h-5 text-cyan-400" />
+              <span className="hidden sm:inline text-sm font-semibold">สแกนด้วยกล้อง</span>
+            </button>
           </div>
 
           {/* แถบเลือกหมวดหมู่ */}
@@ -206,6 +217,13 @@ function PosTerminalInner() {
 
       {/* แบนเนอร์แจ้งเตือนการสแกนบาร์โค้ด */}
       <PosScanToast />
+
+      {/* หน้าต่างสแกนบาร์โค้ดด้วยกล้อง */}
+      <PosCameraScannerModal
+        isOpen={isCameraModalOpen}
+        onClose={() => setIsCameraModalOpen(false)}
+        onScan={handleBarcodeScanned}
+      />
     </div>
   );
 }

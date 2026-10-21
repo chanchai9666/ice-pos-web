@@ -77,9 +77,9 @@
 
 **Independent Test**: แตะปุ่มเปิดกล้องบนหน้า POS นำสินค้ามาส่องในกรอบเล็ง กล้องอ่านรหัส เพิ่มสินค้าลงบิล ส่งเสียง Beep และเปิดรอสแกนชิ้นต่อไปได้ทันที
 
-- [ ] T018 [US3] Create Camera Viewfinder and Scanner Modal in `src/components/pos/PosCameraScannerModal.tsx` (`BarcodeDetector` API / Canvas video stream, camera switch, flash toggle, large finish button)
-- [ ] T019 [US3] Implement Continuous Scanning with Debounce in `src/components/pos/PosCameraScannerModal.tsx` (auto add to cart, play success beep, debounce 1.5s per code)
-- [ ] T020 [US3] Add Camera Launch Button to POS Header/Toolbar in `src/app/(main)/pos/page.tsx` and handle permission denied fallback
+- [x] T018 [US3] Create Camera Viewfinder and Scanner Modal in `src/components/pos/PosCameraScannerModal.tsx` (`BarcodeDetector` API / Canvas video stream, camera switch, flash toggle, large finish button)
+- [x] T019 [US3] Implement Continuous Scanning with Debounce in `src/components/pos/PosCameraScannerModal.tsx` (auto add to cart, play success beep, debounce 1.5s per code)
+- [x] T020 [US3] Add Camera Launch Button to POS Header/Toolbar in `src/app/(main)/pos/page.tsx` and handle permission denied fallback
 
 **Checkpoint**: ร้านค้าที่ไม่มีเครื่องยิงบาร์โค้ดสามารถใช้กล้องของแท็บเล็ตหรือโน้ตบุ๊กสแกนสินค้าได้อย่างสมบูรณ์
 

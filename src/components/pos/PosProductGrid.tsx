@@ -104,7 +104,7 @@ export function PosProductGrid({
               {/* ส่วนราคาขาย */}
               <div className="pt-2 flex items-baseline justify-between border-t border-slate-800/80">
                 <span className="text-lg sm:text-xl font-extrabold text-cyan-400">
-                  ฿{formatSatangToBaht(product.retailPrice || 0)}
+                  ฿{formatSatangToBaht(product.price ?? 0)}
                 </span>
                 <span className="text-xs text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">
                   + เพิ่ม
