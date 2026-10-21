@@ -22,7 +22,15 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
-  const [mode, setMode] = useState<LoginMode>('pin');
+  // Lazy state initializers เพื่อป้องกันการเรียก setState ใน Effect
+  const [mode, setMode] = useState<LoginMode>(() => {
+    try {
+      return getLastLoginMode();
+    } catch {
+      return 'pin';
+    }
+  });
+
   const [branches, setBranches] = useState<Branch[]>([]);
   const [selectedBranchId, setSelectedBranchId] = useState<string>('');
   const [isLoadingBranches, setIsLoadingBranches] = useState<boolean>(true);
@@ -30,24 +38,18 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [failedAttempts, setFailedAttempts] = useState<number>(0);
-  const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
-
-  // ดึงการตั้งค่าที่เคยบันทึกไว้ในอุปกรณ์
-  useEffect(() => {
-    const savedMode = getLastLoginMode();
-    setMode(savedMode);
-
-    // ตรวจสอบสถานะ Cooldown จาก SessionStorage
-    const lockoutUntil = getLockoutExpiry();
-    if (lockoutUntil) {
-      const remainingSeconds = Math.ceil((lockoutUntil - Date.now()) / 1000);
-      if (remainingSeconds > 0) {
-        setCooldownRemaining(remainingSeconds);
-      }
+  const [cooldownRemaining, setCooldownRemaining] = useState<number>(() => {
+    try {
+      const lockoutUntil = getLockoutExpiry();
+      return lockoutUntil
+        ? Math.max(0, Math.ceil((lockoutUntil - Date.now()) / 1000))
+        : 0;
+    } catch {
+      return 0;
     }
-  }, []);
+  });
 
-  // ดึงรายชื่อสาขา
+  // ฟังก์ชันดึงรายชื่อสาขา
   const fetchBranches = useCallback(async () => {
     setIsLoadingBranches(true);
     setBranchesError(null);
@@ -59,10 +61,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       if (savedBranchId && list.some((b) => b.id === savedBranchId)) {
         setSelectedBranchId(savedBranchId);
       } else if (list.length === 1) {
-        // หากมีเพียงสาขาเดียว ให้เลือกอัตโนมัติ
         setSelectedBranchId(list[0].id);
         setLastBranchId(list[0].id);
-      } else if (list.length > 0 && !selectedBranchId) {
+      } else if (list.length > 0) {
         setSelectedBranchId(list[0].id);
       }
     } catch {
@@ -70,11 +71,42 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     } finally {
       setIsLoadingBranches(false);
     }
-  }, [selectedBranchId]);
+  }, []);
 
   useEffect(() => {
-    fetchBranches();
-  }, [fetchBranches]);
+    let active = true;
+
+    async function loadData() {
+      try {
+        const list = await authService.getBranches();
+        if (!active) return;
+        setBranches(list);
+
+        const savedBranchId = getLastBranchId();
+        if (savedBranchId && list.some((b) => b.id === savedBranchId)) {
+          setSelectedBranchId(savedBranchId);
+        } else if (list.length === 1) {
+          setSelectedBranchId(list[0].id);
+          setLastBranchId(list[0].id);
+        } else if (list.length > 0) {
+          setSelectedBranchId(list[0].id);
+        }
+      } catch {
+        if (!active) return;
+        setBranchesError('ไม่สามารถดึงข้อมูลสาขาได้ กรุณาตรวจสอบการเชื่อมต่อ');
+      } finally {
+        if (active) {
+          setIsLoadingBranches(false);
+        }
+      }
+    }
+
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // ระบบนับเวลาถอยหลัง Cooldown (Lockout Timer)
   useEffect(() => {
@@ -180,6 +212,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           onError={handleLoginError}
           isLockedOut={isLockedOut}
         />
+      )}
+
+      {branchesError && !errorMessage && (
+        <p className="text-xs text-amber-500 text-center mt-3">
+          {branchesError}
+        </p>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { AuthResponse, Branch } from '@/types/auth';
 import { BranchSelector } from './BranchSelector';
@@ -32,15 +32,61 @@ export function PinLogin({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // รองรับ PIN ความยาว 4-8 หลัก (แสดง Dot indicators 6 ช่องเป็นค่าแนะนำ)
   const MAX_PIN_LENGTH = 8;
   const MIN_PIN_LENGTH = 4;
+
+  const submitPin = useCallback(
+    async (pinToSubmit: string) => {
+      if (isLockedOut || isSubmitting) return;
+
+      if (!selectedBranchId) {
+        setValidationError('กรุณาเลือกสาขาที่ปฏิบัติงานก่อนเข้าสู่ระบบ');
+        return;
+      }
+
+      if (pinToSubmit.length < MIN_PIN_LENGTH) {
+        setValidationError(`กรุณาระบุรหัส PIN อย่างน้อย ${MIN_PIN_LENGTH} หลัก`);
+        return;
+      }
+
+      setIsSubmitting(true);
+      setValidationError(null);
+
+      const activeBranch =
+        branches.find((b) => b.id === selectedBranchId) || null;
+
+      try {
+        const auth = await loginWithPin(
+          {
+            branchId: selectedBranchId,
+            pin: pinToSubmit,
+          },
+          activeBranch
+        );
+        onSuccess(auth);
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error ? err.message : 'รหัส PIN ไม่ถูกต้อง';
+        onError(message);
+        setPin(''); // ล้าง PIN เมื่อใส่ผิดเพื่อให้ป้อนใหม่ได้ทันที
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [isLockedOut, isSubmitting, selectedBranchId, branches, loginWithPin, onSuccess, onError]
+  );
 
   const handleDigit = (digit: string) => {
     if (isLockedOut || isSubmitting) return;
     if (pin.length < MAX_PIN_LENGTH) {
-      setPin((prev) => prev + digit);
+      const nextPin = pin + digit;
+      setPin(nextPin);
       setValidationError(null);
+
+      // เมื่อป้อนครบ 6 หลัก ให้ส่งข้อมูลอัตโนมัติจาก Event Handler โดยตรง
+      if (nextPin.length === 6 && selectedBranchId) {
+        submitPin(nextPin);
+      }
     }
   };
 
@@ -56,51 +102,9 @@ export function PinLogin({
     setValidationError(null);
   };
 
-  const handleSubmit = async () => {
-    if (isLockedOut || isSubmitting) return;
-
-    if (!selectedBranchId) {
-      setValidationError('กรุณาเลือกสาขาที่ปฏิบัติงานก่อนเข้าสู่ระบบ');
-      return;
-    }
-
-    if (pin.length < MIN_PIN_LENGTH) {
-      setValidationError(`กรุณาระบุรหัส PIN อย่างน้อย ${MIN_PIN_LENGTH} หลัก`);
-      return;
-    }
-
-    setIsSubmitting(true);
-    setValidationError(null);
-
-    const activeBranch = branches.find((b) => b.id === selectedBranchId) || null;
-
-    try {
-      const auth = await loginWithPin(
-        {
-          branchId: selectedBranchId,
-          pin,
-        },
-        activeBranch
-      );
-      onSuccess(auth);
-    } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'รหัส PIN ไม่ถูกต้อง';
-      onError(message);
-      setPin(''); // ล้าง PIN เมื่อใส่ผิดเพื่อให้ป้อนใหม่ได้ทันที
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleManualSubmit = () => {
+    submitPin(pin);
   };
-
-  // ตรวจสอบและส่งข้อมูลอัตโนมัติเมื่อป้อนครบ 6 หลัก (หากเป็นกรณีมาตรฐาน 6 หลัก)
-  // แต่ยังคงให้กดยืนยันได้ระหว่าง 4-8 หลัก
-  useEffect(() => {
-    if (pin.length === 6 && selectedBranchId && !isSubmitting && !isLockedOut) {
-      handleSubmit();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pin]);
 
   return (
     <div className="space-y-5">
@@ -154,14 +158,14 @@ export function PinLogin({
         onDigit={handleDigit}
         onBackspace={handleBackspace}
         onClear={handleClear}
-        onSubmit={handleSubmit}
+        onSubmit={handleManualSubmit}
         disabled={isSubmitting || isLockedOut}
       />
 
       {/* ปุ่มยืนยันเข้าสู่ระบบ */}
       <button
         type="button"
-        onClick={handleSubmit}
+        onClick={handleManualSubmit}
         disabled={isSubmitting || isLockedOut || pin.length < MIN_PIN_LENGTH}
         className="w-full py-3 px-4 rounded-xl font-medium text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-blue-500/20 transition-all flex items-center justify-center space-x-2"
       >

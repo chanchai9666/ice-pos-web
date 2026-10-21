@@ -101,10 +101,10 @@
 
 **Purpose**: ปรับแต่งความสมบูรณ์ ความสวยงาม และการทดสอบระบบทั้งหมด
 
-- [ ] T018 [P] Add root route redirect from src/app/page.tsx to /login when unauthenticated
-- [ ] T019 [P] Verify Thai typography, responsive design for tablet/touchscreens, and Tailwind v4 styling in src/app/globals.css
-- [ ] T020 Run end-to-end validation scenarios per specs/001-user-login/quickstart.md
-- [ ] T021 Run linting and TypeScript strict type checking with npm run lint and npx tsc --noEmit
+- [x] T018 [P] Add root route redirect from src/app/page.tsx to /login when unauthenticated
+- [x] T019 [P] Verify Thai typography, responsive design for tablet/touchscreens, and Tailwind v4 styling in src/app/globals.css
+- [x] T020 Run end-to-end validation scenarios per specs/001-user-login/quickstart.md
+- [x] T021 Run linting and TypeScript strict type checking with npm run lint and npx tsc --noEmit
 
 ---
 

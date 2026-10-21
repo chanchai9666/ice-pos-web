@@ -4,7 +4,6 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 import { authService } from '@/services/auth.service';
@@ -40,29 +39,26 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [branch, setBranch] = useState<Branch | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // โหลด Session ที่เคยมีอยู่เมื่อเริ่มต้น
-  useEffect(() => {
+  // เริ่มต้น State โดยตรงจาก LocalStorage ผ่านฟังก์ชัน Lazy Initializer
+  const [user, setUser] = useState<UserProfile | null>(() => {
     try {
       const token = getAccessToken();
-      const savedUser = getUserProfile();
-      const savedBranch = getCurrentBranch();
-
-      if (token && savedUser) {
-        setUser(savedUser);
-        if (savedBranch) {
-          setBranch(savedBranch);
-        }
-      }
+      return token ? getUserProfile() : null;
     } catch {
-      clearAuthSession();
-    } finally {
-      setIsLoading(false);
+      return null;
     }
-  }, []);
+  });
+
+  const [branch, setBranch] = useState<Branch | null>(() => {
+    try {
+      const token = getAccessToken();
+      return token ? getCurrentBranch() : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [isLoading] = useState<boolean>(false);
 
   const loginWithCredentials = useCallback(
     async (credentials: LoginRequest): Promise<AuthResponse> => {
