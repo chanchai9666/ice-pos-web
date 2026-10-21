@@ -14,8 +14,6 @@ import { DeleteConfirmModal } from '@/components/catalog/DeleteConfirmModal';
 import { Pagination } from '@/components/ui/Pagination';
 import { Icons } from '@/components/ui/Icons';
 
-export const instant = false;
-
 export default function CatalogPage() {
   const [activeTab, setActiveTab] = useState<'products' | 'categories'>('products');
 
