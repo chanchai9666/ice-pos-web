@@ -63,9 +63,9 @@
 
 **Independent Test**: ยิงบาร์โค้ดสินค้าจริง (หรือพิมพ์รหัสเร็วๆ จบด้วย Enter) ขณะไม่ได้โฟกัสช่องค้นหา สินค้าถูกค้นหาและเพิ่มลงในตะกร้าขายทันที พร้อมเสียง Beep
 
-- [ ] T015 [US2] Implement Global Barcode Scanner Hook in `src/hooks/useBarcodeScanner.ts` (listens to window keydown, buffers keystrokes, converts Thai layout via `utils/barcode.ts`, triggers lookup)
-- [ ] T016 [US2] Integrate Barcode Scanner Hook into `src/app/(main)/pos/page.tsx` with `catalogService.lookupProduct` and `catalogService.getProducts`
-- [ ] T017 [US2] Implement Non-blocking Red Toast Notification for unrecognised barcodes in `src/components/pos/PosScanToast.tsx` with Error Buzzer sound
+- [x] T015 [US2] Implement Global Barcode Scanner Hook in `src/hooks/useBarcodeScanner.ts` (listens to window keydown, buffers keystrokes, converts Thai layout via `utils/barcode.ts`, triggers lookup)
+- [x] T016 [US2] Integrate Barcode Scanner Hook into `src/app/(main)/pos/page.tsx` with `catalogService.lookupProduct` and `catalogService.getProducts`
+- [x] T017 [US2] Implement Non-blocking Red Toast Notification for unrecognised barcodes in `src/components/pos/PosScanToast.tsx` with Error Buzzer sound
 
 **Checkpoint**: แคชเชียร์สามารถยิงบาร์โค้ดสินค้าด้วยเครื่องสแกนฮาร์ดแวร์ได้อย่างรวดเร็วและต่อเนื่อง
 

@@ -16,17 +16,78 @@ import { PosSearchBar } from '@/components/pos/PosSearchBar';
 import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
 import { PosProductGrid } from '@/components/pos/PosProductGrid';
 import { PosCartPanel } from '@/components/pos/PosCartPanel';
+import { PosScanToast } from '@/components/pos/PosScanToast';
+import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
-  const { addItem } = usePosCart();
+  const { addItem, addToast } = usePosCart();
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
+
+  // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
+  const handleSelectProduct = (product: Product) => {
+    addItem(product, 1);
+  };
+
+  // การจัดการเมื่อสแกนบาร์โค้ดจากเครื่องสแกนฮาร์ดแวร์
+  const handleBarcodeScanned = useCallback(
+    async (barcode: string) => {
+      try {
+        // 1. ค้นหาในแคชรายการสินค้าที่มีอยู่แล้วก่อน
+        const localFound = products.find(
+          (p) => p.barcode === barcode || p.sku?.toLowerCase() === barcode.toLowerCase()
+        );
+        if (localFound) {
+          addItem(localFound, 1);
+          addToast({
+            type: 'SUCCESS',
+            title: 'เพิ่มสินค้าลงบิลแล้ว',
+            message: localFound.name,
+            code: barcode,
+          });
+          return;
+        }
+
+        // 2. ค้นหาจาก API ด้วย Barcode / SKU Lookup
+        const res = await catalogService.lookupProduct(barcode);
+        if (res.data) {
+          addItem(res.data, 1);
+          addToast({
+            type: 'SUCCESS',
+            title: 'เพิ่มสินค้าลงบิลแล้ว',
+            message: res.data.name,
+            code: barcode,
+          });
+        } else {
+          addToast({
+            type: 'ERROR',
+            title: 'ไม่พบบาร์โค้ดในระบบ',
+            message: `ไม่พบข้อมูลสินค้าสำหรับรหัส "${barcode}"`,
+            code: barcode,
+          });
+        }
+      } catch {
+        addToast({
+          type: 'ERROR',
+          title: 'ไม่พบบาร์โค้ดในระบบ',
+          message: `ไม่พบข้อมูลสินค้าสำหรับรหัส "${barcode}"`,
+          code: barcode,
+        });
+      }
+    },
+    [products, addItem, addToast]
+  );
+
+  // ดักจับบาร์โค้ดฮาร์ดแวร์ทั่วทั้งหน้าจอ
+  useBarcodeScanner({
+    onScan: handleBarcodeScanned,
+  });
 
   // ดึงข้อมูลหมวดหมู่สินค้า
   useEffect(() => {
@@ -90,11 +151,6 @@ function PosTerminalInner() {
     });
   }, [products, selectedCategoryId, searchQuery]);
 
-  // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
-  const handleSelectProduct = (product: Product) => {
-    addItem(product, 1);
-  };
-
   return (
     <div className="flex flex-col h-[calc(100vh-5rem)] max-w-[1920px] mx-auto gap-4">
       {/* ส่วนหัวหน้าจอ POS */}
@@ -147,6 +203,9 @@ function PosTerminalInner() {
           <PosCartPanel />
         </div>
       </div>
+
+      {/* แบนเนอร์แจ้งเตือนการสแกนบาร์โค้ด */}
+      <PosScanToast />
     </div>
   );
 }
