@@ -1,11 +1,11 @@
-'use client';
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { catalogService } from '@/services/catalog.service';
-import { Product, Category } from '@/types/catalog';
+import { metadataService } from '@/services/metadata.service';
+import { Product, Category, Uom, Tax } from '@/types/catalog';
 import { Tabs } from '@/components/ui/Tabs';
 import { ProductToolbar } from '@/components/catalog/ProductToolbar';
 import { ProductTable } from '@/components/catalog/ProductTable';
+import { ProductFormDrawer } from '@/components/catalog/ProductFormDrawer';
 import { Pagination } from '@/components/ui/Pagination';
 import { Icons } from '@/components/ui/Icons';
 
@@ -15,8 +15,14 @@ export default function CatalogPage() {
   // ข้อมูลสินค้าและสถานะโหลด
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [uoms, setUoms] = useState<Uom[]>([]);
+  const [taxes, setTaxes] = useState<Tax[]>([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
+
+  // Drawer Create / Edit State
+  const [isProductDrawerOpen, setIsProductDrawerOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState<Product | null>(null);
 
   // Pagination & ตัวกรองสินค้า
   const [search, setSearch] = useState('');
@@ -35,16 +41,27 @@ export default function CatalogPage() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  // ดึงรายการหมวดหมู่
-  const fetchCategories = useCallback(async () => {
+  // ดึงรายการหมวดหมู่ และ Metadata (Taxes, UOMs)
+  const fetchMetadataAndCategories = useCallback(async () => {
     try {
       setIsLoadingCategories(true);
-      const res = await catalogService.getCategories({ page: 1, pageSize: 100 });
-      if (res && res.data) {
-        setCategories(res.data);
+      const [catRes, taxRes, uomRes] = await Promise.allSettled([
+        catalogService.getCategories({ page: 1, pageSize: 100 }),
+        metadataService.getTaxes(),
+        metadataService.getUoms(),
+      ]);
+
+      if (catRes.status === 'fulfilled' && catRes.value?.data) {
+        setCategories(catRes.value.data);
+      }
+      if (taxRes.status === 'fulfilled' && taxRes.value?.data) {
+        setTaxes(taxRes.value.data);
+      }
+      if (uomRes.status === 'fulfilled' && uomRes.value?.data) {
+        setUoms(uomRes.value.data);
       }
     } catch {
-      // ดึงหมวดหมู่ล้มเหลว
+      // ดึงข้อมูลล้มเหลว
     } finally {
       setIsLoadingCategories(false);
     }
@@ -85,8 +102,8 @@ export default function CatalogPage() {
 
   // Initial load
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    fetchMetadataAndCategories();
+  }, [fetchMetadataAndCategories]);
 
   useEffect(() => {
     if (activeTab === 'products') {
@@ -196,9 +213,8 @@ export default function CatalogPage() {
               setPage(1);
             }}
             onAddNewProduct={() => {
-              // จะเชื่อมกับ ProductFormDrawer ใน Phase 5 (US3)
-              const event = new CustomEvent('open-product-drawer', { detail: { mode: 'create' } });
-              window.dispatchEvent(event);
+              setSelectedProductForEdit(null);
+              setIsProductDrawerOpen(true);
             }}
             onRefresh={fetchProducts}
             isLoading={isLoadingProducts}
@@ -208,9 +224,8 @@ export default function CatalogPage() {
             products={products}
             isLoading={isLoadingProducts}
             onEditProduct={(prod) => {
-              // จะเชื่อมกับ ProductFormDrawer ใน Phase 5 (US3)
-              const event = new CustomEvent('open-product-drawer', { detail: { mode: 'edit', product: prod } });
-              window.dispatchEvent(event);
+              setSelectedProductForEdit(prod);
+              setIsProductDrawerOpen(true);
             }}
             onDeleteProduct={(prod) => {
               // จะเชื่อมกับ DeleteConfirmModal ใน Phase 8 (US6)
@@ -239,6 +254,28 @@ export default function CatalogPage() {
           />
         </div>
       )}
+
+      {/* Drawer สำหรับเพิ่ม / แก้ไขสินค้า */}
+      <ProductFormDrawer
+        isOpen={isProductDrawerOpen}
+        onClose={() => setIsProductDrawerOpen(false)}
+        product={selectedProductForEdit}
+        categories={categories}
+        uoms={uoms}
+        taxes={taxes}
+        onSuccess={(savedProduct, isNew) => {
+          if (isNew) {
+            setProducts((prev) => [savedProduct, ...prev]);
+            setTotalItems((prev) => prev + 1);
+            showToast(`สร้างสินค้า "${savedProduct.name}" สำเร็จ`, 'success');
+          } else {
+            setProducts((prev) =>
+              prev.map((p) => (p.id === savedProduct.id ? savedProduct : p))
+            );
+            showToast(`แก้ไขข้อมูลสินค้า "${savedProduct.name}" สำเร็จ`, 'success');
+          }
+        }}
+      />
 
       {/* เนื้อหาในแท็บหมวดหมู่สินค้า (จะถูกขยายสมบูรณ์ใน Phase 6) */}
       {activeTab === 'categories' && (

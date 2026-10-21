@@ -73,10 +73,10 @@
 
 ### Implementation for User Story 3
 
-- [ ] T017 [US3] Create Slide-over Drawer container component with backdrop and smooth transition in `src/components/ui/Drawer.tsx`
-- [ ] T018 [US3] Implement ProductFormDrawer component with form fields (name, SKU, barcode, category, UOM, tax, price in THB, cost, product type, min stock, track expiry) in `src/components/catalog/ProductFormDrawer.tsx`
-- [ ] T019 [US3] Implement internal barcode generation trigger button and handler in `src/components/catalog/ProductFormDrawer.tsx`
-- [ ] T020 [US3] Connect ProductFormDrawer create and edit actions with Catalog page state in `src/app/(main)/catalog/page.tsx`
+- [X] T017 [US3] Create Slide-over Drawer container component with backdrop and smooth transition in `src/components/ui/Drawer.tsx`
+- [X] T018 [US3] Implement ProductFormDrawer component with form fields (name, SKU, barcode, category, UOM, tax, price in THB, cost, product type, min stock, track expiry) in `src/components/catalog/ProductFormDrawer.tsx`
+- [X] T019 [US3] Implement internal barcode generation trigger button and handler in `src/components/catalog/ProductFormDrawer.tsx`
+- [X] T020 [US3] Connect ProductFormDrawer create and edit actions with Catalog page state in `src/app/(main)/catalog/page.tsx`
 
 **Checkpoint**: สามารถเพิ่มและแก้ไขสินค้าผ่าน Slide-over Drawer ได้อย่างสมบูรณ์
 
