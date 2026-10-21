@@ -78,9 +78,32 @@ export interface Product {
   minStock: number;
   trackExpiry: boolean;
   imageUrl?: string;
+  imageTimestamp?: number; // สำหรับ Client-side Cache-Busting รูปภาพ
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;
+}
+
+// ข้อมูลผลลัพธ์การอัปโหลดรูปภาพ
+export interface ProductImageUploadResponse {
+  imageUrl: string;
+}
+
+// ข้อมูลสถานะอุปกรณ์กล้อง
+export interface CameraDeviceState {
+  isStreaming: boolean;
+  facingMode: 'user' | 'environment';
+  hasMultipleCameras: boolean;
+  error: string | null;
+}
+
+// ข้อมูลภาพถ่ายจากกล้องที่พร้อมใช้งาน
+export interface CapturedImageResult {
+  file: File;
+  previewUrl: string;
+  blob: Blob;
+  width: number;
+  height: number;
 }
 
 // ข้อมูลสำหรับสร้างสินค้าใหม่

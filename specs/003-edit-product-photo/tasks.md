@@ -6,7 +6,7 @@
 
 **Purpose**: จัดเตรียม Type Definitions และโครงสร้างพื้นฐานสำหรับจัดการรูปภาพและกล้อง
 
-- [ ] T001 [P] อัปเดต Type Definitions สำหรับ Camera Capture State และ Image Response ใน `src/types/catalog.ts`
+- [x] T001 [P] อัปเดต Type Definitions สำหรับ Camera Capture State และ Image Response ใน `src/types/catalog.ts`
 
 ---
 
