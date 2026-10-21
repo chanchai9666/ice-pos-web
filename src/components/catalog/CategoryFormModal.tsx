@@ -142,7 +142,7 @@ export function CategoryFormModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="เช่น น้ำแข็งหลอด, น้ำดื่ม, เครื่องดื่ม"
-              className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all"
+              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all"
             />
             {formErrors.name && (
               <span className="text-sm font-semibold text-rose-400">{formErrors.name}</span>
@@ -157,7 +157,7 @@ export function CategoryFormModal({
             <select
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
-              className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
             >
               <option value="">-- เป็นหมวดหมู่หลัก (ไม่มีหมวดหมู่แม่) --</option>
               {eligibleParents.map((p) => (
@@ -177,7 +177,7 @@ export function CategoryFormModal({
               type="number"
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none"
+              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none"
             />
             <p className="text-sm text-slate-400 font-medium">
               ค่าน้อยจะแสดงก่อนในเมนูและหน้าจอขายหน้าร้าน (เช่น 1, 2, 3...)

@@ -282,7 +282,7 @@ export function ProductFormModal({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="เช่น น้ำแข็งหลอดเล็ก 5kg"
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none"
               />
               {formErrors.name && (
                 <span className="text-sm font-semibold text-rose-400 block">{formErrors.name}</span>
@@ -301,7 +301,7 @@ export function ProductFormModal({
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
                 placeholder="เช่น ICE-001"
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none uppercase"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none uppercase"
               />
               {formErrors.sku && (
                 <span className="text-sm font-semibold text-rose-400 block">{formErrors.sku}</span>
@@ -333,7 +333,7 @@ export function ProductFormModal({
                     setIsInternalBarcode(false);
                   }}
                   placeholder="ระบุหรือสร้างอัตโนมัติ"
-                  className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none"
+                  className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none"
                 />
                 {isInternalBarcode && (
                   <span className="absolute inset-y-0 right-3 flex items-center text-xs text-cyan-400 font-mono font-bold bg-cyan-950/80 px-2.5 py-1 rounded-md my-auto h-7 border border-cyan-500/40">
@@ -353,7 +353,7 @@ export function ProductFormModal({
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
               >
                 <option value="">-- ไม่ระบุหมวดหมู่ --</option>
                 {categories.map((cat) => (
@@ -374,7 +374,7 @@ export function ProductFormModal({
               <select
                 value={productType}
                 onChange={(e) => setProductType(e.target.value as ProductType)}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
               >
                 <option value="PRICE_PER_UNIT">ขายต่อหน่วย/ชิ้น (PRICE_PER_UNIT)</option>
                 <option value="BY_WEIGHT">ขายตามน้ำหนัก (BY_WEIGHT)</option>
@@ -391,7 +391,7 @@ export function ProductFormModal({
               <select
                 value={baseUomId}
                 onChange={(e) => setBaseUomId(e.target.value)}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
               >
                 {uoms.map((uom) => (
                   <option key={uom.id} value={uom.id}>
@@ -414,7 +414,7 @@ export function ProductFormModal({
               <select
                 value={taxId}
                 onChange={(e) => setTaxId(e.target.value)}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
               >
                 <option value="">-- ไม่ระบุภาษี --</option>
                 {taxes.map((tax) => (
@@ -448,7 +448,7 @@ export function ProductFormModal({
                 value={priceBaht}
                 onChange={(e) => setPriceBaht(e.target.value)}
                 onClick={() => setKeypadField('price')}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-2xl text-cyan-400 font-extrabold focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-2xl text-cyan-400 font-extrabold focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none cursor-pointer"
               />
               {formErrors.price && (
                 <span className="text-sm font-semibold text-rose-400 block">{formErrors.price}</span>
@@ -478,7 +478,7 @@ export function ProductFormModal({
                 value={costBaht}
                 onChange={(e) => setCostBaht(e.target.value)}
                 onClick={() => setKeypadField('cost')}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-xl text-slate-100 font-bold focus:border-cyan-400 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-xl text-slate-100 font-bold focus:border-cyan-400 outline-none cursor-pointer"
               />
             </div>
 
@@ -504,7 +504,7 @@ export function ProductFormModal({
                 value={minStock}
                 onChange={(e) => setMinStock(e.target.value)}
                 onClick={() => setKeypadField('minStock')}
-                className="w-full min-h-[48px] px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-xl text-slate-100 font-bold focus:border-cyan-400 outline-none cursor-pointer"
+                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-xl text-slate-100 font-bold focus:border-cyan-400 outline-none cursor-pointer"
               />
             </div>
 
@@ -515,7 +515,7 @@ export function ProductFormModal({
                   สถานะสินค้าและวันหมดอายุ
                 </span>
               </div>
-              <div className="min-h-[48px] flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-slate-950/60 border-2 border-slate-800 rounded-xl px-4 py-2">
+              <div className="h-[50px] flex items-center gap-4 bg-slate-950/60 border-2 border-slate-800 rounded-xl px-4">
                 <label className="flex items-center gap-3 cursor-pointer select-none">
                   <input
                     type="checkbox"

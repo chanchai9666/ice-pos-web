@@ -58,7 +58,7 @@ export function ProductToolbar({
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             placeholder="ค้นหาชื่อสินค้า, SKU, บาร์โค้ด..."
-            className="w-full min-h-[48px] pl-11 pr-11 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all font-medium"
+            className="w-full h-[50px] pl-11 pr-11 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all font-medium"
           />
           {localSearch && (
             <button
@@ -80,7 +80,7 @@ export function ProductToolbar({
           <select
             value={selectedCategoryId}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full min-h-[48px] py-2.5 px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
+            className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
           >
             <option value="">ทุกหมวดหมู่สินค้า</option>
             {categories.map((cat) => (
@@ -96,7 +96,7 @@ export function ProductToolbar({
           <select
             value={selectedStatus}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="w-full min-h-[48px] py-2.5 px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
+            className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
           >
             <option value="all">สถานะทั้งหมด</option>
             <option value="active">เปิดจำหน่าย</option>
@@ -112,7 +112,7 @@ export function ProductToolbar({
           onClick={onRefresh}
           disabled={isLoading}
           title="รีเฟรชรายการ"
-          className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-700 text-slate-200 transition-all disabled:opacity-50 cursor-pointer"
+          className="w-[50px] h-[50px] min-w-[50px] min-h-[50px] flex items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-700 text-slate-200 transition-all disabled:opacity-50 cursor-pointer"
           aria-label="รีเฟรชข้อมูลสินค้า"
         >
           <span className={`inline-block text-xl ${isLoading ? 'animate-spin' : ''}`}>
@@ -123,7 +123,7 @@ export function ProductToolbar({
         <button
           type="button"
           onClick={onAddNewProduct}
-          className="min-h-[48px] flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-white font-bold text-base shadow-lg shadow-cyan-500/25 transition-all cursor-pointer whitespace-nowrap"
+          className="h-[50px] min-h-[50px] flex items-center gap-2 px-5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-white font-bold text-base shadow-lg shadow-cyan-500/25 transition-all cursor-pointer whitespace-nowrap"
         >
           <Icons.Plus className="w-5 h-5 stroke-[2.5]" />
           <span>เพิ่มสินค้าใหม่</span>
