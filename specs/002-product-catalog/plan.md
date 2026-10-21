@@ -9,7 +9,7 @@
 พัฒนาระบบเมนูหลัก (App Shell Navigation Layout) และระบบบริหารจัดการสินค้าและหมวดหมู่ (Product Catalog Management) สำหรับระบบขายหน้าร้าน `ice-pos-web`:
 1. โครงสร้าง App Shell ประกอบด้วย Sidebar ด้านข้างแบบพับเก็บได้ (Collapsible Sidebar), Header แสดงสถานะผู้ใช้งาน สาขา และปุ่มออกจากระบบ พร้อมการควบคุมสิทธิ์ตามบทบาทผู้ใช้ (Role-based Navigation & Route Protection) โดยซ่อนเมนูสินค้าสำหรับแคชเชียร์
 2. หน้าจอจัดการแคตตาล็อกสินค้าแบบ Tabbed Interface (`/catalog`) แบ่งเป็น 2 แท็บ:
-   - **แท็บรายการสินค้า (Products)**: ตารางรายการสินค้า, ค้นหา, กรองหมวดหมู่/สถานะ, แบ่งหน้า, Slide-over Drawer ฟอร์มเพิ่ม/แก้ไข, สร้างบาร์โค้ดภายใน, อัปโหลดรูปภาพ WebP, และการลบสินค้าอย่างปลอดภัย
+   - **แท็บรายการสินค้า (Products)**: ตารางรายการสินค้า, ค้นหา, กรองหมวดหมู่/สถานะ, แบ่งหน้า, Modal Dialog ฟอร์มเพิ่ม/แก้ไขสินค้าขนาดใหญ่ตรงกลางจอ (Large Center Modal Dialog), ช่องเลือก Dropdown ขนาดเท่ากับ Input ทุกช่อง (min-h-[48px]), จัดวางแบบ 2 คอลัมน์สมมาตรไม่ตกแถว, สร้างบาร์โค้ดภายใน, อัปโหลดรูปภาพ WebP, และการลบสินค้าอย่างปลอดภัย
    - **แท็บหมวดหมู่สินค้า (Categories)**: ตารางรายการหมวดหมู่และลำดับชั้น, Modal Dialog เพิ่ม/แก้ไข, และการลบหมวดหมู่ที่ไม่มีสินค้าผูกอยู่
 
 ## Technical Context
@@ -77,7 +77,7 @@ src/
 │   ├── catalog/
 │   │   ├── ProductTable.tsx             # Products table view with status toggle
 │   │   ├── ProductToolbar.tsx           # Search input, Category filter, Status filter
-│   │   ├── ProductFormDrawer.tsx        # Slide-over Drawer for Create & Edit product
+│   │   ├── ProductFormModal.tsx         # Large Center Modal Dialog for Create & Edit product
 │   │   ├── CategoryList.tsx             # Categories table & hierarchy view
 │   │   ├── CategoryFormModal.tsx        # Modal Dialog for Create & Edit category
 │   │   ├── ImageUploader.tsx            # Product image upload & preview component
