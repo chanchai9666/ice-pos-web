@@ -74,9 +74,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T013 [P] [US3] Create ModeSwitcher tab component for toggling between PIN and Credential modes in src/components/auth/ModeSwitcher.tsx
-- [ ] T014 [US3] Create container LoginForm managing active mode, branch auto-selection, and device preference persistence in src/components/auth/LoginForm.tsx
-- [ ] T015 [US3] Update login page at src/app/(auth)/login/page.tsx to render LoginForm and handle redirect routing for both roles
+- [x] T013 [P] [US3] Create ModeSwitcher tab component for toggling between PIN and Credential modes in src/components/auth/ModeSwitcher.tsx
+- [x] T014 [US3] Create container LoginForm managing active mode, branch auto-selection, and device preference persistence in src/components/auth/LoginForm.tsx
+- [x] T015 [US3] Update login page at src/app/(auth)/login/page.tsx to render LoginForm and handle redirect routing for both roles
 
 **Checkpoint**: User Story 1, 2, และ 3 ผสานการทำงานร่วมกันได้อย่างสมบูรณ์
 

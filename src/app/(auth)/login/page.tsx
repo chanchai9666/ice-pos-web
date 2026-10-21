@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import { CredentialLogin } from '@/components/auth/CredentialLogin';
+import { LoginForm } from '@/components/auth/LoginForm';
 import { AuthResponse } from '@/types/auth';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleLoginSuccess = (auth: AuthResponse) => {
     // หากเป็นแคชเชียร์ ให้นำทางไปยังหน้าขาย POS
@@ -19,16 +18,12 @@ export default function LoginPage() {
     }
   };
 
-  const handleLoginError = (message: string) => {
-    setErrorMessage(message);
-  };
-
   return (
     <main className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-blue-50/40 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="w-full max-w-md">
         {/* Card Header & Brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-500/30 mb-4">
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-500/30 mb-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -54,29 +49,7 @@ export default function LoginPage() {
 
         {/* Card Body */}
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800">
-          {/* ข้อความแจ้งเตือนข้อผิดพลาด */}
-          {errorMessage && (
-            <div className="mb-5 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm flex items-start space-x-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-5 h-5 flex-shrink-0 mt-0.5"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>{errorMessage}</span>
-            </div>
-          )}
-
-          <CredentialLogin
-            onSuccess={handleLoginSuccess}
-            onError={handleLoginError}
-          />
+          <LoginForm onSuccess={handleLoginSuccess} />
         </div>
 
         {/* Card Footer */}
