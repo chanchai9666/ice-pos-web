@@ -1,8 +1,8 @@
 <!--
 # Sync Impact Report
-- Version change: 1.3.0 → 1.3.1
+- Version change: 1.3.1 → 1.3.2
 - Modified principles:
-  - 14. Tech Stack ของโปรเจกต์: บันทึกข้อมูลเทคโนโลยีเพิ่มเติม (App Router, โครงสร้าง src/, Tailwind CSS v4, ESLint)
+  - 14.4 การเชื่อมต่อและจัดการข้อมูล: อ้างอิงเอกสาร Swagger และ docs/api-summary.md พร้อมบันทึกรูปแบบ Authentication และ Response Envelope
 - Added sections: None
 - Removed sections: None
 - Follow-up TODOs: Remaining details marked as [ระบุภายหลัง] in Section 14 to be finalized as architecture choices are confirmed.
@@ -270,10 +270,10 @@ AI ต้องไม่:
 
 ### 14.4 การเชื่อมต่อและจัดการข้อมูล
 - API Client / HTTP Library: [ระบุภายหลัง]
-- API Specification: [ระบุภายหลัง]
-- Serialization / Data Mapping: [ระบุภายหลัง]
+- API Specification: OpenAPI 2.0 (Swagger) อ้างอิงจาก `http://127.0.0.1:8080/docs#/` และ [docs/api-summary.md](file:///Users/chanchai/workshop/CODE/ice-pos-web/docs/api-summary.md) (Base Path: `/api/v1`)
+- Serialization / Data Mapping: Standard Response Envelope `{ code, message, data, meta, details }`
 - Local Storage / Database: [ระบุภายหลัง]
-- Authentication / Authorization: [ระบุภายหลัง]
+- Authentication / Authorization: JWT Bearer Token (`Authorization: Bearer <token>`) และ Quick PIN Login
 - Caching Strategy: [ระบุภายหลัง]
 
 ### 14.5 UI/UX และการออกแบบ
@@ -335,4 +335,4 @@ AI ต้องไม่:
   - MINOR: มีการเพิ่มหมวดหมู่หรือขยายแนวทางปฏิบัติใหม่
   - PATCH: แก้ไขคำผิด ปรับปรุงถ้อยคำ หรือชี้แจงรายละเอียดโดยไม่เปลี่ยนหลักการเดิม
 
-**Version**: 1.3.1 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
+**Version**: 1.3.2 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
