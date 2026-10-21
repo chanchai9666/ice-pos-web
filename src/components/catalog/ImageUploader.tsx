@@ -2,21 +2,25 @@
 
 import React, { useState, useRef } from 'react';
 import { Icons } from '@/components/ui/Icons';
+import { CameraCaptureModal } from './CameraCaptureModal';
 
 export interface ImageUploaderProps {
   currentImageUrl?: string | null;
   onImageSelected: (file: File | null) => void;
   maxSizeBytes?: number; // default 5MB
+  enableCamera?: boolean;
 }
 
 export function ImageUploader({
   currentImageUrl,
   onImageSelected,
   maxSizeBytes = 5 * 1024 * 1024,
+  enableCamera = true,
 }: ImageUploaderProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentImageUrl || null);
   const [isDragging, setIsDragging] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Sync with currentImageUrl when it changes
@@ -126,23 +130,35 @@ export function ImageUploader({
             รองรับ JPG, PNG, WebP ขนาดไม่เกิน 5MB
           </p>
 
-          <div className="flex items-center gap-2 pt-1">
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {enableCamera && (
+              <button
+                type="button"
+                onClick={() => setIsCameraOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-950/70 hover:bg-cyan-900/80 active:scale-95 text-xs md:text-sm text-cyan-300 font-bold border-2 border-cyan-700/60 transition-all cursor-pointer min-h-[44px] shadow-sm"
+                title="เปิดกล้องเพื่อถ่ายภาพสินค้า"
+              >
+                <Icons.Camera className="w-4 h-4 text-cyan-400 stroke-[2.2]" />
+                <span>ถ่ายภาพด้วยกล้อง</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-cyan-400 font-medium border border-slate-700 transition-colors cursor-pointer min-h-[36px]"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs md:text-sm text-slate-200 font-medium border border-slate-700 transition-all cursor-pointer min-h-[44px]"
             >
-              <Icons.Upload className="w-3.5 h-3.5" />
-              <span>{previewUrl ? 'เปลี่ยนรูป' : 'เลือกรูปภาพ'}</span>
+              <Icons.Upload className="w-4 h-4 text-slate-300" />
+              <span>{previewUrl ? 'เลือกไฟล์ใหม่' : 'เลือกไฟล์ภาพ'}</span>
             </button>
 
             {previewUrl && (
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-rose-950/30 text-xs text-rose-400 border border-slate-700/60 transition-colors cursor-pointer min-h-[36px]"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-rose-950/40 text-xs md:text-sm text-rose-400 border border-slate-700/60 transition-all cursor-pointer min-h-[44px]"
               >
-                <Icons.Trash className="w-3.5 h-3.5" />
+                <Icons.Trash className="w-4 h-4" />
                 <span>ลบรูป</span>
               </button>
             )}
@@ -157,6 +173,13 @@ export function ImageUploader({
           />
         </div>
       </div>
+
+      {/* โมดอลถ่ายภาพด้วยกล้อง */}
+      <CameraCaptureModal
+        isOpen={isCameraOpen}
+        onClose={() => setIsCameraOpen(false)}
+        onCapture={(file) => validateAndProcessFile(file)}
+      />
 
       {errorMessage && (
         <div className="flex items-center gap-1.5 text-xs text-rose-400 bg-rose-950/40 border border-rose-800/40 px-3 py-1.5 rounded-lg">

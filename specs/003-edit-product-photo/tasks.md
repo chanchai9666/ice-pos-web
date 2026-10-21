@@ -16,8 +16,8 @@
 
 **⚠️ CRITICAL**: ต้องทำส่วนนี้ให้เสร็จก่อนเริ่มเชื่อมต่อ User Story
 
-- [ ] T002 [P] สร้างโครงคอมโพเนนต์ CameraCaptureModal สำหรับเปิดกล้อง แสดงภาพสด และปุ่มชัตเตอร์ขนาด $\ge 64$px ใน `src/components/catalog/CameraCaptureModal.tsx`
-- [ ] T003 [P] ปรับปรุง ImageUploader เพื่อรองรับปุ่มเปิดกล้องถ่ายภาพควบคู่กับปุ่มเลือกไฟล์เดิม ใน `src/components/catalog/ImageUploader.tsx`
+- [x] T002 [P] สร้างโครงคอมโพเนนต์ CameraCaptureModal สำหรับเปิดกล้อง แสดงภาพสด และปุ่มชัตเตอร์ขนาด $\ge 64$px ใน `src/components/catalog/CameraCaptureModal.tsx`
+- [x] T003 [P] ปรับปรุง ImageUploader เพื่อรองรับปุ่มเปิดกล้องถ่ายภาพควบคู่กับปุ่มเลือกไฟล์เดิม ใน `src/components/catalog/ImageUploader.tsx`
 
 **Checkpoint**: โครงสร้างคอมโพเนนต์พื้นฐานพร้อมสำหรับการพัฒนา User Story
 
