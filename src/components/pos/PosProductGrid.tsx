@@ -66,20 +66,22 @@ export function PosProductGrid({
           >
             {/* ส่วนรูปภาพสินค้า */}
             <div className="relative w-full h-24 sm:h-28 rounded-xl bg-slate-800 flex items-center justify-center mb-3 overflow-hidden border border-slate-700/60 group-hover:border-slate-600">
-              {product.imageUrl ? (
+              {/* ไอคอน Fallback ด้านหลังเสมอ */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500 pointer-events-none">
+                <Icons.Package className="w-8 h-8 text-slate-600" />
+              </div>
+
+              {product.imageUrl && (
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                   onError={(e) => {
-                    // หากรูปภาพโหลดไม่ติด ให้ซ่อนและแสดงไอคอนแทน
+                    // หากรูปภาพโหลดไม่ติด ให้ซ่อนและแสดงไอคอน Fallback ด้านหลัง
                     (e.target as HTMLElement).style.display = 'none';
                   }}
                 />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-slate-500">
-                  <Icons.Package className="w-8 h-8 text-slate-600" />
-                </div>
               )}
 
               {/* ป้ายแสดงหน่วยนับ */}

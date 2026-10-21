@@ -103,10 +103,10 @@
 
 **Purpose**: ตรวจสอบความสมบูรณ์ ความถูกต้องตามธรรมนูญ และการทดสอบรวมทุกระบบ
 
-- [ ] T024 [P] Review and enforce Touch Target sizes (>=48x48px) and WCAG 2.1 AA Contrast across all POS components
-- [ ] T025 [P] Optimize Product Card image loading and fallback placeholder for products without images
-- [ ] T026 Execute Quickstart Scenarios in `specs/004-pos-sales-screen/quickstart.md` and verify end-to-end user flows
-- [ ] T027 Run TypeScript strict check (`npm run build` or `npx tsc --noEmit`) and verify zero errors
+- [x] T024 [P] Review and enforce Touch Target sizes (>=48x48px) and WCAG 2.1 AA Contrast across all POS components
+- [x] T025 [P] Optimize Product Card image loading and fallback placeholder for products without images
+- [x] T026 Execute Quickstart Scenarios in `specs/004-pos-sales-screen/quickstart.md` and verify end-to-end user flows
+- [x] T027 Run TypeScript strict check (`npm run build` or `npx tsc --noEmit`) and verify zero errors
 
 ---
 

@@ -43,7 +43,7 @@ export function PosCartItemRow({
           type="button"
           onClick={() => onRemoveItem(item.id)}
           aria-label={`ลบ ${item.name} ออกจากตะกร้า`}
-          className="w-10 h-10 -mr-1 -mt-1 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer"
+          className="min-w-[48px] min-h-[48px] -mr-1 -mt-1 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer"
         >
           <Icons.Trash className="w-5 h-5" />
         </button>
@@ -58,7 +58,7 @@ export function PosCartItemRow({
             type="button"
             onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
             aria-label="ลดจำนวน"
-            className="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
+            className="min-w-[48px] min-h-[48px] rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
           >
             <Icons.Minus className="w-5 h-5" />
           </button>
@@ -68,7 +68,7 @@ export function PosCartItemRow({
             type="button"
             onClick={() => onOpenQuantityModal(item)}
             title="แตะเพื่อพิมพ์ระบุจำนวนด้วยแป้นตัวเลข"
-            className="min-w-[48px] h-11 px-2.5 rounded-lg bg-slate-900 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-500/60 text-white font-extrabold text-base flex items-center justify-center transition-all cursor-pointer"
+            className="min-w-[48px] min-h-[48px] px-2.5 rounded-lg bg-slate-900 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-500/60 text-white font-extrabold text-base flex items-center justify-center transition-all cursor-pointer"
           >
             <span>{item.quantity}</span>
           </button>
@@ -78,7 +78,7 @@ export function PosCartItemRow({
             type="button"
             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
             aria-label="เพิ่มจำนวน"
-            className="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
+            className="min-w-[48px] min-h-[48px] rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
           >
             <Icons.Plus className="w-5 h-5" />
           </button>
