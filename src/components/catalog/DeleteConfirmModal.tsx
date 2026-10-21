@@ -58,69 +58,70 @@ export function DeleteConfirmModal({
       />
 
       {/* Modal Card */}
-      <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 text-slate-100 z-10 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-lg bg-slate-900 border-2 border-slate-700 rounded-3xl shadow-2xl p-6 text-slate-100 z-10 animate-in fade-in zoom-in-95 duration-200">
         {/* Header Icon & Title */}
-        <div className="flex items-start gap-3.5 pb-4 border-b border-slate-800">
-          <div className="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-800/60 flex items-center justify-center text-rose-400 shrink-0">
-            <Icons.Trash className="w-5 h-5" />
+        <div className="flex items-start gap-4 pb-4 border-b-2 border-slate-800">
+          <div className="w-12 h-12 rounded-2xl bg-rose-950/80 border-2 border-rose-800 flex items-center justify-center text-rose-400 shrink-0 shadow-inner">
+            <Icons.Trash className="w-6 h-6" />
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-base font-bold text-white">
+            <h3 className="text-xl font-bold text-white">
               ยืนยันการลบสินค้า
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5 truncate">
+            <p className="text-base text-slate-300 mt-1 font-semibold truncate">
               {product.name} (รหัส SKU: {product.sku})
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer"
+            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 active:scale-95 transition-all cursor-pointer"
+            aria-label="ปิดหน้าต่างยืนยัน"
           >
-            <Icons.X className="w-4 h-4" />
+            <Icons.X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Warning Content */}
-        <div className="py-4 space-y-3.5">
-          <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 space-y-1.5">
-            <div className="flex items-center gap-2 font-semibold text-xs text-amber-300">
-              <Icons.AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="py-5 space-y-4">
+          <div className="p-4 rounded-2xl bg-amber-950/60 border-2 border-amber-500/50 text-amber-100 space-y-2">
+            <div className="flex items-center gap-2 font-bold text-base text-amber-300">
+              <Icons.AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
               <span>ข้อควรระวังเกี่ยวกับประวัติข้อมูล</span>
             </div>
-            <p className="text-[11px] leading-relaxed text-amber-200/90">
+            <p className="text-sm leading-relaxed text-amber-200">
               หากสินค้านี้เคยมีประวัติการขาย ใบเสร็จ หรือรายการตรวจนับสต็อกในระบบ
               การลบข้อมูลถาวรอาจส่งผลต่อความสมบูรณ์ของรายงานประวัติย้อนหลัง
             </p>
           </div>
 
-          <p className="text-xs text-slate-300">
+          <p className="text-base text-slate-200 leading-relaxed">
             หากต้องการระงับการขายชั่วคราว แนะนำให้เลือก{' '}
-            <strong className="text-cyan-400">ปิดการจำหน่าย (Deactivate)</strong>{' '}
+            <strong className="text-cyan-400 font-bold">ปิดการจำหน่าย (Deactivate)</strong>{' '}
             แทนการลบถาวร สินค้าจะไม่ปรากฏในหน้าขายหน้าร้าน แต่ยังคงเก็บข้อมูลประวัติไว้ครบถ้วน
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="pt-4 border-t border-slate-800 flex flex-col gap-2">
+        <div className="pt-4 border-t-2 border-slate-800 flex flex-col gap-3">
           {onDeactivateInstead && product.isActive && (
             <button
               type="button"
               disabled={isDeactivating || isDeleting}
               onClick={handleDeactivate}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-md shadow-cyan-600/20 transition-all cursor-pointer min-h-[44px] disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white text-base font-bold shadow-lg shadow-cyan-600/30 transition-all cursor-pointer min-h-[50px] disabled:opacity-50"
             >
-              <Icons.Check className="w-4 h-4" />
+              <Icons.Check className="w-5 h-5 stroke-[2.5]" />
               <span>{isDeactivating ? 'กำลังดำเนินการ...' : 'ปิดการจำหน่ายแทน (แนะนำ)'}</span>
             </button>
           )}
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               type="button"
               disabled={isDeleting || isDeactivating}
               onClick={onClose}
-              className="flex-1 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors cursor-pointer min-h-[44px]"
+              className="flex-1 px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-base font-bold border-2 border-slate-700 transition-all cursor-pointer min-h-[50px]"
             >
               ยกเลิก
             </button>
@@ -129,9 +130,9 @@ export function DeleteConfirmModal({
               type="button"
               disabled={isDeleting || isDeactivating}
               onClick={handleDelete}
-              className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-700/60 text-rose-300 hover:text-white text-xs font-semibold transition-all cursor-pointer min-h-[44px] disabled:opacity-50"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 border-2 border-rose-500 text-white text-base font-bold shadow-lg shadow-rose-600/30 transition-all cursor-pointer min-h-[50px] disabled:opacity-50"
             >
-              <Icons.Trash className="w-4 h-4" />
+              <Icons.Trash className="w-5 h-5" />
               <span>{isDeleting ? 'กำลังลบ...' : 'ยืนยันลบถาวร'}</span>
             </button>
           </div>

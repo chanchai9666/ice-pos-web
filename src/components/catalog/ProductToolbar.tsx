@@ -45,20 +45,20 @@ export function ProductToolbar({
   }, [search]);
 
   return (
-    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-slate-900/90 p-3.5 rounded-2xl border-2 border-slate-800 shadow-md">
       {/* ค้นหาและตัวกรอง */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 flex-1">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 flex-1">
         {/* ช่องค้นหา */}
-        <div className="relative flex-1 min-w-[200px]">
-          <span className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-500">
-            <Icons.Search className="w-4 h-4" />
+        <div className="relative flex-1 min-w-[240px]">
+          <span className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none text-slate-400">
+            <Icons.Search className="w-5 h-5" />
           </span>
           <input
             type="text"
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             placeholder="ค้นหาชื่อสินค้า, SKU, บาร์โค้ด..."
-            className="w-full pl-9 pr-8 py-2 bg-slate-950/80 border border-slate-700/80 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+            className="w-full min-h-[48px] pl-11 pr-11 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all font-medium"
           />
           {localSearch && (
             <button
@@ -67,19 +67,20 @@ export function ProductToolbar({
                 setLocalSearch('');
                 onSearchChange('');
               }}
-              className="absolute inset-y-0 right-2.5 flex items-center text-slate-400 hover:text-slate-200 cursor-pointer"
+              className="absolute inset-y-0 right-2 my-auto min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white rounded-lg active:scale-90 transition cursor-pointer"
+              aria-label="ล้างคำค้นหา"
             >
-              <Icons.X className="w-3.5 h-3.5" />
+              <Icons.X className="w-5 h-5" />
             </button>
           )}
         </div>
 
         {/* ตัวกรองหมวดหมู่ */}
-        <div className="w-full sm:w-44">
+        <div className="w-full sm:w-52">
           <select
             value={selectedCategoryId}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full py-2 px-3 bg-slate-950/80 border border-slate-700/80 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-cyan-400 cursor-pointer"
+            className="w-full min-h-[48px] py-2.5 px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
           >
             <option value="">ทุกหมวดหมู่สินค้า</option>
             {categories.map((cat) => (
@@ -91,11 +92,11 @@ export function ProductToolbar({
         </div>
 
         {/* ตัวกรองสถานะ */}
-        <div className="w-full sm:w-36">
+        <div className="w-full sm:w-44">
           <select
             value={selectedStatus}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="w-full py-2 px-3 bg-slate-950/80 border border-slate-700/80 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-cyan-400 cursor-pointer"
+            className="w-full min-h-[48px] py-2.5 px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
           >
             <option value="all">สถานะทั้งหมด</option>
             <option value="active">เปิดจำหน่าย</option>
@@ -105,15 +106,16 @@ export function ProductToolbar({
       </div>
 
       {/* ปุ่มรีเฟรช และ ปุ่มเพิ่มสินค้า */}
-      <div className="flex items-center gap-2 justify-end">
+      <div className="flex items-center gap-3 justify-end">
         <button
           type="button"
           onClick={onRefresh}
           disabled={isLoading}
           title="รีเฟรชรายการ"
-          className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-colors disabled:opacity-50 cursor-pointer"
+          className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-700 text-slate-200 transition-all disabled:opacity-50 cursor-pointer"
+          aria-label="รีเฟรชข้อมูลสินค้า"
         >
-          <span className={`inline-block ${isLoading ? 'animate-spin' : ''}`}>
+          <span className={`inline-block text-xl ${isLoading ? 'animate-spin' : ''}`}>
             ↻
           </span>
         </button>
@@ -121,9 +123,9 @@ export function ProductToolbar({
         <button
           type="button"
           onClick={onAddNewProduct}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-xs shadow-md shadow-cyan-500/20 transition-all cursor-pointer whitespace-nowrap"
+          className="min-h-[48px] flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-white font-bold text-base shadow-lg shadow-cyan-500/25 transition-all cursor-pointer whitespace-nowrap"
         >
-          <Icons.Plus className="w-4 h-4" />
+          <Icons.Plus className="w-5 h-5 stroke-[2.5]" />
           <span>เพิ่มสินค้าใหม่</span>
         </button>
       </div>

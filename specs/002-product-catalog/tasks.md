@@ -138,12 +138,12 @@
 
 ### Implementation for User Story 7
 
-- [ ] T036 [P] [US7] Create VirtualNumericKeypad component with 60x60px buttons, decimal, Clear, Backspace, and immediate visual feedback in `src/components/ui/VirtualNumericKeypad.tsx`
-- [ ] T037 [US7] Integrate VirtualNumericKeypad into price and cost inputs in `src/components/catalog/ProductFormDrawer.tsx`
-- [ ] T038 [P] [US7] Audit and update touch targets across all buttons, tabs, inputs, and action buttons to meet minimum 48x48px in `src/components/catalog/ProductToolbar.tsx`, `src/components/catalog/ProductTable.tsx`, and `src/components/catalog/CategoryList.tsx`
-- [ ] T039 [P] [US7] Verify and enforce typography >= 16px, large bold price numbers, and WCAG 2.1 AA contrast ratio (>= 4.5:1, no faint gray) in `src/components/catalog/ProductTable.tsx` and `src/components/catalog/ProductFormDrawer.tsx`
-- [ ] T040 [US7] Enhance DeleteConfirmModal with prominent confirmation and cancellation buttons, high-contrast colors, and clear non-technical Thai wording in `src/components/catalog/DeleteConfirmModal.tsx`
-- [ ] T041 [US7] Add debouncing / rapid touch prevention on action buttons to prevent accidental double-tap submission in `src/components/catalog/ProductFormDrawer.tsx` and `src/components/catalog/CategoryFormModal.tsx`
+- [X] T036 [P] [US7] Create VirtualNumericKeypad component with 60x60px buttons, decimal, Clear, Backspace, and immediate visual feedback in `src/components/ui/VirtualNumericKeypad.tsx`
+- [X] T037 [US7] Integrate VirtualNumericKeypad into price and cost inputs in `src/components/catalog/ProductFormDrawer.tsx`
+- [X] T038 [P] [US7] Audit and update touch targets across all buttons, tabs, inputs, and action buttons to meet minimum 48x48px in `src/components/catalog/ProductToolbar.tsx`, `src/components/catalog/ProductTable.tsx`, and `src/components/catalog/CategoryList.tsx`
+- [X] T039 [P] [US7] Verify and enforce typography >= 16px, large bold price numbers, and WCAG 2.1 AA contrast ratio (>= 4.5:1, no faint gray) in `src/components/catalog/ProductTable.tsx` and `src/components/catalog/ProductFormDrawer.tsx`
+- [X] T040 [US7] Enhance DeleteConfirmModal with prominent confirmation and cancellation buttons, high-contrast colors, and clear non-technical Thai wording in `src/components/catalog/DeleteConfirmModal.tsx`
+- [X] T041 [US7] Add debouncing / rapid touch prevention on action buttons to prevent accidental double-tap submission in `src/components/catalog/ProductFormDrawer.tsx` and `src/components/catalog/CategoryFormModal.tsx`
 
 **Checkpoint**: ระบบผ่านเกณฑ์ Elderly-Friendly & Touchscreen Optimized ครบถ้วนตามธรรมนูญโครงการ v1.4.0
 

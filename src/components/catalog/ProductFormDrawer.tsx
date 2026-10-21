@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Drawer } from '@/components/ui/Drawer';
 import { Product, Category, Uom, Tax, ProductType } from '@/types/catalog';
 import { catalogService } from '@/services/catalog.service';
 import { bahtToSatang, satangToBahtNumber } from '@/utils/currency';
 import { ImageUploader } from '@/components/catalog/ImageUploader';
 import { Icons } from '@/components/ui/Icons';
+import { VirtualNumericKeypad } from '@/components/ui/VirtualNumericKeypad';
 
 export interface ProductFormDrawerProps {
   isOpen: boolean;
@@ -50,10 +51,15 @@ export function ProductFormDrawer({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
+  // Keypad State for Elderly & Touchscreen POS
+  const [keypadField, setKeypadField] = useState<'price' | 'cost' | 'minStock' | null>(null);
+
   // Loading & Validation
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGeneratingBarcode, setIsGeneratingBarcode] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const lastSubmitTimeRef = useRef<number>(0);
+
 
   // Reset or Populate form on open/change
   useEffect(() => {
@@ -140,6 +146,12 @@ export function ProductFormDrawer({
   // Submit Handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const now = Date.now();
+    if (isSubmitting || now - lastSubmitTimeRef.current < 800) {
+      return;
+    }
+    lastSubmitTimeRef.current = now;
+
     if (!validate()) return;
 
     try {
@@ -233,8 +245,8 @@ export function ProductFormDrawer({
         {/* ข้อมูลพื้นฐาน */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* ชื่อสินค้า */}
-          <div className="md:col-span-2 space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="md:col-span-2 space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               ชื่อสินค้า <span className="text-rose-400">*</span>
             </label>
             <input
@@ -242,16 +254,16 @@ export function ProductFormDrawer({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="เช่น น้ำแข็งหลอดเล็ก 5kg"
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none"
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none"
             />
             {formErrors.name && (
-              <span className="text-[11px] text-rose-400">{formErrors.name}</span>
+              <span className="text-sm text-rose-400 block font-medium">{formErrors.name}</span>
             )}
           </div>
 
           {/* รหัส SKU */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               รหัส SKU <span className="text-rose-400">*</span>
             </label>
             <input
@@ -259,26 +271,26 @@ export function ProductFormDrawer({
               value={sku}
               onChange={(e) => setSku(e.target.value)}
               placeholder="เช่น ICE-001"
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 font-mono focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none uppercase"
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none uppercase"
             />
             {formErrors.sku && (
-              <span className="text-[11px] text-rose-400">{formErrors.sku}</span>
+              <span className="text-sm text-rose-400 block font-medium">{formErrors.sku}</span>
             )}
           </div>
 
           {/* บาร์โค้ด + ปุ่มสร้างบาร์โค้ดภายใน */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-base font-semibold text-slate-200">
                 บาร์โค้ดสินค้า
               </label>
               <button
                 type="button"
                 onClick={handleGenerateBarcode}
                 disabled={isGeneratingBarcode}
-                className="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
+                className="min-h-[48px] px-3 py-1.5 text-sm font-bold text-cyan-300 bg-cyan-950/60 hover:bg-cyan-900/80 active:scale-95 border border-cyan-500/50 rounded-xl flex items-center gap-1.5 cursor-pointer transition-all"
               >
-                <Icons.Sparkles className="w-3 h-3" />
+                <Icons.Sparkles className="w-4 h-4" />
                 <span>สร้างบาร์โค้ดอัตโนมัติ</span>
               </button>
             </div>
@@ -291,10 +303,10 @@ export function ProductFormDrawer({
                   setIsInternalBarcode(false);
                 }}
                 placeholder="ระบุหรือสร้างอัตโนมัติ"
-                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 font-mono focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none"
+                className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none"
               />
               {isInternalBarcode && (
-                <span className="absolute inset-y-0 right-2.5 flex items-center text-[10px] text-cyan-400 font-mono">
+                <span className="absolute inset-y-0 right-3 flex items-center text-xs text-cyan-400 font-mono font-bold bg-cyan-950/80 px-2 py-0.5 rounded-md my-auto h-7 border border-cyan-500/40">
                   บาร์โค้ดร้าน
                 </span>
               )}
@@ -302,14 +314,14 @@ export function ProductFormDrawer({
           </div>
 
           {/* หมวดหมู่สินค้า */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               หมวดหมู่สินค้า
             </label>
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
             >
               <option value="">-- ไม่ระบุหมวดหมู่ --</option>
               {categories.map((cat) => (
@@ -321,14 +333,14 @@ export function ProductFormDrawer({
           </div>
 
           {/* ชนิดสินค้า */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               ชนิดสินค้า
             </label>
             <select
               value={productType}
               onChange={(e) => setProductType(e.target.value as ProductType)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
             >
               <option value="PRICE_PER_UNIT">ขายต่อหน่วย/ชิ้น (PRICE_PER_UNIT)</option>
               <option value="BY_WEIGHT">ขายตามน้ำหนัก (BY_WEIGHT)</option>
@@ -336,14 +348,14 @@ export function ProductFormDrawer({
           </div>
 
           {/* หน่วยนับหลัก */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               หน่วยนับหลัก <span className="text-rose-400">*</span>
             </label>
             <select
               value={baseUomId}
               onChange={(e) => setBaseUomId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
             >
               {uoms.map((uom) => (
                 <option key={uom.id} value={uom.id}>
@@ -352,19 +364,19 @@ export function ProductFormDrawer({
               ))}
             </select>
             {formErrors.baseUomId && (
-              <span className="text-[11px] text-rose-400">{formErrors.baseUomId}</span>
+              <span className="text-sm text-rose-400 block font-medium">{formErrors.baseUomId}</span>
             )}
           </div>
 
           {/* อัตราภาษี */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               อัตราภาษีมูลค่าเพิ่ม
             </label>
             <select
               value={taxId}
               onChange={(e) => setTaxId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
             >
               <option value="">-- ไม่ระบุภาษี --</option>
               {taxes.map((tax) => (
@@ -376,78 +388,114 @@ export function ProductFormDrawer({
           </div>
 
           {/* ราคาขาย */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
-              ราคาขาย (บาท) <span className="text-rose-400">*</span>
-            </label>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="block text-base font-semibold text-slate-200">
+                ราคาขาย (บาท) <span className="text-rose-400">*</span>
+              </label>
+              <button
+                type="button"
+                onClick={() => setKeypadField('price')}
+                className="min-h-[48px] px-3.5 py-1.5 bg-cyan-950/60 hover:bg-cyan-900/80 active:scale-95 border-2 border-cyan-500/50 rounded-xl text-cyan-300 text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+                aria-label="เปิดแป้นตัวเลขสำหรับราคาขาย"
+              >
+                <Icons.Calculator className="w-5 h-5" />
+                <span>แป้นตัวเลข</span>
+              </button>
+            </div>
             <input
               type="number"
               step="0.25"
               min="0"
               value={priceBaht}
               onChange={(e) => setPriceBaht(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-cyan-400 font-bold focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 outline-none"
+              onClick={() => setKeypadField('price')}
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-2xl text-cyan-400 font-extrabold focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none cursor-pointer"
             />
             {formErrors.price && (
-              <span className="text-[11px] text-rose-400">{formErrors.price}</span>
+              <span className="text-sm text-rose-400 block font-medium">{formErrors.price}</span>
             )}
           </div>
 
           {/* ต้นทุน */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
-              ต้นทุนสินค้าต่อหน่วย (บาท)
-            </label>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="block text-base font-semibold text-slate-200">
+                ต้นทุนสินค้าต่อหน่วย (บาท)
+              </label>
+              <button
+                type="button"
+                onClick={() => setKeypadField('cost')}
+                className="min-h-[48px] px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-600 rounded-xl text-slate-200 text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+                aria-label="เปิดแป้นตัวเลขสำหรับต้นทุน"
+              >
+                <Icons.Calculator className="w-5 h-5" />
+                <span>แป้นตัวเลข</span>
+              </button>
+            </div>
             <input
               type="number"
               step="0.25"
               min="0"
               value={costBaht}
               onChange={(e) => setCostBaht(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200 focus:border-cyan-400 outline-none"
+              onClick={() => setKeypadField('cost')}
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-xl text-slate-100 font-bold focus:border-cyan-400 outline-none cursor-pointer"
             />
           </div>
 
           {/* สต็อกขั้นต่ำ */}
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
-              ระดับแจ้งเตือนสต็อกขั้นต่ำ
-            </label>
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <label className="block text-base font-semibold text-slate-200">
+                ระดับแจ้งเตือนสต็อกขั้นต่ำ
+              </label>
+              <button
+                type="button"
+                onClick={() => setKeypadField('minStock')}
+                className="min-h-[48px] px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-600 rounded-xl text-slate-200 text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+                aria-label="เปิดแป้นตัวเลขสำหรับสต็อกขั้นต่ำ"
+              >
+                <Icons.Calculator className="w-5 h-5" />
+                <span>แป้นตัวเลข</span>
+              </button>
+            </div>
             <input
               type="number"
               min="0"
               value={minStock}
               onChange={(e) => setMinStock(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200 focus:border-cyan-400 outline-none"
+              onClick={() => setKeypadField('minStock')}
+              className="w-full min-h-[48px] px-4 py-2.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-xl text-slate-100 font-bold focus:border-cyan-400 outline-none cursor-pointer"
             />
           </div>
 
           {/* ตัวเลือกเปิด/ปิดสถานะ & วันหมดอายุ */}
-          <div className="flex flex-col justify-center space-y-2 pt-2">
-            <label className="flex items-center gap-2 cursor-pointer">
+          <div className="flex flex-col justify-center space-y-3 pt-2">
+            <label className="flex items-center gap-3 cursor-pointer min-h-[48px] px-2 rounded-xl hover:bg-slate-900/60 transition">
               <input
                 type="checkbox"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="w-4 h-4 rounded-sm bg-slate-950 border-slate-700 text-cyan-500 focus:ring-cyan-400 cursor-pointer"
+                className="w-6 h-6 rounded-md bg-slate-950 border-2 border-slate-600 text-cyan-500 focus:ring-cyan-400 cursor-pointer"
               />
-              <span className="text-xs text-slate-200">เปิดจำหน่ายสินค้าทันที</span>
+              <span className="text-base text-slate-100 font-medium">เปิดจำหน่ายสินค้าทันที</span>
             </label>
 
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-3 cursor-pointer min-h-[48px] px-2 rounded-xl hover:bg-slate-900/60 transition">
               <input
                 type="checkbox"
                 checked={trackExpiry}
                 onChange={(e) => setTrackExpiry(e.target.checked)}
-                className="w-4 h-4 rounded-sm bg-slate-950 border-slate-700 text-cyan-500 focus:ring-cyan-400 cursor-pointer"
+                className="w-6 h-6 rounded-md bg-slate-950 border-2 border-slate-600 text-cyan-500 focus:ring-cyan-400 cursor-pointer"
               />
-              <span className="text-xs text-slate-400">ติดตามวันหมดอายุของสินค้า (Lot/Expiry)</span>
+              <span className="text-base text-slate-300 font-medium">ติดตามวันหมดอายุของสินค้า (Lot/Expiry)</span>
             </label>
           </div>
 
           {/* คำอธิบาย */}
-          <div className="md:col-span-2 space-y-1">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="md:col-span-2 space-y-1.5">
+            <label className="block text-base font-semibold text-slate-200">
               รายละเอียดเพิ่มเติม
             </label>
             <textarea
@@ -455,40 +503,73 @@ export function ProductFormDrawer({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="ระบุข้อความอธิบายสินค้า..."
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200 focus:border-cyan-400 outline-none resize-none"
+              className="w-full px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-200 focus:border-cyan-400 outline-none resize-none"
             />
           </div>
         </div>
 
         {/* Footer Buttons */}
-        <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+        <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-4">
           <button
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition-colors cursor-pointer"
+            className="min-h-[48px] px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-base font-bold border-2 border-slate-700 transition-all cursor-pointer"
           >
             ยกเลิก
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-1.5 px-5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium text-xs shadow-md shadow-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
+            className="min-h-[48px] flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-white font-bold text-base shadow-lg shadow-cyan-500/25 transition-all cursor-pointer disabled:opacity-50"
           >
             {isSubmitting ? (
               <>
-                <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 <span>กำลังบันทึก...</span>
               </>
             ) : (
               <>
-                <Icons.Check className="w-4 h-4" />
+                <Icons.Check className="w-5 h-5 stroke-[2.5]" />
                 <span>{isEditing ? 'บันทึกการแก้ไข' : 'สร้างสินค้า'}</span>
               </>
             )}
           </button>
         </div>
+
+        {/* Virtual Numeric Keypad Overlay Dialog */}
+        {keypadField && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4">
+            <div className="w-full max-w-sm animate-in fade-in zoom-in-95 duration-150">
+              <VirtualNumericKeypad
+                label={
+                  keypadField === 'price'
+                    ? 'ระบุราคาขาย (บาท)'
+                    : keypadField === 'cost'
+                    ? 'ระบุต้นทุนสินค้า (บาท)'
+                    : 'ระบุสต็อกขั้นต่ำ'
+                }
+                value={
+                  keypadField === 'price'
+                    ? priceBaht
+                    : keypadField === 'cost'
+                    ? costBaht
+                    : minStock
+                }
+                onChange={(val) => {
+                  if (keypadField === 'price') setPriceBaht(val);
+                  else if (keypadField === 'cost') setCostBaht(val);
+                  else if (keypadField === 'minStock') setMinStock(val);
+                }}
+                onClose={() => setKeypadField(null)}
+                onConfirm={() => setKeypadField(null)}
+                allowDecimal={keypadField !== 'minStock'}
+              />
+            </div>
+          </div>
+        )}
       </form>
     </Drawer>
   );
 }
+

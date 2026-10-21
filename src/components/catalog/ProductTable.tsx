@@ -19,14 +19,14 @@ function ProductImageThumbnail({ src, alt }: { src?: string; alt: string }) {
 
   if (!src || hasError) {
     return (
-      <div className="w-10 h-10 rounded-lg bg-slate-800/80 border border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center text-slate-500 shadow-inner">
-        <Icons.Package className="w-5 h-5 text-slate-500" />
+      <div className="w-12 h-12 rounded-xl bg-slate-800 border-2 border-slate-700 overflow-hidden shrink-0 flex items-center justify-center text-slate-400 shadow-inner">
+        <Icons.Package className="w-6 h-6 text-slate-400" />
       </div>
     );
   }
 
   return (
-    <div className="w-10 h-10 rounded-lg bg-slate-800 border border-slate-700/60 overflow-hidden shrink-0 flex items-center justify-center shadow-inner">
+    <div className="w-12 h-12 rounded-xl bg-slate-800 border-2 border-slate-700 overflow-hidden shrink-0 flex items-center justify-center shadow-inner">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
@@ -48,22 +48,22 @@ export function ProductTable({
 }: ProductTableProps) {
   if (isLoading) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 text-center text-slate-400 space-y-3">
-        <div className="w-8 h-8 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-sm">กำลังโหลดรายการสินค้า...</p>
+      <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-12 text-center text-slate-300 space-y-4">
+        <div className="w-10 h-10 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-base font-semibold">กำลังโหลดรายการสินค้า...</p>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 text-center text-slate-400 space-y-4">
-        <div className="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-500">
-          <Icons.Package className="w-7 h-7" />
+      <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-12 text-center text-slate-300 space-y-4">
+        <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-400 border-2 border-slate-700">
+          <Icons.Package className="w-8 h-8" />
         </div>
         <div>
-          <h3 className="text-base font-semibold text-slate-200">ไม่พบรายการสินค้า</h3>
-          <p className="text-xs text-slate-500 mt-1">
+          <h3 className="text-xl font-bold text-slate-100">ไม่พบรายการสินค้า</h3>
+          <p className="text-base text-slate-400 mt-1">
             ลองปรับเปลี่ยนคำค้นหา หรือสร้างสินค้าใหม่เข้าสู่ระบบ
           </p>
         </div>
@@ -72,7 +72,7 @@ export function ProductTable({
             <button
               type="button"
               onClick={onResetSearch}
-              className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 text-xs font-medium cursor-pointer transition-colors"
+              className="min-h-[48px] px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-cyan-400 border-2 border-slate-700 text-base font-bold cursor-pointer transition-all shadow-sm"
             >
               ล้างการค้นหา
             </button>
@@ -83,38 +83,38 @@ export function ProductTable({
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xs">
+    <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl overflow-hidden shadow-md">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-slate-300">
-          <thead className="bg-slate-850/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-800">
+        <table className="w-full text-left text-base text-slate-200">
+          <thead className="bg-slate-850 text-slate-300 uppercase text-sm font-bold border-b-2 border-slate-800">
             <tr>
-              <th scope="col" className="py-3 px-4">สินค้า</th>
-              <th scope="col" className="py-3 px-4">SKU / บาร์โค้ด</th>
-              <th scope="col" className="py-3 px-4">หมวดหมู่</th>
-              <th scope="col" className="py-3 px-4 text-right">ราคาขาย (บาท)</th>
-              <th scope="col" className="py-3 px-4 text-right">ต้นทุน (บาท)</th>
-              <th scope="col" className="py-3 px-4 text-center">หน่วยนับ</th>
-              <th scope="col" className="py-3 px-4 text-center">สถานะ</th>
-              <th scope="col" className="py-3 px-4 text-center">จัดการ</th>
+              <th scope="col" className="py-4 px-4">สินค้า</th>
+              <th scope="col" className="py-4 px-4">SKU / บาร์โค้ด</th>
+              <th scope="col" className="py-4 px-4">หมวดหมู่</th>
+              <th scope="col" className="py-4 px-4 text-right">ราคาขาย (บาท)</th>
+              <th scope="col" className="py-4 px-4 text-right">ต้นทุน (บาท)</th>
+              <th scope="col" className="py-4 px-4 text-center">หน่วยนับ</th>
+              <th scope="col" className="py-4 px-4 text-center">สถานะ</th>
+              <th scope="col" className="py-4 px-4 text-center">จัดการ</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60">
+          <tbody className="divide-y-2 divide-slate-800/80">
             {products.map((product) => {
               return (
                 <tr
                   key={product.id}
-                  className="hover:bg-slate-800/40 transition-colors group"
+                  className="hover:bg-slate-800/50 transition-colors group"
                 >
                   {/* รูปภาพ + ชื่อสินค้า */}
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     <div className="flex items-center gap-3">
                       <ProductImageThumbnail src={product.imageUrl} alt={product.name} />
                       <div className="min-w-0">
-                        <div className="font-semibold text-slate-100 group-hover:text-cyan-300 transition-colors truncate max-w-[220px]">
+                        <div className="font-bold text-base text-slate-100 group-hover:text-cyan-300 transition-colors truncate max-w-[240px]">
                           {product.name}
                         </div>
                         {product.description && (
-                          <div className="text-[11px] text-slate-500 truncate max-w-[220px]">
+                          <div className="text-sm text-slate-400 truncate max-w-[240px]">
                             {product.description}
                           </div>
                         )}
@@ -123,16 +123,16 @@ export function ProductTable({
                   </td>
 
                   {/* SKU & Barcode */}
-                  <td className="py-3 px-4">
-                    <div className="font-mono text-xs text-slate-200">
+                  <td className="py-3.5 px-4">
+                    <div className="font-mono text-sm font-bold text-slate-200">
                       {product.sku}
                     </div>
                     {product.barcode && (
-                      <div className="flex items-center gap-1 text-[11px] text-slate-400 font-mono">
-                        <Icons.Barcode className="w-3.5 h-3.5 text-slate-500" />
+                      <div className="flex items-center gap-1.5 text-xs text-slate-300 font-mono mt-0.5">
+                        <Icons.Barcode className="w-4 h-4 text-slate-400" />
                         <span>{product.barcode}</span>
                         {product.isInternalBarcode && (
-                          <span className="text-[10px] px-1 bg-cyan-950 text-cyan-400 border border-cyan-800 rounded">
+                          <span className="text-[10px] px-1.5 py-0.5 bg-cyan-950 text-cyan-300 border border-cyan-800 rounded font-bold">
                             ร้าน
                           </span>
                         )}
@@ -141,82 +141,86 @@ export function ProductTable({
                   </td>
 
                   {/* หมวดหมู่ */}
-                  <td className="py-3 px-4">
+                  <td className="py-3.5 px-4">
                     {product.category?.name ? (
-                      <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700/60">
+                      <span className="px-3 py-1 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 font-medium text-sm">
                         {product.category.name}
                       </span>
                     ) : (
-                      <span className="text-slate-500">-</span>
+                      <span className="text-slate-400 font-medium">-</span>
                     )}
                   </td>
 
                   {/* ราคาขาย */}
-                  <td className="py-3 px-4 text-right">
-                    <span className="font-semibold text-cyan-400 text-sm">
+                  <td className="py-3.5 px-4 text-right">
+                    <span className="font-extrabold text-cyan-300 text-xl tracking-tight">
                       {formatSatangToBaht(product.price)}
                     </span>
                   </td>
 
                   {/* ต้นทุน */}
-                  <td className="py-3 px-4 text-right text-slate-400">
+                  <td className="py-3.5 px-4 text-right text-slate-300 font-semibold text-base">
                     {product.costPerBaseUnit
                       ? formatSatangToBaht(product.costPerBaseUnit)
                       : '-'}
                   </td>
 
                   {/* หน่วยนับ */}
-                  <td className="py-3 px-4 text-center">
-                    <span className="text-slate-300">
+                  <td className="py-3.5 px-4 text-center">
+                    <span className="text-slate-200 font-medium text-base">
                       {product.baseUom?.name || product.baseUom?.code || '-'}
                     </span>
                   </td>
 
                   {/* สถานะ Active Switch */}
-                  <td className="py-3 px-4 text-center">
+                  <td className="py-3.5 px-4 text-center">
                     <button
                       type="button"
                       role="switch"
                       aria-checked={product.isActive}
                       onClick={() => onToggleStatus(product)}
                       title={product.isActive ? 'คลิกเพื่อปิดจำหน่ายชั่วคราว' : 'คลิกเพื่อเปิดจำหน่าย'}
-                      className="cursor-pointer inline-flex items-center gap-2 group/toggle py-1 px-1.5 rounded-lg hover:bg-slate-800/60 transition-colors min-h-[36px]"
+                      className="cursor-pointer inline-flex items-center gap-2.5 group/toggle py-1.5 px-2.5 rounded-xl hover:bg-slate-800 active:scale-95 transition-all min-h-[48px]"
                     >
                       <div
-                        className={`w-9 h-5 rounded-full transition-colors relative flex items-center p-0.5 ${
-                          product.isActive ? 'bg-cyan-500' : 'bg-slate-700'
+                        className={`w-11 h-6 rounded-full transition-colors relative flex items-center p-0.5 border-2 ${
+                          product.isActive
+                            ? 'bg-emerald-500 border-emerald-400'
+                            : 'bg-slate-700 border-slate-600'
                         }`}
                       >
                         <div
                           className={`w-4 h-4 rounded-full bg-white shadow-md transform transition-transform ${
-                            product.isActive ? 'translate-x-4' : 'translate-x-0'
+                            product.isActive ? 'translate-x-5' : 'translate-x-0'
                           }`}
                         />
                       </div>
-                      <span className={`text-[11px] font-medium ${product.isActive ? 'text-emerald-400' : 'text-slate-500'}`}>
+                      <span className={`text-sm font-bold ${product.isActive ? 'text-emerald-400' : 'text-slate-400'}`}>
                         {product.isActive ? 'เปิดขาย' : 'ปิดชั่วคราว'}
                       </span>
                     </button>
                   </td>
 
                   {/* ปุ่มจัดการ */}
-                  <td className="py-3 px-4 text-center">
-                    <div className="flex items-center justify-center gap-1">
+                  <td className="py-3.5 px-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
                       <button
                         type="button"
                         onClick={() => onEditProduct(product)}
                         title="แก้ไขข้อมูลสินค้า"
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors cursor-pointer"
+                        className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl bg-slate-800 hover:bg-cyan-950 border-2 border-slate-700 hover:border-cyan-500 text-slate-200 hover:text-cyan-300 active:scale-95 transition-all cursor-pointer shadow-sm"
+                        aria-label={`แก้ไข ${product.name}`}
                       >
-                        <Icons.Edit className="w-4 h-4" />
+                        <Icons.Edit className="w-5 h-5" />
                       </button>
                       <button
                         type="button"
                         onClick={() => onDeleteProduct(product)}
                         title="ลบสินค้า"
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                        className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl bg-slate-800 hover:bg-rose-950 border-2 border-slate-700 hover:border-rose-500 text-slate-200 hover:text-rose-400 active:scale-95 transition-all cursor-pointer shadow-sm"
+                        aria-label={`ลบ ${product.name}`}
                       >
-                        <Icons.Trash2 className="w-4 h-4" />
+                        <Icons.Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </td>
