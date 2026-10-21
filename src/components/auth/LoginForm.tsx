@@ -15,6 +15,7 @@ import {
 import { ModeSwitcher } from './ModeSwitcher';
 import { PinLogin } from './PinLogin';
 import { CredentialLogin } from './CredentialLogin';
+import { CooldownTimer } from './CooldownTimer';
 
 interface LoginFormProps {
   onSuccess: (auth: AuthResponse) => void;
@@ -140,19 +141,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       />
 
       {/* แจ้งเตือนสถานะ Cooldown */}
-      {isLockedOut && (
-        <div className="mb-5 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm flex items-center space-x-3 shadow-sm">
-          <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-amber-200 dark:bg-amber-800 flex items-center justify-center font-bold text-base text-amber-900 dark:text-amber-100">
-            {cooldownRemaining}s
-          </div>
-          <div>
-            <p className="font-semibold">ระบบระงับการเข้าสู่ระบบชั่วคราว</p>
-            <p className="text-xs text-amber-700 dark:text-amber-300 mt-0.5">
-              กรุณารออีก {cooldownRemaining} วินาที ก่อนลองใหม่อีกครั้ง
-            </p>
-          </div>
-        </div>
-      )}
+      <CooldownTimer secondsRemaining={cooldownRemaining} />
 
       {/* แจ้งเตือนข้อผิดพลาดทั่วไป */}
       {errorMessage && !isLockedOut && (

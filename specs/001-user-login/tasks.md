@@ -90,8 +90,8 @@
 
 ### Implementation for User Story 4
 
-- [ ] T016 [P] [US4] Create CooldownTimer countdown component with countdown seconds badge in src/components/auth/CooldownTimer.tsx
-- [ ] T017 [US4] Integrate consecutive failed attempts counter, cooldown trigger (5 failures / 60s), and Thai error alert handling in src/components/auth/LoginForm.tsx
+- [x] T016 [P] [US4] Create CooldownTimer countdown component with countdown seconds badge in src/components/auth/CooldownTimer.tsx
+- [x] T017 [US4] Integrate consecutive failed attempts counter, cooldown trigger (5 failures / 60s), and Thai error alert handling in src/components/auth/LoginForm.tsx
 
 **Checkpoint**: ความปลอดภัยหน้าร้านและการจัดการข้อผิดพลาดสมบูรณ์ตามข้อกำหนดความปลอดภัย
 
