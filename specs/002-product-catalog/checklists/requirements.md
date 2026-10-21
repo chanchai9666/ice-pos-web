@@ -31,4 +31,6 @@
 
 ## Notes
 
-- Clarification session completed on 2026-10-21 (5 questions resolved). 16/16 items passing. Ready for planning (`/speckit-plan`).
+- Clarification session completed on 2026-10-21 (5 questions resolved).
+- UX/UI updated to comply with Constitution v1.4.0 (Elderly-Friendly & Touchscreen Optimized: Touch targets >= 48px, High contrast WCAG 2.1 AA, Large fonts >= 16px, Virtual Numeric Keypad).
+- 16/16 checklist items passing. Ready for planning (`/speckit-plan`).
