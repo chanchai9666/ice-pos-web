@@ -38,11 +38,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T008 [P] [US1] Create AppHeader component showing user profile, current branch, and logout button in `src/components/layout/AppHeader.tsx`
-- [ ] T009 [P] [US1] Create Collapsible AppSidebar component with active state, role-based menu filtering, and touch toggle in `src/components/layout/AppSidebar.tsx`
-- [ ] T010 [US1] Implement RouteGuard component for protecting `/catalog` from CASHIER role in `src/components/layout/RouteGuard.tsx`
-- [ ] T011 [US1] Create main authenticated App Shell layout integrating Header, Sidebar, and RouteGuard in `src/app/(main)/layout.tsx`
-- [ ] T012 [P] [US1] Create initial POS terminal placeholder page with sidebar toggle button in `src/app/(main)/pos/page.tsx`
+- [X] T008 [P] [US1] Create AppHeader component showing user profile, current branch, and logout button in `src/components/layout/AppHeader.tsx`
+- [X] T009 [P] [US1] Create Collapsible AppSidebar component with active state, role-based menu filtering, and touch toggle in `src/components/layout/AppSidebar.tsx`
+- [X] T010 [US1] Implement RouteGuard component for protecting `/catalog` from CASHIER role in `src/components/layout/RouteGuard.tsx`
+- [X] T011 [US1] Create main authenticated App Shell layout integrating Header, Sidebar, and RouteGuard in `src/app/(main)/layout.tsx`
+- [X] T012 [P] [US1] Create initial POS terminal placeholder page with sidebar toggle button in `src/app/(main)/pos/page.tsx`
 
 **Checkpoint**: App Shell สมบูรณ์ สามารถนำทางและทดสอบการพับเก็บเมนูและการกรองสิทธิ์ตามบทบาทได้
 
