@@ -57,10 +57,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T009 [P] [US2] Create touch-friendly Virtual Numpad component (0-9, Backspace, Clear) supporting physical keyboard events in src/components/auth/VirtualNumpad.tsx
-- [ ] T010 [P] [US2] Create Branch selection dropdown/modal with auto-fetch and search in src/components/auth/BranchSelector.tsx
-- [ ] T011 [US2] Create PinLogin component combining BranchSelector, PIN masked dots, and VirtualNumpad in src/components/auth/PinLogin.tsx
-- [ ] T012 [US2] Implement PIN submission logic and direct navigation to POS Terminal upon success in src/components/auth/PinLogin.tsx
+- [x] T009 [P] [US2] Create touch-friendly Virtual Numpad component (0-9, Backspace, Clear) supporting physical keyboard events in src/components/auth/VirtualNumpad.tsx
+- [x] T010 [P] [US2] Create Branch selection dropdown/modal with auto-fetch and search in src/components/auth/BranchSelector.tsx
+- [x] T011 [US2] Create PinLogin component combining BranchSelector, PIN masked dots, and VirtualNumpad in src/components/auth/PinLogin.tsx
+- [x] T012 [US2] Implement PIN submission logic and direct navigation to POS Terminal upon success in src/components/auth/PinLogin.tsx
 
 **Checkpoint**: User Story 2 ใช้งานและทดสอบเดี่ยวได้สมบูรณ์ แคชเชียร์เปิดหน้าขายหน้าร้านได้สะดวกรวดเร็ว
 
