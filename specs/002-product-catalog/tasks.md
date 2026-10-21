@@ -21,10 +21,10 @@
 
 **⚠️ CRITICAL**: ต้องทำ Phase นี้ให้เสร็จก่อนเริ่มพัฒนา User Stories
 
-- [ ] T004 Implement Category API client methods (List, Create, Update, Delete) in `src/services/catalog.service.ts`
-- [ ] T005 Implement Product API client methods (List with filters/pagination, Create, Update, Delete, Internal Barcode, Upload Image) in `src/services/catalog.service.ts`
-- [ ] T006 [P] Implement Metadata API client methods for Taxes and UOMs in `src/services/metadata.service.ts`
-- [ ] T007 Create reusable Tab navigation container and Badge primitives in `src/components/ui/Tabs.tsx` and `src/components/ui/Badge.tsx`
+- [X] T004 Implement Category API client methods (List, Create, Update, Delete) in `src/services/catalog.service.ts`
+- [X] T005 Implement Product API client methods (List with filters/pagination, Create, Update, Delete, Internal Barcode, Upload Image) in `src/services/catalog.service.ts`
+- [X] T006 [P] Implement Metadata API client methods for Taxes and UOMs in `src/services/metadata.service.ts`
+- [X] T007 Create reusable Tab navigation container and Badge primitives in `src/components/ui/Tabs.tsx` and `src/components/ui/Badge.tsx`
 
 **Checkpoint**: โครงสร้าง Type, API Service และ UI Primitives พร้อมเริ่มพัฒนา User Stories
 

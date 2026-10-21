@@ -45,9 +45,10 @@ export async function request<T>(
   }
 
   const token = getAccessToken();
+  const isFormData = typeof FormData !== 'undefined' && restOptions.body instanceof FormData;
   const requestHeaders: Record<string, string> = {
-    'Content-Type': 'application/json',
     Accept: 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...(headers as Record<string, string>),
   };
 
