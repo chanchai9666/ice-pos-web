@@ -6,6 +6,8 @@ import { Tabs } from '@/components/ui/Tabs';
 import { ProductToolbar } from '@/components/catalog/ProductToolbar';
 import { ProductTable } from '@/components/catalog/ProductTable';
 import { ProductFormDrawer } from '@/components/catalog/ProductFormDrawer';
+import { CategoryList } from '@/components/catalog/CategoryList';
+import { CategoryFormModal } from '@/components/catalog/CategoryFormModal';
 import { Pagination } from '@/components/ui/Pagination';
 import { Icons } from '@/components/ui/Icons';
 
@@ -20,9 +22,13 @@ export default function CatalogPage() {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
 
-  // Drawer Create / Edit State
+  // Drawer Create / Edit State (สินค้า)
   const [isProductDrawerOpen, setIsProductDrawerOpen] = useState(false);
   const [selectedProductForEdit, setSelectedProductForEdit] = useState<Product | null>(null);
+
+  // Modal Create / Edit State (หมวดหมู่สินค้า)
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [selectedCategoryForEdit, setSelectedCategoryForEdit] = useState<Category | null>(null);
 
   // Pagination & ตัวกรองสินค้า
   const [search, setSearch] = useState('');
@@ -137,6 +143,41 @@ export default function CatalogPage() {
     }
   };
 
+  // จัดการบันทึกหมวดหมู่ (เพิ่ม / แก้ไข)
+  const handleCategorySuccess = (savedCategory: Category, isNew: boolean) => {
+    if (isNew) {
+      setCategories((prev) => [...prev, savedCategory]);
+      showToast(`สร้างหมวดหมู่ "${savedCategory.name}" สำเร็จ`, 'success');
+    } else {
+      setCategories((prev) =>
+        prev.map((c) => (c.id === savedCategory.id ? savedCategory : c))
+      );
+      showToast(`แก้ไขหมวดหมู่ "${savedCategory.name}" สำเร็จ`, 'success');
+    }
+  };
+
+  // จัดการลบหมวดหมู่ (พร้อมตรวจสอบสินค้าผูกอยู่)
+  const handleDeleteCategory = async (category: Category) => {
+    const hasProducts = products.some((p) => p.categoryId === category.id);
+    if (hasProducts) {
+      alert(`ไม่สามารถลบหมวดหมู่ "${category.name}" ได้เนื่องจากมีสินค้าสังกัดอยู่ในหมวดหมู่นี้ กรุณาย้ายหรือลบสินค้าออกก่อน`);
+      return;
+    }
+
+    if (!confirm(`คุณต้องการลบหมวดหมู่ "${category.name}" ใช่หรือไม่?`)) {
+      return;
+    }
+
+    try {
+      await catalogService.deleteCategory(category.id);
+      setCategories((prev) => prev.filter((c) => c.id !== category.id));
+      showToast(`ลบหมวดหมู่ "${category.name}" สำเร็จแล้ว`, 'success');
+    } catch (err: unknown) {
+      const error = err as Error;
+      showToast(error.message || `ไม่สามารถลบหมวดหมู่ "${category.name}" ได้`, 'error');
+    }
+  };
+
   const tabsConfig = [
     {
       id: 'products',
@@ -228,7 +269,6 @@ export default function CatalogPage() {
               setIsProductDrawerOpen(true);
             }}
             onDeleteProduct={(prod) => {
-              // จะเชื่อมกับ DeleteConfirmModal ใน Phase 8 (US6)
               const event = new CustomEvent('open-delete-modal', { detail: { product: prod } });
               window.dispatchEvent(event);
             }}
@@ -255,6 +295,23 @@ export default function CatalogPage() {
         </div>
       )}
 
+      {/* เนื้อหาในแท็บหมวดหมู่สินค้า */}
+      {activeTab === 'categories' && (
+        <CategoryList
+          categories={categories}
+          isLoading={isLoadingCategories}
+          onAddNew={() => {
+            setSelectedCategoryForEdit(null);
+            setIsCategoryModalOpen(true);
+          }}
+          onEdit={(cat) => {
+            setSelectedCategoryForEdit(cat);
+            setIsCategoryModalOpen(true);
+          }}
+          onDelete={handleDeleteCategory}
+        />
+      )}
+
       {/* Drawer สำหรับเพิ่ม / แก้ไขสินค้า */}
       <ProductFormDrawer
         isOpen={isProductDrawerOpen}
@@ -277,16 +334,15 @@ export default function CatalogPage() {
         }}
       />
 
-      {/* เนื้อหาในแท็บหมวดหมู่สินค้า (จะถูกขยายสมบูรณ์ใน Phase 6) */}
-      {activeTab === 'categories' && (
-        <div id="category-tab-content" className="space-y-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400">
-            <Icons.Boxes className="w-8 h-8 text-cyan-400 mx-auto mb-2" />
-            <p className="text-sm text-slate-200 font-medium">กำลังเตรียมพร้อมแท็บหมวดหมู่สินค้า</p>
-            <p className="text-xs text-slate-500 mt-1">โมดูลหมวดหมู่สินค้าจะเชื่อมต่ออย่างสมบูรณ์ในขั้นตอนถัดไป</p>
-          </div>
-        </div>
-      )}
+      {/* Modal Dialog สำหรับเพิ่ม / แก้ไขหมวดหมู่สินค้า */}
+      <CategoryFormModal
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+        category={selectedCategoryForEdit}
+        parentOptions={categories}
+        onSuccess={handleCategorySuccess}
+      />
     </div>
   );
 }
+

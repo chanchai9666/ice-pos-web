@@ -90,9 +90,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T021 [P] [US4] Create CategoryList table and tree-view component in `src/components/catalog/CategoryList.tsx`
-- [ ] T022 [P] [US4] Create CategoryFormModal dialog component for adding and editing categories in `src/components/catalog/CategoryFormModal.tsx`
-- [ ] T023 [US4] Integrate Category tab, modal triggers, and API actions in `src/app/(main)/catalog/page.tsx`
+- [X] T021 [P] [US4] Create CategoryList table and tree-view component in `src/components/catalog/CategoryList.tsx`
+- [X] T022 [P] [US4] Create CategoryFormModal dialog component for adding and editing categories in `src/components/catalog/CategoryFormModal.tsx`
+- [X] T023 [US4] Integrate Category tab, modal triggers, and API actions in `src/app/(main)/catalog/page.tsx`
 
 **Checkpoint**: จัดการหมวดหมู่สินค้าได้ครบถ้วน ทั้งการแสดงผล เพิ่ม แก้ไข และลบ
 
