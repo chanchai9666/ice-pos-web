@@ -31,9 +31,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [US1] พัฒนาระบบเชื่อมต่อกล้องผ่าน WebRTC `getUserMedia` พร้อมฉายภาพสดลงใน `<video>` และคำสั่งปิด Stream ทันทีเมื่อปิดหน้าต่าง ใน `src/components/catalog/CameraCaptureModal.tsx`
-- [ ] T005 [US1] พัฒนาระบบจับภาพนิ่งผ่าน `<canvas>` แปลงเป็น File/Blob พร้อมหน้าจอตรวจสอบภาพ ปุ่ม "ถ่ายใหม่" และปุ่ม "ใช้ภาพนี้" ใน `src/components/catalog/CameraCaptureModal.tsx`
-- [ ] T006 [US1] เชื่อมต่อ CameraCaptureModal เข้ากับ ImageUploader และส่งไฟล์ภาพต่อไปยังฟอร์มแก้ไขสินค้า ใน `src/components/catalog/ProductFormModal.tsx`
+- [x] T004 [US1] พัฒนาระบบเชื่อมต่อกล้องผ่าน WebRTC `getUserMedia` พร้อมฉายภาพสดลงใน `<video>` และคำสั่งปิด Stream ทันทีเมื่อปิดหน้าต่าง ใน `src/components/catalog/CameraCaptureModal.tsx`
+- [x] T005 [US1] พัฒนาระบบจับภาพนิ่งผ่าน `<canvas>` แปลงเป็น File/Blob พร้อมหน้าจอตรวจสอบภาพ ปุ่ม "ถ่ายใหม่" และปุ่ม "ใช้ภาพนี้" ใน `src/components/catalog/CameraCaptureModal.tsx`
+- [x] T006 [US1] เชื่อมต่อ CameraCaptureModal เข้ากับ ImageUploader และส่งไฟล์ภาพต่อไปยังฟอร์มแก้ไขสินค้า ใน `src/components/catalog/ProductFormModal.tsx`
 
 **Checkpoint**: User Story 1 ทำงานได้สมบูรณ์และทดสอบการจับภาพจากกล้องเข้าสู่ฟอร์มแก้ไขได้
 
