@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { catalogService } from '@/services/catalog.service';
 import { metadataService } from '@/services/metadata.service';
