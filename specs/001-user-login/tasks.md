@@ -14,9 +14,9 @@
 
 **Purpose**: โครงสร้างพื้นฐาน Type Definitions, Utility สำหรับ LocalStorage และ API Client กลาง
 
-- [ ] T001 [P] Create TypeScript types and interfaces for authentication in src/types/auth.ts
-- [ ] T002 [P] Create browser storage helpers for JWT tokens, user session, and device preferences in src/utils/storage.ts
-- [ ] T003 [P] Create base API HTTP client with Fetch wrapper, error envelope parser, and JWT header interceptor in src/services/api.ts
+- [x] T001 [P] Create TypeScript types and interfaces for authentication in src/types/auth.ts
+- [x] T002 [P] Create browser storage helpers for JWT tokens, user session, and device preferences in src/utils/storage.ts
+- [x] T003 [P] Create base API HTTP client with Fetch wrapper, error envelope parser, and JWT header interceptor in src/services/api.ts
 
 ---
 
