@@ -21,7 +21,16 @@ export function ImageUploader({
   const [isDragging, setIsDragging] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isCameraSupported, setIsCameraSupported] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // ตรวจสอบการรองรับกล้องบนอุปกรณ์
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+      setIsCameraSupported(hasSupport);
+    }
+  }, []);
 
   // Sync with currentImageUrl when it changes
   React.useEffect(() => {
@@ -131,7 +140,7 @@ export function ImageUploader({
           </p>
 
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            {enableCamera && (
+            {enableCamera && isCameraSupported && (
               <button
                 type="button"
                 onClick={() => setIsCameraOpen(true)}

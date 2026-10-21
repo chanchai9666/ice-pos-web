@@ -63,9 +63,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T010 [US3] พัฒนาระบบสลับกล้องหน้า/กล้องหลัง (Facing Mode: environment / user) เมื่อมีกล้องมากกว่าหนึ่งตัว ใน `src/components/catalog/CameraCaptureModal.tsx`
-- [ ] T011 [US3] พัฒนาระบบจัดการข้อผิดพลาดกรณีปฏิเสธสิทธิ์ หรือไม่พบกล้อง พร้อมข้อความแจ้งเตือนภาษาไทยที่ชัดเจน ใน `src/components/catalog/CameraCaptureModal.tsx`
-- [ ] T012 [US3] ปรับปรุง Fallback บนอุปกรณ์ที่ไม่มีกล้องให้แสดงเฉพาะปุ่มเลือกไฟล์ตามปกติ ใน `src/components/catalog/ImageUploader.tsx`
+- [x] T010 [US3] พัฒนาระบบสลับกล้องหน้า/กล้องหลัง (Facing Mode: environment / user) เมื่อมีกล้องมากกว่าหนึ่งตัว ใน `src/components/catalog/CameraCaptureModal.tsx`
+- [x] T011 [US3] พัฒนาระบบจัดการข้อผิดพลาดกรณีปฏิเสธสิทธิ์ หรือไม่พบกล้อง พร้อมข้อความแจ้งเตือนภาษาไทยที่ชัดเจน ใน `src/components/catalog/CameraCaptureModal.tsx`
+- [x] T012 [US3] ปรับปรุง Fallback บนอุปกรณ์ที่ไม่มีกล้องให้แสดงเฉพาะปุ่มเลือกไฟล์ตามปกติ ใน `src/components/catalog/ImageUploader.tsx`
 
 **Checkpoint**: User Story 3 ทำงานได้สมบูรณ์ รองรับอุปกรณ์และกรณีข้อผิดพลาดของกล้องทุกรูปแบบ
 
