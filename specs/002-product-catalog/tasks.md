@@ -202,11 +202,11 @@
 
 ### Implementation for User Story 3 Refinement
 
-- [ ] T042 [US3] Create `src/components/catalog/ProductFormModal.tsx` as a centered Modal Dialog with backdrop, smooth scale animation, max-w-4xl container, and scrollable body
-- [ ] T043 [US3] Standardize all dropdown (`select`) styling and dimensions to match `input` 1:1 (`min-h-[48px]`, `px-4 py-3`, `text-base`, `border-2`, `rounded-xl`) in `src/components/catalog/ProductFormModal.tsx`
-- [ ] T044 [US3] Restructure form grid layout into balanced 2-column pairs (Name full width, SKU/Barcode, Category/Type, UOM/Tax, Price/Cost with keypad buttons, MinStock/Checkboxes, Description full width, Image Uploader full width) preventing any row wrapping in `src/components/catalog/ProductFormModal.tsx`
-- [ ] T045 [US3] Integrate ProductFormModal in `src/app/(main)/catalog/page.tsx` replacing previous drawer invocation
-- [ ] T046 [US3] Verify touch targets >= 48px, WCAG 2.1 AA contrast, rapid-touch debounce, and zero TypeScript compile errors with `npx tsc --noEmit`
+- [X] T042 [US3] Create `src/components/catalog/ProductFormModal.tsx` as a centered Modal Dialog with backdrop, smooth scale animation, max-w-4xl container, and scrollable body
+- [X] T043 [US3] Standardize all dropdown (`select`) styling and dimensions to match `input` 1:1 (`min-h-[48px]`, `px-4 py-3`, `text-base`, `border-2`, `rounded-xl`) in `src/components/catalog/ProductFormModal.tsx`
+- [X] T044 [US3] Restructure form grid layout into balanced 2-column pairs (Name full width, SKU/Barcode, Category/Type, UOM/Tax, Price/Cost with keypad buttons, MinStock/Checkboxes, Description full width, Image Uploader full width) preventing any row wrapping in `src/components/catalog/ProductFormModal.tsx`
+- [X] T045 [US3] Integrate ProductFormModal in `src/app/(main)/catalog/page.tsx` replacing previous drawer invocation
+- [X] T046 [US3] Verify touch targets >= 48px, WCAG 2.1 AA contrast, rapid-touch debounce, and zero TypeScript compile errors with `npx tsc --noEmit`
 
 **Checkpoint**: ฟอร์มสินค้าเป็น Modal Dialog ตรงกลางจอสวยงาม Dropdown ขนาดเท่ากับ Input และจัด UI ได้สมบูรณ์ไม่ตกแถว
 

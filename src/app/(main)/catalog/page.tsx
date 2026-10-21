@@ -7,7 +7,7 @@ import { Product, Category, Uom, Tax } from '@/types/catalog';
 import { Tabs } from '@/components/ui/Tabs';
 import { ProductToolbar } from '@/components/catalog/ProductToolbar';
 import { ProductTable } from '@/components/catalog/ProductTable';
-import { ProductFormDrawer } from '@/components/catalog/ProductFormDrawer';
+import { ProductFormModal } from '@/components/catalog/ProductFormModal';
 import { CategoryList } from '@/components/catalog/CategoryList';
 import { CategoryFormModal } from '@/components/catalog/CategoryFormModal';
 import { DeleteConfirmModal } from '@/components/catalog/DeleteConfirmModal';
@@ -25,8 +25,8 @@ export default function CatalogPage() {
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
 
-  // Drawer Create / Edit State (สินค้า)
-  const [isProductDrawerOpen, setIsProductDrawerOpen] = useState(false);
+  // Modal Create / Edit State (สินค้า)
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [selectedProductForEdit, setSelectedProductForEdit] = useState<Product | null>(null);
 
   // Modal Create / Edit State (หมวดหมู่สินค้า)
@@ -279,7 +279,7 @@ export default function CatalogPage() {
             }}
             onAddNewProduct={() => {
               setSelectedProductForEdit(null);
-              setIsProductDrawerOpen(true);
+              setIsProductModalOpen(true);
             }}
             onRefresh={fetchProducts}
             isLoading={isLoadingProducts}
@@ -290,7 +290,7 @@ export default function CatalogPage() {
             isLoading={isLoadingProducts}
             onEditProduct={(prod) => {
               setSelectedProductForEdit(prod);
-              setIsProductDrawerOpen(true);
+              setIsProductModalOpen(true);
             }}
             onDeleteProduct={(prod) => {
               setProductToDelete(prod);
@@ -336,10 +336,10 @@ export default function CatalogPage() {
         />
       )}
 
-      {/* Drawer สำหรับเพิ่ม / แก้ไขสินค้า */}
-      <ProductFormDrawer
-        isOpen={isProductDrawerOpen}
-        onClose={() => setIsProductDrawerOpen(false)}
+      {/* Center Modal Dialog สำหรับเพิ่ม / แก้ไขสินค้า */}
+      <ProductFormModal
+        isOpen={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
         product={selectedProductForEdit}
         categories={categories}
         uoms={uoms}
