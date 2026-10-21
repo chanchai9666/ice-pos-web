@@ -48,10 +48,10 @@
 
 **Independent Test**: เพิ่มสินค้าลงตะกร้า ปรับจำนวนด้วยปุ่ม +/- หรือ Virtual Numpad ยอดเงินรวมและภาษีคำนวณถูกต้อง และมีปุ่มล้างตะกร้าพร้อมกล่องยืนยัน
 
-- [ ] T011 [P] [US4] Create Individual Cart Item Row in `src/components/pos/PosCartItemRow.tsx` (product name, locked unit price, +/- buttons >=48px, line total, delete button)
-- [ ] T012 [US4] Integrate Virtual Numeric Keypad for quantity editing in `src/components/pos/PosQuantityModal.tsx` (modal with `src/components/ui/VirtualNumericKeypad.tsx`)
-- [ ] T013 [US4] Create POS Cart Panel and Order Summary in `src/components/pos/PosCartPanel.tsx` (item count, subtotal, VAT 7%, grand total with large font, clear cart confirmation, checkout button)
-- [ ] T014 [US4] Connect Cart Panel and Catalog Grid together in `src/app/(main)/pos/page.tsx` (2-column layout 60/40)
+- [x] T011 [P] [US4] Create Individual Cart Item Row in `src/components/pos/PosCartItemRow.tsx` (product name, locked unit price, +/- buttons >=48px, line total, delete button)
+- [x] T012 [US4] Integrate Virtual Numeric Keypad for quantity editing in `src/components/pos/PosQuantityModal.tsx` (modal with `src/components/ui/VirtualNumericKeypad.tsx`)
+- [x] T013 [US4] Create POS Cart Panel and Order Summary in `src/components/pos/PosCartPanel.tsx` (item count, subtotal, VAT 7%, grand total with large font, clear cart confirmation, checkout button)
+- [x] T014 [US4] Connect Cart Panel and Catalog Grid together in `src/app/(main)/pos/page.tsx` (2-column layout 60/40)
 
 **Checkpoint**: MVP สำเร็จสมบูรณ์! หน้าจอ POS สามารถเลือกสินค้า ปรับจำนวน ดูยอดเงินรวม และจัดการตะกร้าขายได้ครบวงจร
 

@@ -15,6 +15,7 @@ import { Category, Product } from '@/types/catalog';
 import { PosSearchBar } from '@/components/pos/PosSearchBar';
 import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
 import { PosProductGrid } from '@/components/pos/PosProductGrid';
+import { PosCartPanel } from '@/components/pos/PosCartPanel';
 import { Icons } from '@/components/ui/Icons';
 
 function PosTerminalInner() {
@@ -143,12 +144,7 @@ function PosTerminalInner() {
 
         {/* คอลัมน์ขวา: ตะกร้าขายสินค้า (สัดส่วน 5 จาก 12 คอลัมน์ ≈ 40%) */}
         <div id="pos-cart-container" className="lg:col-span-5 xl:col-span-4 flex flex-col h-full overflow-hidden bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl">
-          {/* จะถูกแทนที่ด้วย PosCartPanel ใน Phase 4 */}
-          <div className="flex-1 p-6 flex flex-col items-center justify-center text-center text-slate-400 space-y-3">
-            <Icons.ShoppingCart className="w-12 h-12 text-slate-600" />
-            <p className="text-base font-semibold text-slate-300">ตะกร้าสินค้าว่างเปล่า</p>
-            <p className="text-xs text-slate-500">แตะที่รายการสินค้าฝั่งซ้าย หรือยิงบาร์โค้ดเพื่อเพิ่มรายการลงบิล</p>
-          </div>
+          <PosCartPanel />
         </div>
       </div>
     </div>
