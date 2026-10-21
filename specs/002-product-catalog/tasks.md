@@ -56,10 +56,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T013 [P] [US2] Create ProductToolbar component with search input (300ms debounce), category dropdown, and status filter in `src/components/catalog/ProductToolbar.tsx`
-- [ ] T014 [US2] Create ProductTable component rendering image, name, SKU, barcode, category, price (THB), cost, and active status in `src/components/catalog/ProductTable.tsx`
-- [ ] T015 [P] [US2] Create Pagination control component supporting page navigation and page size selector in `src/components/ui/Pagination.tsx`
-- [ ] T016 [US2] Create Catalog main page with tab switcher and product listing integration in `src/app/(main)/catalog/page.tsx`
+- [X] T013 [P] [US2] Create ProductToolbar component with search input (300ms debounce), category dropdown, and status filter in `src/components/catalog/ProductToolbar.tsx`
+- [X] T014 [US2] Create ProductTable component rendering image, name, SKU, barcode, category, price (THB), cost, and active status in `src/components/catalog/ProductTable.tsx`
+- [X] T015 [P] [US2] Create Pagination control component supporting page navigation and page size selector in `src/components/ui/Pagination.tsx`
+- [X] T016 [US2] Create Catalog main page with tab switcher and product listing integration in `src/app/(main)/catalog/page.tsx`
 
 **Checkpoint**: หน้าจอรายการสินค้า ค้นหา และกรองข้อมูลทำงานได้อย่างสมบูรณ์
 
