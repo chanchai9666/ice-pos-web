@@ -22,14 +22,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
-  // Lazy state initializers เพื่อป้องกันการเรียก setState ใน Effect
-  const [mode, setMode] = useState<LoginMode>(() => {
-    try {
-      return getLastLoginMode();
-    } catch {
-      return 'pin';
-    }
-  });
+  // เริ่มต้นด้วยค่าเริ่มต้นที่สอดคล้องกับ SSR แล้วซิงค์จาก localStorage หลัง mount
+  const [mode, setMode] = useState<LoginMode>('pin');
 
   const [branches, setBranches] = useState<Branch[]>([]);
   const [selectedBranchId, setSelectedBranchId] = useState<string>('');
@@ -38,16 +32,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [failedAttempts, setFailedAttempts] = useState<number>(0);
-  const [cooldownRemaining, setCooldownRemaining] = useState<number>(() => {
-    try {
-      const lockoutUntil = getLockoutExpiry();
-      return lockoutUntil
-        ? Math.max(0, Math.ceil((lockoutUntil - Date.now()) / 1000))
-        : 0;
-    } catch {
-      return 0;
-    }
-  });
+  const [cooldownRemaining, setCooldownRemaining] = useState<number>(0);
 
   // ฟังก์ชันดึงรายชื่อสาขา
   const fetchBranches = useCallback(async () => {
@@ -75,6 +60,24 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   useEffect(() => {
     let active = true;
+
+    // ซิงค์การตั้งค่าโหมดล็อกอินและคูลดาวน์จาก Client Storage หลัง Mount
+    try {
+      const savedMode = getLastLoginMode();
+      if (savedMode && active) {
+        setMode(savedMode);
+      }
+
+      const lockoutUntil = getLockoutExpiry();
+      if (lockoutUntil && active) {
+        const remaining = Math.max(0, Math.ceil((lockoutUntil - Date.now()) / 1000));
+        if (remaining > 0) {
+          setCooldownRemaining(remaining);
+        }
+      }
+    } catch {
+      // ละเว้นข้อผิดพลาดจาก Storage
+    }
 
     async function loadData() {
       try {

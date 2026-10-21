@@ -168,6 +168,6 @@
 
 **Purpose**: แก้ไขช่องว่างและจุดบกพร่องจากการประเมินระบบที่ตรวจพบระหว่างการเชื่อมต่อ App Shell และ Login Flow
 
-- [ ] T034 [US1] Fix post-login navigation for ADMIN and MANAGER roles to route to valid App Shell page (/pos or /catalog) and add /dashboard redirect per FR-001, US1/AC1 (partial)
-- [ ] T035 [US1] Resolve SSR hydration mismatch in LoginForm by safely syncing client-side login mode after mount per Constitution I (partial)
+- [X] T034 [US1] Fix post-login navigation for ADMIN and MANAGER roles to route to valid App Shell page (/pos or /catalog) and add /dashboard redirect per FR-001, US1/AC1 (partial)
+- [X] T035 [US1] Resolve SSR hydration mismatch in LoginForm by safely syncing client-side login mode after mount per Constitution I (partial)
 

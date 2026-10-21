@@ -10,11 +10,11 @@ export default function LoginPage() {
 
   const handleLoginSuccess = (auth: AuthResponse) => {
     // หากเป็นแคชเชียร์ ให้นำทางไปยังหน้าขาย POS
-    // หากเป็นบทบาทอื่น (เช่น ADMIN, MANAGER) ให้นำทางไปยัง Dashboard
+    // หากเป็นบทบาทอื่น (เช่น ADMIN, MANAGER) ให้นำทางไปยังหน้าจัดการสินค้าและหมวดหมู่
     if (auth.user.role === 'CASHIER') {
       router.push('/pos');
     } else {
-      router.push('/dashboard');
+      router.push('/catalog');
     }
   };
 
