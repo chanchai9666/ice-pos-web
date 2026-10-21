@@ -1,25 +1,10 @@
 <!--
 # Sync Impact Report
-- Version change: Initial Draft (template) → 1.0.0
-- Modified principles: Replaced template generic principles with comprehensive project governance principles
-- Added sections:
-  - 1. วัตถุประสงค์และขอบเขต (Purpose and Scope)
-  - 2. หลักการใช้ภาษา (Language Guidelines: Thai Primary)
-  - 3. หลักการพัฒนาซอฟต์แวร์ (Core Development Principles)
-  - 4. สถาปัตยกรรมและโครงสร้างโค้ด (Architecture & Code Structure)
-  - 5. การจัดการข้อมูลและการเชื่อมต่อระบบ (Data Management & Integration)
-  - 6. มาตรฐาน UI/UX (UI/UX Standards)
-  - 7. ความปลอดภัยและความเป็นส่วนตัว (Security & Privacy)
-  - 8. ประสิทธิภาพและการใช้ทรัพยากร (Performance & Resource Management)
-  - 9. การจัดการข้อผิดพลาดและการบันทึกเหตุการณ์ (Error Handling & Logging)
-  - 10. การจัดการ Dependency และการตั้งค่า (Dependency Management & Configuration)
-  - 11. การทดสอบและประกันคุณภาพ (Testing & Quality Assurance)
-  - 12. การบำรุงรักษาและการเปลี่ยนแปลงระบบ (Maintenance & System Evolution)
-  - 13. ข้อกำหนดสำหรับ AI Coding Agent (Directives & Constraints for AI Agents)
-  - 14. Tech Stack ของโปรเจกต์ (Project Tech Stack & Rules)
-  - 15. เกณฑ์การส่งมอบงาน (Definition of Done & Delivery Criteria)
-  - 16. การบังคับใช้และข้อยกเว้น (Governance, Enforcement & Exceptions)
-- Removed sections: Template placeholder sections
+- Version change: 1.0.0 → 1.1.0
+- Modified principles:
+  - 13. ข้อกำหนดสำหรับ AI Coding Agent: เพิ่มข้อกำหนดการดำเนินงานด้วย /speckit-implement ให้ดำเนินการทีละ phase (หรือหลาย phase เมื่อจำเป็น) และทำ git commit พร้อมระบุรายละเอียดการเปลี่ยนแปลงเป็นภาษาไทยก่อนเริ่ม phase ถัดไป
+- Added sections: None
+- Removed sections: None
 - Follow-up TODOs: Details marked as [ระบุภายหลัง] in Section 14 to be finalized as architecture choices are confirmed.
 -->
 
@@ -251,6 +236,10 @@ AI ต้องไม่:
 
 หากยังไม่ได้กำหนดเทคโนโลยีที่จำเป็นต่อการดำเนินงาน AI ต้องตรวจสอบโปรเจกต์เดิมและเสนอทางเลือกพร้อมเหตุผลก่อนเลือกใช้เทคโนโลยีใหม่ที่มีผลกระทบต่อโครงสร้างระบบ
 
+### ข้อกำหนดการดำเนินงานด้วย /speckit-implement:
+- เมื่อใช้คำสั่ง `/speckit-implement` ให้ดำเนินการทีละ Phase ตามลำดับ และอนุญาตให้ดำเนินการหลาย Phase พร้อมกันได้หากมีความจำเป็น
+- เมื่อดำเนินการในแต่ละ Phase แล้วเสร็จ ให้ทำ Git Commit โดยระบุรายละเอียดสิ่งที่เพิ่มหรือปรับแก้เป็นภาษาไทยอย่างชัดเจน แล้วค่อยดำเนินการใน Phase ถัดไป
+
 ## 14. Tech Stack ของโปรเจกต์
 
 ส่วนนี้เป็นข้อมูลกำหนดค่าเฉพาะโปรเจกต์ สามารถเติม แก้ไข หรือละเว้นรายการที่ไม่เกี่ยวข้องได้ โดยไม่ต้องเปลี่ยนหลักการส่วนอื่นของธรรมนูญ
@@ -343,4 +332,4 @@ AI ต้องไม่:
   - MINOR: มีการเพิ่มหมวดหมู่หรือขยายแนวทางปฏิบัติใหม่
   - PATCH: แก้ไขคำผิด ปรับปรุงถ้อยคำ หรือชี้แจงรายละเอียดโดยไม่เปลี่ยนหลักการเดิม
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
+**Version**: 1.1.0 | **Ratified**: 2026-10-21 | **Last Amended**: 2026-10-21
