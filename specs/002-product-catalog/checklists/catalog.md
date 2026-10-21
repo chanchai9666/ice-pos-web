@@ -23,6 +23,8 @@
 - [x] CHK008 Is the currency conversion between Backend Satang (integer) and UI Baht (decimal) explicitly defined? [Clarity, Spec §FR-004, Plan §Summary]
 - [x] CHK009 Are search criteria and debounce timing thresholds quantified? [Clarity, Spec §SC-003, Plan §Summary]
 - [x] CHK010 Is the distinction between `PRICE_PER_UNIT` and `BY_WEIGHT` product types clearly documented? [Clarity, Spec §FR-008, Data Model §2]
+- [x] CHK021 Is the Center Modal Dialog container specification quantified for responsive width and touchscreen positioning? [Clarity, Spec §FR-008, §FR-017]
+- [x] CHK022 Are dropdown (select) and input styling, heights (min-h-[48px]), and 2-column non-wrapping alignment explicitly defined? [Consistency, Spec §FR-008, §FR-017]
 
 ## Requirement Consistency
 
