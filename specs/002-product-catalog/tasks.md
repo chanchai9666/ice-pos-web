@@ -134,10 +134,10 @@
 
 **Purpose**: ปรับแต่งรายละเอียดความสมบูรณ์ ความลื่นไหล และการทดสอบตามคู่มือ Quickstart
 
-- [ ] T030 [P] Validate 100% Thai localization and user-friendly error messages across all catalog components
-- [ ] T031 [P] Verify touch-screen interaction on tablet resolution (minimum 44x44px touch targets) in `src/app/globals.css`
-- [ ] T032 Run full validation walkthrough per `specs/002-product-catalog/quickstart.md`
-- [ ] T033 Run ESLint and TypeScript typecheck across all modified files
+- [X] T030 [P] Validate 100% Thai localization and user-friendly error messages across all catalog components
+- [X] T031 [P] Verify touch-screen interaction on tablet resolution (minimum 44x44px touch targets) in `src/app/globals.css`
+- [X] T032 Run full validation walkthrough per `specs/002-product-catalog/quickstart.md`
+- [X] T033 Run ESLint and TypeScript typecheck across all modified files
 
 ---
 

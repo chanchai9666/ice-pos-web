@@ -3,7 +3,6 @@
 import React from 'react';
 import { Product } from '@/types/catalog';
 import { formatSatangToBaht } from '@/utils/currency';
-import { Badge } from '@/components/ui/Badge';
 import { Icons } from '@/components/ui/Icons';
 
 export interface ProductTableProps {

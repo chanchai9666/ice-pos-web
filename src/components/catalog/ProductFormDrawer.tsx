@@ -125,25 +125,6 @@ export function ProductFormDrawer({
     }
   };
 
-  // Handle Local Image File Selection
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      alert('กรุณาเลือกไฟล์รูปภาพ (JPG, PNG, WebP) เท่านั้น');
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      alert('ขนาดไฟล์ต้องไม่เกิน 5MB');
-      return;
-    }
-
-    setImageFile(file);
-    const objectUrl = URL.createObjectURL(file);
-    setImagePreview(objectUrl);
-  };
-
   // Form Validation
   const validate = () => {
     const errors: Record<string, string> = {};
