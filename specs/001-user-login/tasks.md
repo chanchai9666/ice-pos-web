@@ -26,8 +26,8 @@
 
 **⚠️ CRITICAL**: ต้องดำเนินการให้เสร็จสิ้นก่อนเริ่มพัฒนา User Stories
 
-- [ ] T004 Create authentication service implementing login, pinLogin, me, and branches API endpoints in src/services/auth.service.ts
-- [ ] T005 [P] Create AuthContext and session hook for managing authenticated user state and branch in src/context/AuthContext.tsx
+- [x] T004 Create authentication service implementing login, pinLogin, me, and branches API endpoints in src/services/auth.service.ts
+- [x] T005 [P] Create AuthContext and session hook for managing authenticated user state and branch in src/context/AuthContext.tsx
 
 **Checkpoint**: Foundation พร้อมทำงาน — สามารถเริ่มพัฒนา User Stories ได้
 
