@@ -161,3 +161,13 @@
 - T013, T015 ใน Phase 4 สามารถทำพร้อมกันได้
 - T021, T022 ใน Phase 6 สามารถทำพร้อมกันได้
 - T024, T026 ใน Phase 7 สามารถทำพร้อมกันได้
+
+---
+
+## Phase 10: Convergence
+
+**Purpose**: แก้ไขช่องว่างและจุดบกพร่องจากการประเมินระบบที่ตรวจพบระหว่างการเชื่อมต่อ App Shell และ Login Flow
+
+- [ ] T034 [US1] Fix post-login navigation for ADMIN and MANAGER roles to route to valid App Shell page (/pos or /catalog) and add /dashboard redirect per FR-001, US1/AC1 (partial)
+- [ ] T035 [US1] Resolve SSR hydration mismatch in LoginForm by safely syncing client-side login mode after mount per Constitution I (partial)
+
