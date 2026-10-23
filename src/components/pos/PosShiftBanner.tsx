@@ -81,7 +81,7 @@ export function PosShiftBanner({
         <span className="text-slate-500">•</span>
         <span>เปิดเมื่อ: <span className="text-white font-medium">{formattedTime} น.</span></span>
         <span className="text-slate-500">•</span>
-        <span>เงินทอนเริ่มต้น: <span className="text-cyan-400 font-bold">฿{formatSatangToBaht(shift.startingCash)}</span></span>
+        <span>เงินทอนเริ่มต้น: <span className="text-cyan-400 font-bold">฿{formatSatangToBaht(shift.openingCash)}</span></span>
       </div>
 
       <div className="text-xs text-slate-400">

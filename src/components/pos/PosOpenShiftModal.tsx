@@ -13,6 +13,7 @@ import { ShiftInfo } from '@/types/shift';
 import { VirtualNumericKeypad } from '@/components/ui/VirtualNumericKeypad';
 import { Icons } from '@/components/ui/Icons';
 import { playSuccessBeep, playErrorBuzzer } from '@/utils/audio';
+import { bahtToSatang } from '@/utils/currency';
 
 interface PosOpenShiftModalProps {
   isOpen: boolean;
@@ -30,7 +31,6 @@ export function PosOpenShiftModal({
   onSuccess,
 }: PosOpenShiftModalProps) {
   const [startingCashBaht, setStartingCashBaht] = useState<string>('1000');
-  const [notes, setNotes] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -59,12 +59,11 @@ export function PosOpenShiftModal({
 
     setIsSubmitting(true);
     try {
-      // แปลงบาทเป็นสตางค์ (1 บาท = 100 สตางค์)
-      const startingCashSatang = Math.round(cashNum * 100);
+      // แปลงบาทเป็นสตางค์ (1 บาท = 100 สตางค์) และส่งตามชื่อฟิลด์ที่ API กำหนด
+      const openingCash = bahtToSatang(startingCashBaht);
       const res = await shiftService.openShift({
         branchId,
-        startingCash: startingCashSatang,
-        notes: notes.trim() || undefined,
+        openingCash,
       });
 
       if (res.data) {
@@ -150,20 +149,6 @@ export function PosOpenShiftModal({
               label="เงินทอนเริ่มต้น (บาท)"
               allowDecimal={true}
               maxValue={100000}
-            />
-          </div>
-
-          {/* หมายเหตุเพิ่มเติม (ถ้ามี) */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">
-              หมายเหตุเปิดกะ (ถ้ามี):
-            </label>
-            <input
-              type="text"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="เช่น เงินเหรียญ 200 บาท แบงก์ย่อย 800 บาท"
-              className="w-full h-11 px-3 bg-slate-950 border border-slate-800 rounded-xl text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500"
             />
           </div>
         </div>

@@ -53,7 +53,7 @@ export function PosSuccessOverlay({
         <div className="flex justify-between items-center">
           <span className="text-sm text-slate-400 font-medium">ยอดสุทธิทั้งบิล</span>
           <span className="text-xl sm:text-2xl font-extrabold text-white">
-            ฿{formatSatangToBaht(sale.grandTotal)}
+            {formatSatangToBaht(sale.grandTotal)}
           </span>
         </div>
 
@@ -62,14 +62,14 @@ export function PosSuccessOverlay({
             <div className="flex justify-between items-center text-sm text-slate-300">
               <span>เงินสดที่รับมา</span>
               <span className="font-semibold text-slate-200">
-                ฿{formatSatangToBaht(primaryPayment.tenderedAmount ?? sale.grandTotal)}
+                {formatSatangToBaht(primaryPayment.tenderedAmount ?? sale.grandTotal)}
               </span>
             </div>
 
             <div className="flex justify-between items-center pt-2 border-t border-slate-700/50">
               <span className="text-base font-bold text-amber-300">เงินทอน</span>
               <span className="text-2xl sm:text-3xl font-black text-amber-400">
-                ฿{formatSatangToBaht(primaryPayment.changeAmount ?? 0)}
+                {formatSatangToBaht(primaryPayment.changeAmount ?? 0)}
               </span>
             </div>
           </>

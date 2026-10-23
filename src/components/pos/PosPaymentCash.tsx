@@ -58,7 +58,7 @@ export function PosPaymentCash({
             <div className="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-3.5">
               <span className="text-xs sm:text-sm text-slate-400 font-medium">ยอดที่ต้องชำระ</span>
               <div className="text-2xl sm:text-3xl font-black text-white mt-1">
-                ฿{formatSatangToBaht(grandTotalSatang)}
+                {formatSatangToBaht(grandTotalSatang)}
               </div>
             </div>
 
@@ -78,8 +78,8 @@ export function PosPaymentCash({
               </div>
               <div className="text-2xl sm:text-3xl font-extrabold text-cyan-300 min-h-[36px] flex items-center">
                 {tenderedString
-                  ? `฿${parseFloat(tenderedString).toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
-                  : '฿0.00'}
+                  ? `${parseFloat(tenderedString).toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+                  : '0.00'}
               </div>
             </div>
           </div>
@@ -98,11 +98,11 @@ export function PosPaymentCash({
             <div className="text-2xl sm:text-3xl font-black mt-1">
               {isEnough ? (
                 <span className="text-emerald-400">
-                  ฿{formatSatangToBaht(changeSatang)}
+                  {formatSatangToBaht(changeSatang)}
                 </span>
               ) : (
                 <span className="text-rose-400 text-lg sm:text-xl">
-                  ยังขาดอีก ฿{formatSatangToBaht(grandTotalSatang - tenderedSatang)}
+                  ยังขาดอีก {formatSatangToBaht(grandTotalSatang - tenderedSatang)}
                 </span>
               )}
             </div>
@@ -126,7 +126,7 @@ export function PosPaymentCash({
               }`}
             >
               <Icons.Check className="w-5 h-5 text-cyan-400" />
-              <span>จ่ายพอดี (฿{formatSatangToBaht(grandTotalSatang)})</span>
+              <span>จ่ายพอดี ({formatSatangToBaht(grandTotalSatang)})</span>
             </button>
 
             {/* ตารางปุ่มเงินด่วน 12 จำนวน: 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 500, 1000 */}
@@ -144,7 +144,7 @@ export function PosPaymentCash({
                         : 'bg-slate-800 hover:bg-slate-700 active:bg-cyan-700 border-slate-700 text-slate-100 hover:text-white'
                     }`}
                   >
-                    ฿{amount >= 1000 ? amount.toLocaleString('th-TH') : amount}
+                    {amount >= 1000 ? amount.toLocaleString('th-TH') : amount}
                   </button>
                 );
               })}
@@ -167,7 +167,7 @@ export function PosPaymentCash({
           ) : (
             <>
               <Icons.Check className="w-6 h-6 stroke-[3]" />
-              <span>ยืนยันการขาย (รับ ฿{tenderedString || '0'})</span>
+              <span>ยืนยันการขาย (รับ {tenderedString || '0'})</span>
             </>
           )}
         </button>

@@ -302,7 +302,7 @@ export function PosCheckoutModal({
             <div>
               <h2 className="text-xl font-bold text-white">ชำระเงินหน้าร้าน</h2>
               <p className="text-xs text-slate-400">
-                รายการสินค้า {items.length} รายการ • รวม ฿{formatSatangToBaht(grandTotalSatang)}
+                รายการสินค้า {items.length} รายการ • รวม {formatSatangToBaht(grandTotalSatang)}
               </p>
             </div>
           </div>

@@ -163,7 +163,7 @@ export function PosPaymentQR({
       <div className="text-center space-y-1">
         <span className="text-sm text-slate-400 font-medium">สแกนชำระผ่านพร้อมเพย์</span>
         <div className="text-3xl sm:text-4xl font-black text-white">
-          ฿{formatSatangToBaht(grandTotalSatang)}
+          {formatSatangToBaht(grandTotalSatang)}
         </div>
       </div>
 

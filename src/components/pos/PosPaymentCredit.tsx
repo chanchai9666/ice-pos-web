@@ -151,7 +151,7 @@ export function PosPaymentCredit({
                         hasCredit ? 'text-emerald-400' : 'text-rose-400'
                       }`}
                     >
-                      ฿{formatSatangToBaht(c.availableCredit || 0)}
+                      {formatSatangToBaht(c.availableCredit || 0)}
                     </span>
                   </div>
                 </button>
@@ -167,7 +167,7 @@ export function PosPaymentCredit({
           <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4">
             <span className="text-xs text-slate-400 font-medium">ยอดบิลที่ต้องชำระ</span>
             <div className="text-2xl sm:text-3xl font-black text-white mt-1">
-              ฿{formatSatangToBaht(grandTotalSatang)}
+              {formatSatangToBaht(grandTotalSatang)}
             </div>
           </div>
 
@@ -195,14 +195,14 @@ export function PosPaymentCredit({
                 <div className="flex justify-between text-slate-300">
                   <span>วงเงินคงเหลือปัจจุบัน</span>
                   <span className="font-bold text-white">
-                    ฿{formatSatangToBaht(availableCredit)}
+                    {formatSatangToBaht(availableCredit)}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-slate-300">
                   <span>ยอดหักบัญชีบิลนี้</span>
                   <span className="font-bold text-purple-300">
-                    -฿{formatSatangToBaht(grandTotalSatang)}
+                    -{formatSatangToBaht(grandTotalSatang)}
                   </span>
                 </div>
 
@@ -213,7 +213,7 @@ export function PosPaymentCredit({
                       isCreditEnough ? 'text-emerald-400' : 'text-rose-400'
                     }`}
                   >
-                    ฿{formatSatangToBaht(remainingAfterSale)}
+                    {formatSatangToBaht(remainingAfterSale)}
                   </span>
                 </div>
               </div>

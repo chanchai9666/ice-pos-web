@@ -95,7 +95,7 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
           <div className="flex justify-between text-slate-400">
             <span>ยอดรวมสินค้า ({summary.itemCount} รายการ)</span>
             <span className="font-mono text-slate-200">
-              ฿{formatSatangToBaht(summary.subtotal - summary.taxAmount)}
+              {formatSatangToBaht(summary.subtotal - summary.taxAmount)}
             </span>
           </div>
 
@@ -103,7 +103,7 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
           <div className="flex justify-between text-slate-400">
             <span>ภาษีมูลค่าเพิ่ม (VAT 7%)</span>
             <span className="font-mono text-slate-200">
-              ฿{formatSatangToBaht(summary.taxAmount)}
+              {formatSatangToBaht(summary.taxAmount)}
             </span>
           </div>
 
@@ -115,7 +115,7 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
             <span className="text-base font-bold text-white">ยอดสุทธิ (Total)</span>
             <div className="text-right">
               <span className="text-2xl sm:text-3xl font-black text-cyan-400 tracking-tight">
-                ฿{formatSatangToBaht(summary.grandTotal)}
+                {formatSatangToBaht(summary.grandTotal)}
               </span>
             </div>
           </div>

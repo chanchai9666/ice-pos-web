@@ -34,7 +34,7 @@ export function PosCartItemRow({
             {item.name}
           </h4>
           <p className="text-xs text-slate-400 font-mono mt-0.5">
-            ฿{formatSatangToBaht(item.price)} / {item.uomName}
+            {formatSatangToBaht(item.price)} / {item.uomName}
           </p>
         </div>
 
@@ -87,7 +87,7 @@ export function PosCartItemRow({
         {/* ยอดรวมของบรรทัดนี้ */}
         <div className="text-right">
           <div className="text-lg font-extrabold text-cyan-400">
-            ฿{formatSatangToBaht(item.lineTotal)}
+            {formatSatangToBaht(item.lineTotal)}
           </div>
         </div>
       </div>

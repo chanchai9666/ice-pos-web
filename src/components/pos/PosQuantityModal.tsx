@@ -54,7 +54,7 @@ export function PosQuantityModal({
               {item.name}
             </h3>
             <p className="text-xs text-slate-400">
-              ราคา ฿{formatSatangToBaht(item.price)} / {item.uomName}
+              ราคา {formatSatangToBaht(item.price)} / {item.uomName}
             </p>
           </div>
           <button
