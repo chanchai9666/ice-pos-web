@@ -11,8 +11,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Icons } from '@/components/ui/Icons';
 import { usePosCart } from '@/context/PosCartContext';
 import { PaymentMethodType, CreateSaleRequest, SaleResponse } from '@/types/sale';
+import { CustomerSummary } from '@/types/customer';
 import { PosPaymentCash } from '@/components/pos/PosPaymentCash';
 import { PosPaymentQR } from '@/components/pos/PosPaymentQR';
+import { PosPaymentCredit } from '@/components/pos/PosPaymentCredit';
 import { PosSuccessOverlay } from '@/components/pos/PosSuccessOverlay';
 import { salesService } from '@/services/sales.service';
 import { generateIdempotencyKey } from '@/utils/idempotency';
@@ -38,6 +40,8 @@ export function PosCheckoutModal({
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType>('CASH');
   // จำนวนเงินสดที่รับจากลูกค้า (สตริงสำหรับกรอกผ่านแป้น)
   const [tenderedString, setTenderedString] = useState<string>('');
+  // ข้อมูลลูกค้าที่เลือกสำหรับการชำระด้วยเงินเชื่อ
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerSummary | null>(null);
   // สถานะการส่ง API
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // ข้อความแจ้งเตือนข้อผิดพลาด
@@ -56,6 +60,7 @@ export function PosCheckoutModal({
       setIdempotencyKey(generateIdempotencyKey());
       setPaymentMethod('CASH');
       setTenderedString('');
+      setSelectedCustomer(null);
       setErrorMessage(null);
       setCompletedSale(null);
       setIsSubmitting(false);
@@ -212,6 +217,77 @@ export function PosCheckoutModal({
     }
   };
 
+  // การส่งคำขอบันทึกการขายด้วยเงินเชื่อลูกค้า (CREDIT)
+  const handleCreditSubmit = async () => {
+    if (!branchId || items.length === 0) return;
+
+    if (!selectedCustomer) {
+      setErrorMessage('กรุณาเลือกลูกค้าสำหรับบันทึกรายการเงินเชื่อ');
+      playErrorBuzzer();
+      return;
+    }
+
+    if ((selectedCustomer.availableCredit || 0) < grandTotalSatang) {
+      setErrorMessage('วงเงินเครดิตคงเหลือของลูกค้าไม่เพียงพอสำหรับยอดบิลนี้');
+      playErrorBuzzer();
+      return;
+    }
+
+    // ตรวจสอบความถูกต้องของ uomId ในสินค้าทุกชิ้น (FR-012)
+    const invalidItem = items.find((item) => !item.uomId);
+    if (invalidItem) {
+      setErrorMessage(`สินค้า "${invalidItem.name}" ขาดข้อมูลหน่วยนับ (uomId) กรุณาลบและเพิ่มใหม่`);
+      playErrorBuzzer();
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    const saleRequest: CreateSaleRequest = {
+      branchId,
+      customerId: selectedCustomer.id,
+      idempotencyKey,
+      billDiscount: 0,
+      lines: items.map((item) => ({
+        productId: item.productId,
+        uomId: item.uomId,
+        qty: item.quantity,
+        unitPrice: item.price,
+        lineDiscount: 0,
+      })),
+      payments: [
+        {
+          method: 'CREDIT',
+          amount: grandTotalSatang,
+        },
+      ],
+    };
+
+    try {
+      const response = await salesService.createSale(saleRequest, idempotencyKey);
+      if (response && response.data) {
+        setCompletedSale(response.data);
+        playCheckoutSuccessChime();
+        addToast({
+          type: 'SUCCESS',
+          title: 'บันทึกรายการเงินเชื่อสำเร็จ',
+          message: `ออกบิลขาย ${response.data.saleNo || ''} เรียบร้อย`,
+        });
+      } else {
+        throw new Error(response.message || 'บันทึกการขายไม่สำเร็จ');
+      }
+    } catch (err: unknown) {
+      const errorMsg =
+        err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+      setErrorMessage(errorMsg);
+      playErrorBuzzer();
+      console.error('Credit Sale submission failed:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -331,15 +407,14 @@ export function PosCheckoutModal({
               )}
 
               {paymentMethod === 'CREDIT' && (
-                <div className="p-8 text-center text-slate-400 space-y-4">
-                  <div className="w-16 h-16 rounded-2xl bg-purple-500/20 border border-purple-500/40 text-purple-400 flex items-center justify-center mx-auto">
-                    <Icons.User className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-xl font-bold text-white">ชำระด้วยบัญชีเงินเชื่อลูกค้า</h4>
-                  <p className="text-sm text-slate-400 max-w-sm mx-auto">
-                    ค้นหาลูกค้าและตรวจสอบวงเงินเครดิตคงเหลือ (จะเปิดใช้งานในขั้นตอนถัดไป)
-                  </p>
-                </div>
+                <PosPaymentCredit
+                  grandTotalSatang={grandTotalSatang}
+                  branchId={branchId}
+                  selectedCustomer={selectedCustomer}
+                  onSelectCustomer={setSelectedCustomer}
+                  onSubmit={handleCreditSubmit}
+                  isSubmitting={isSubmitting}
+                />
               )}
             </div>
           </>

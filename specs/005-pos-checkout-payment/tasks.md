@@ -81,9 +81,9 @@
 
 **Independent Test**: เลือกชำระเงินเชื่อ ค้นหาและเลือกลูกค้า ระบบแสดงวงเงินคงเหลือ หากวงเงินพอให้กดยืนยันบันทึกการขายสำเร็จ หากวงเงินไม่พอปุ่มยืนยันจะถูกบล็อก
 
-- [ ] T019 [P] [US4] Implement `customerService.searchCustomers(query, branchId)` in `src/services/customer.service.ts`
-- [ ] T020 [US4] Create `PosPaymentCredit` component with customer search, credit balance check, and limit validation in `src/components/pos/PosPaymentCredit.tsx`
-- [ ] T021 [US4] Integrate `PosPaymentCredit` into `src/components/pos/PosCheckoutModal.tsx` with customerId and method `CREDIT`
+- [X] T019 [P] [US4] Implement `customerService.searchCustomers(query, branchId)` in `src/services/customer.service.ts`
+- [X] T020 [US4] Create `PosPaymentCredit` component with customer search, credit balance check, and limit validation in `src/components/pos/PosPaymentCredit.tsx`
+- [X] T021 [US4] Integrate `PosPaymentCredit` into `src/components/pos/PosCheckoutModal.tsx` with customerId and method `CREDIT`
 
 **Checkpoint**: ระบบชำระเงินเชื่อสำหรับลูกค้าประจำทำงานได้สมบูรณ์
 
