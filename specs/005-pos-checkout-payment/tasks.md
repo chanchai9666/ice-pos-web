@@ -36,9 +36,9 @@
 
 **Independent Test**: โหลดหน้า `/pos` ตรวจสอบ Network Tab ว่า `GET /api/v1/shifts/active` ถูกเรียกเพียง 1 ครั้ง และเมื่อเปิดกะสำเร็จ PosShiftBanner กับปุ่มคิดเงินอัปเดตสถานะพร้อมกัน
 
-- [ ] T007 [US2] Remove duplicate `activeShift` state and initial fetch `useEffect` from `src/app/(main)/pos/page.tsx`
-- [ ] T008 [US2] Update `src/app/(main)/pos/page.tsx` to consume `activeShift` and `setActiveShift` directly from `usePosCart()`
-- [ ] T009 [US2] Ensure `PosOpenShiftModal` updates `PosCartContext.setActiveShift` upon successful shift opening in `src/app/(main)/pos/page.tsx`
+- [X] T007 [US2] Remove duplicate `activeShift` state and initial fetch `useEffect` from `src/app/(main)/pos/page.tsx`
+- [X] T008 [US2] Update `src/app/(main)/pos/page.tsx` to consume `activeShift` and `setActiveShift` directly from `usePosCart()`
+- [X] T009 [US2] Ensure `PosOpenShiftModal` updates `PosCartContext.setActiveShift` upon successful shift opening in `src/app/(main)/pos/page.tsx`
 
 **Checkpoint**: สถานะกะการขายเป็น Single Source of Truth ผ่าน `PosCartContext` เรียบร้อย
 

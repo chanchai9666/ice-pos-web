@@ -20,7 +20,6 @@ import { PosScanToast } from '@/components/pos/PosScanToast';
 import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
 import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
 import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
-import { shiftService } from '@/services/shift.service';
 import { ShiftInfo } from '@/types/shift';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
@@ -28,7 +27,10 @@ import { Icons } from '@/components/ui/Icons';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
-  const { addItem, addToast } = usePosCart();
+  const { addItem, addToast, activeShift, setActiveShift, isLoadingShift } = usePosCart();
+
+  // ใช้ branchId จากสาขาที่เลือก หรือ fallback ไปยังสาขาประจำตัวผู้ใช้ (กรณี login ด้วย Username/Password)
+  const effectiveBranchId = branch?.id ?? user?.branchId ?? undefined;
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,39 +38,7 @@ function PosTerminalInner() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
-
-  // ข้อมูลสถานะกะการขายปัจจุบัน
-  const [activeShift, setActiveShift] = useState<ShiftInfo | null>(null);
-  const [isLoadingShift, setIsLoadingShift] = useState<boolean>(true);
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
-
-  // ตรวจสอบสถานะกะการขายจาก API
-  useEffect(() => {
-    let isMounted = true;
-    async function checkShift() {
-      if (!branch?.id) return;
-      setIsLoadingShift(true);
-      try {
-        const res = await shiftService.getActiveShift(branch.id);
-        if (isMounted) {
-          setActiveShift(res.data || null);
-        }
-      } catch (err) {
-        console.error('Failed to load active shift:', err);
-        if (isMounted) {
-          setActiveShift(null);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoadingShift(false);
-        }
-      }
-    }
-    checkShift();
-    return () => {
-      isMounted = false;
-    };
-  }, [branch?.id]);
 
   // การดำเนินการเมื่อคลิกปุ่มชำระเงิน (สกัดกั้นหากยังไม่ได้เปิดกะ)
   const handleCheckout = () => {
@@ -296,14 +266,14 @@ function PosTerminalInner() {
       {/* หน้าต่างเปิดกะการขาย */}
       <PosOpenShiftModal
         isOpen={isOpenShiftModalOpen}
-        branchId={branch?.id}
+        branchId={effectiveBranchId}
         onClose={() => setIsOpenShiftModalOpen(false)}
         onSuccess={(newShift) => {
           setActiveShift(newShift);
           addToast({
             type: 'SUCCESS',
             title: 'เปิดกะการขายสำเร็จ',
-            message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${(newShift.startingCash / 100).toLocaleString()}`,
+            message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${(newShift.openingCash / 100).toLocaleString()}`,
           });
         }}
       />
@@ -312,10 +282,10 @@ function PosTerminalInner() {
 }
 
 export default function PosPage() {
-  const { branch } = useAuth();
+  const { branch, user } = useAuth();
 
   return (
-    <PosCartProvider branchId={branch?.id}>
+    <PosCartProvider branchId={branch?.id ?? user?.branchId ?? undefined}>
       <PosTerminalInner />
     </PosCartProvider>
   );
