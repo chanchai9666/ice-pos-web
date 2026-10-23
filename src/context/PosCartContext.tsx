@@ -142,6 +142,9 @@ export function PosCartProvider({
 
         // เพิ่มรายการใหม่
         const unitPrice = product.price || 0;
+        const resolvedUomId = product.sellUomId || product.baseUomId || product.baseUom?.id || '';
+        const resolvedUomName = product.sellUom?.name || product.baseUom?.name || 'ชิ้น';
+
         const newItem: CartItem = {
           id: product.id,
           productId: product.id,
@@ -150,7 +153,8 @@ export function PosCartProvider({
           barcode: product.barcode || undefined,
           price: unitPrice,
           quantity: quantityToAdd,
-          uomName: product.baseUom?.name || 'ชิ้น',
+          uomId: resolvedUomId,
+          uomName: resolvedUomName,
           imageUrl: product.imageUrl || undefined,
           categoryName: product.category?.name || undefined,
           taxRatePercent: product.tax ? (product.tax.rate <= 1 ? product.tax.rate * 100 : product.tax.rate) : 7,

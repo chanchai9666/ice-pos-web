@@ -16,6 +16,7 @@ export interface CartItem {
   barcode?: string;        // รหัสบาร์โค้ด
   price: number;           // ราคาขายต่อหน่วย (หน่วยสตางค์ หรือบาทตาม API)
   quantity: number;        // จำนวนสินค้า (รองรับทศนิยมสำหรับสินค้าชั่งน้ำหนัก)
+  uomId: string;           // รหัสหน่วยนับสินค้า (UUID จาก product.baseUomId หรือ baseUom.id)
   uomName: string;         // ชื่อหน่วยนับ (เช่น "ชิ้น", "ขวด", "กิโลกรัม")
   imageUrl?: string;       // URL รูปภาพสินค้า
   categoryName?: string;   // ชื่อหมวดหมู่
