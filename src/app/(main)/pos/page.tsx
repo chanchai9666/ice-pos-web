@@ -20,6 +20,7 @@ import { PosScanToast } from '@/components/pos/PosScanToast';
 import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
 import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
 import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
+import { PosCheckoutModal } from '@/components/pos/PosCheckoutModal';
 import { ShiftInfo } from '@/types/shift';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
@@ -39,6 +40,7 @@ function PosTerminalInner() {
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
 
   // การดำเนินการเมื่อคลิกปุ่มชำระเงิน (สกัดกั้นหากยังไม่ได้เปิดกะ)
   const handleCheckout = () => {
@@ -53,11 +55,7 @@ function PosTerminalInner() {
       return;
     }
 
-    addToast({
-      type: 'SUCCESS',
-      title: 'พร้อมรับชำระเงิน',
-      message: 'ระบบพร้อมสำหรับการรับชำระเงินและพิมพ์ใบเสร็จ',
-    });
+    setIsCheckoutModalOpen(true);
   };
 
   // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
@@ -276,6 +274,14 @@ function PosTerminalInner() {
             message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${(newShift.openingCash / 100).toLocaleString()}`,
           });
         }}
+      />
+
+      {/* หน้าต่างชำระเงินหน้าร้าน */}
+      <PosCheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        branchId={effectiveBranchId}
+        cashierName={user?.fullName || user?.username}
       />
     </div>
   );

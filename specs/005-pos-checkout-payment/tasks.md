@@ -50,12 +50,12 @@
 
 **Independent Test**: เพิ่มสินค้าลงตะกร้า กดปุ่มชำระเงิน เลือกเงินสด ใส่เงินรับ 100 บาท ยืนยันการขาย ตรวจสอบว่า `POST /api/v1/sales` ถูกเรียก Success Overlay แสดงเลขที่บิล และกดเริ่มบิลใหม่เพื่อล้างตะกร้า
 
-- [ ] T010 [P] [US1] Implement `salesService.createSale(request, idempotencyKey)` with `Idempotency-Key` header in `src/services/sales.service.ts`
-- [ ] T011 [P] [US1] Create success audio chime helper using Web Audio API in `src/utils/audio.ts`
-- [ ] T012 [P] [US1] Create `PosSuccessOverlay` component with receipt summary and "เริ่มบิลใหม่" button in `src/components/pos/PosSuccessOverlay.tsx`
-- [ ] T013 [US1] Create `PosPaymentCash` component with quick-cash buttons, change calculation, and `VirtualNumericKeypad` in `src/components/pos/PosPaymentCash.tsx`
-- [ ] T014 [US1] Create `PosCheckoutModal` component with payment method selector and grand total display in `src/components/pos/PosCheckoutModal.tsx`
-- [ ] T015 [US1] Connect `handleCheckout()` in `src/app/(main)/pos/page.tsx` to open `PosCheckoutModal` and handle clear-cart on "เริ่มบิลใหม่"
+- [X] T010 [P] [US1] Implement `salesService.createSale(request, idempotencyKey)` with `Idempotency-Key` header in `src/services/sales.service.ts`
+- [X] T011 [P] [US1] Create success audio chime helper using Web Audio API in `src/utils/audio.ts`
+- [X] T012 [P] [US1] Create `PosSuccessOverlay` component with receipt summary and "เริ่มบิลใหม่" button in `src/components/pos/PosSuccessOverlay.tsx`
+- [X] T013 [US1] Create `PosPaymentCash` component with quick-cash buttons, change calculation, and `VirtualNumericKeypad` in `src/components/pos/PosPaymentCash.tsx`
+- [X] T014 [US1] Create `PosCheckoutModal` component with payment method selector and grand total display in `src/components/pos/PosCheckoutModal.tsx`
+- [X] T015 [US1] Connect `handleCheckout()` in `src/app/(main)/pos/page.tsx` to open `PosCheckoutModal` and handle clear-cart on "เริ่มบิลใหม่"
 
 **Checkpoint**: ระบบชำระเงินสด (MVP) ทำงานได้สมบูรณ์ตั้งแต่ต้นจนจบ พร้อม Success Overlay
 
