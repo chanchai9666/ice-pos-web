@@ -67,9 +67,9 @@
 
 **Independent Test**: เลือกชำระเงิน QR พร้อมเพย์ ระบบแสดง QR Code และ Polling สถานะทุก 3 วินาที เมื่อสำเร็จจะบันทึกการขายและแสดง Success Overlay อัตโนมัติ หากปิด Modal Polling จะหยุดทันที
 
-- [ ] T016 [P] [US3] Implement `paymentsService.generatePromptPayQR(amount)` and `checkPaymentStatus(ref)` in `src/services/payments.service.ts`
-- [ ] T017 [US3] Create `PosPaymentQR` component with QR display, 3-second auto-polling loop, 5-minute timeout countdown, and timer cleanup in `src/components/pos/PosPaymentQR.tsx`
-- [ ] T018 [US3] Integrate `PosPaymentQR` into `src/components/pos/PosCheckoutModal.tsx` to auto-trigger `salesService.createSale` upon QR success
+- [X] T016 [P] [US3] Implement `paymentsService.generatePromptPayQR(amount)` and `checkPaymentStatus(ref)` in `src/services/payments.service.ts`
+- [X] T017 [US3] Create `PosPaymentQR` component with QR display, 3-second auto-polling loop, 5-minute timeout countdown, and timer cleanup in `src/components/pos/PosPaymentQR.tsx`
+- [X] T018 [US3] Integrate `PosPaymentQR` into `src/components/pos/PosCheckoutModal.tsx` to auto-trigger `salesService.createSale` upon QR success
 
 **Checkpoint**: ระบบชำระเงิน QR พร้อมเพย์พร้อม Auto-polling ทำงานได้อย่างถูกต้องและไม่มี Memory Leak
 

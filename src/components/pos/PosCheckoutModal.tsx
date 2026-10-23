@@ -12,6 +12,7 @@ import { Icons } from '@/components/ui/Icons';
 import { usePosCart } from '@/context/PosCartContext';
 import { PaymentMethodType, CreateSaleRequest, SaleResponse } from '@/types/sale';
 import { PosPaymentCash } from '@/components/pos/PosPaymentCash';
+import { PosPaymentQR } from '@/components/pos/PosPaymentQR';
 import { PosSuccessOverlay } from '@/components/pos/PosSuccessOverlay';
 import { salesService } from '@/services/sales.service';
 import { generateIdempotencyKey } from '@/utils/idempotency';
@@ -152,6 +153,65 @@ export function PosCheckoutModal({
     }
   };
 
+  // การส่งคำขอบันทึกการขายเมื่อชำระเงินผ่าน QR พร้อมเพย์สำเร็จ
+  const handleQRSuccess = async (qrRef: string) => {
+    if (!branchId || items.length === 0) return;
+
+    // ตรวจสอบความถูกต้องของ uomId ในสินค้าทุกชิ้น (FR-012)
+    const invalidItem = items.find((item) => !item.uomId);
+    if (invalidItem) {
+      setErrorMessage(`สินค้า "${invalidItem.name}" ขาดข้อมูลหน่วยนับ (uomId) กรุณาลบและเพิ่มใหม่`);
+      playErrorBuzzer();
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    const saleRequest: CreateSaleRequest = {
+      branchId,
+      idempotencyKey,
+      billDiscount: 0,
+      lines: items.map((item) => ({
+        productId: item.productId,
+        uomId: item.uomId,
+        qty: item.quantity,
+        unitPrice: item.price,
+        lineDiscount: 0,
+      })),
+      payments: [
+        {
+          method: 'QR_PROMPTPAY',
+          amount: grandTotalSatang,
+          ref: qrRef,
+        },
+      ],
+    };
+
+    try {
+      const response = await salesService.createSale(saleRequest, idempotencyKey);
+      if (response && response.data) {
+        setCompletedSale(response.data);
+        playCheckoutSuccessChime();
+        addToast({
+          type: 'SUCCESS',
+          title: 'ชำระเงินผ่าน QR สำเร็จ',
+          message: `ออกบิลขาย ${response.data.saleNo || ''} สำเร็จ`,
+        });
+      } else {
+        throw new Error(response.message || 'บันทึกการขายไม่สำเร็จ');
+      }
+    } catch (err: unknown) {
+      const errorMsg =
+        err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+      setErrorMessage(errorMsg);
+      playErrorBuzzer();
+      console.error('QR Sale submission failed:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -260,15 +320,14 @@ export function PosCheckoutModal({
               )}
 
               {paymentMethod === 'QR_PROMPTPAY' && (
-                <div className="p-8 text-center text-slate-400 space-y-4">
-                  <div className="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-500/40 text-blue-400 flex items-center justify-center mx-auto">
-                    <Icons.QrCode className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-xl font-bold text-white">ชำระเงินผ่าน QR พร้อมเพย์</h4>
-                  <p className="text-sm text-slate-400 max-w-sm mx-auto">
-                    ระบบจะสร้าง Dynamic QR Code พร้อมเพย์ตามยอดบิล ฿{formatSatangToBaht(grandTotalSatang)} (จะเปิดใช้งานในขั้นตอนถัดไป)
-                  </p>
-                </div>
+                <PosPaymentQR
+                  grandTotalSatang={grandTotalSatang}
+                  onSuccess={handleQRSuccess}
+                  onError={(msg) => {
+                    setErrorMessage(msg);
+                    playErrorBuzzer();
+                  }}
+                />
               )}
 
               {paymentMethod === 'CREDIT' && (
