@@ -312,7 +312,7 @@ export function PosCheckoutModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="w-11 h-11 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all min-h-[44px]"
+              className="w-12 h-12 min-h-[48px] min-w-[48px] rounded-2xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all"
               title="ปิดหน้าต่าง"
             >
               <Icons.Close className="w-6 h-6" />

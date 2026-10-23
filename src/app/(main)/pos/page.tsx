@@ -21,7 +21,6 @@ import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
 import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
 import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
 import { PosCheckoutModal } from '@/components/pos/PosCheckoutModal';
-import { ShiftInfo } from '@/types/shift';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';

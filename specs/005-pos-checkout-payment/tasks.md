@@ -93,10 +93,10 @@
 
 **Purpose**: ปรับปรุงการเข้าถึง ความปลอดภัย การจัดการข้อผิดพลาด และทดสอบความถูกต้องโดยรวม
 
-- [ ] T022 Audit touch target sizes (all buttons >= 48px) and WCAG 2.1 AA color contrast across `PosCheckoutModal` in `src/components/pos/PosCheckoutModal.tsx`
-- [ ] T023 Verify error handling displays clear Thai messages on API failure without clearing the cart in `src/components/pos/PosCheckoutModal.tsx`
-- [ ] T024 Run TypeScript typecheck (`npm run typecheck`) and ESLint (`npm run lint`) to ensure zero errors in `package.json`
-- [ ] T025 Execute manual walkthrough scenarios from `specs/005-pos-checkout-payment/quickstart.md`
+- [X] T022 Audit touch target sizes (all buttons >= 48px) and WCAG 2.1 AA color contrast across `PosCheckoutModal` in `src/components/pos/PosCheckoutModal.tsx`
+- [X] T023 Verify error handling displays clear Thai messages on API failure without clearing the cart in `src/components/pos/PosCheckoutModal.tsx`
+- [X] T024 Run TypeScript typecheck (`npm run typecheck`) and ESLint (`npm run lint`) to ensure zero errors in `package.json`
+- [X] T025 Execute manual walkthrough scenarios from `specs/005-pos-checkout-payment/quickstart.md`
 
 ---
 
