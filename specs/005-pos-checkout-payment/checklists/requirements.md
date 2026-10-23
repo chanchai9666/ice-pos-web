@@ -40,19 +40,20 @@ All items passed. Key decisions documented in Assumptions:
 - Idempotency-Key header confirmed in Swagger spec for `POST /api/v1/sales`
 - Receipt printing (hardware) is explicitly out of scope
 
-### Iteration 2 (2026-10-23) — Post-Clarify Session
+### Iteration 3 (2026-10-23) — ยอดเงินไม่ถูกต้อง & ปุ่มเงินด่วนเพิ่มเติม
 
-All 5 clarifications integrated. Checklist re-validated: **14/14 → 14/14** (no regressions).
+All items passed: **14/14 → 14/14** (no regressions).
 
-Clarifications applied:
-- Q1 (uomId): FR-012 added, CartItem Key Entity updated with `uomId` field and storage rule
-- Q2 (Post-checkout flow): User Story 1 Acceptance Scenarios updated; FR-007 & FR-011 updated with Success Overlay + "เริ่มบิลใหม่" button
-- Q3 (QR Polling): User Story 3 updated with Auto-polling every 3s, timeout 5min, manual fallback; FR-004 updated; SC-006 added for Memory Leak prevention; Edge Case added
-- Q4 (Discount deferred): FR-006 updated with `billDiscount: 0`/`lineDiscount: 0` explicit note; Assumptions updated
-- Q5 (Close Shift): Explicitly declared out of scope in Assumptions; separate spec `006-pos-close-shift` noted
+Updates validated:
+- Problem Group 3 added: Total discrepancy (หน่วยสตางค์ซ้ำซ้อน) and Quick cash options requirement.
+- User Story 1 updated with exact total amount matching and complete quick cash options.
+- FR-002 updated to guarantee 100% total amount match with cart (no unit conversion discrepancy).
+- FR-003 updated with complete quick cash buttons: "พอดี", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 500, 1000 บาท with Elderly-Friendly >= 48px touch targets.
+- Clarification encoded: Quick cash buttons behave as Set/Replace (กำหนดยอดรับตามปุ่มทันที ไม่บวกสะสม)
+- SC-007 (0% Unit conversion discrepancy) and SC-008 (1-touch quick cash buttons) added.
 
 ## Notes
 
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
-- This spec directly addresses two discovered bugs: (1) Duplicate Shift State and (2) Missing Checkout Implementation
+- This spec directly addresses: (1) Duplicate Shift State, (2) Missing Checkout Implementation, and (3) Total Discrepancy & Comprehensive Quick Cash Buttons
 - FR-001 (State consolidation) should be implemented as Phase 0 before implementing Checkout UI

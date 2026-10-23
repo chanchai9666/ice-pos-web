@@ -51,8 +51,8 @@ export function PosCheckoutModal({
   // ข้อมูลบิลขายเมื่อบันทึกสำเร็จ (เพื่อแสดง Success Overlay)
   const [completedSale, setCompletedSale] = useState<SaleResponse | null>(null);
 
-  // คำนวณยอดเงินรวมในหน่วยสตางค์
-  const grandTotalSatang = bahtToSatang(summary.grandTotal);
+  // ยอดเงินรวมในหน่วยสตางค์ (summary.grandTotal อยู่ในหน่วยสตางค์อยู่แล้ว ไม่ต้องแปลงซ้ำ)
+  const grandTotalSatang = summary.grandTotal;
 
   // รีเซ็ตสถานะเมื่อเปิด Modal
   useEffect(() => {

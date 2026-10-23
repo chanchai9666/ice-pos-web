@@ -100,6 +100,16 @@
 
 ---
 
+## Phase 8: Remediation & Quick Cash Expansion (User Story 1 - P1)
+
+**Purpose**: แก้ไขยอดเงินชำระให้ถูกต้องตรงกับตะกร้าสินค้า (ไม่แปลงสตางค์ซ้ำซ้อน) และเพิ่มชุดปุ่มเงินสดด่วน 13 ปุ่มตามมาตรฐานไทย
+
+- [X] T026 [US1] Fix grand total calculation in `src/components/pos/PosCheckoutModal.tsx` by using `summary.grandTotal` directly
+- [X] T027 [US1] Implement comprehensive quick cash buttons ("พอดี", 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 500, 1000) with Set/Replace behavior and >= 48px touch targets in `src/components/pos/PosPaymentCash.tsx`
+- [X] T028 [US1] Verify total accuracy and quick cash buttons through typecheck and quickstart walkthrough in `specs/005-pos-checkout-payment/quickstart.md`
+
+---
+
 ## Dependencies & Execution Order
 
 ```mermaid
@@ -150,6 +160,12 @@ graph TD
         T025[T025: Quickstart Scenarios]
     end
 
+    subgraph Phase 8: Remediation & Quick Cash
+        T026[T026: Fix Grand Total in Modal]
+        T027[T027: Complete Quick Cash Buttons]
+        T028[T028: Typecheck & Walkthrough]
+    end
+
     T001 --> T010
     T004 --> T005
     T005 --> T007
@@ -175,6 +191,10 @@ graph TD
     T015 --> T022
     T021 --> T022
     T022 --> T023 --> T024 --> T025
+    T025 --> T026
+    T025 --> T027
+    T026 --> T028
+    T027 --> T028
 ```
 
 ---

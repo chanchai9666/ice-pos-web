@@ -15,6 +15,9 @@
    - สร้าง Component `PosCheckoutModal` รองรับการชำระเงินสด (CASH, P1) พร้อมแป้นตัวเลขสัมผัสขนาดใหญ่และคำนวณเงินทอนอัตโนมัติ, ชำระผ่าน QR พร้อมเพย์ (QR_PROMPTPAY, P2) พร้อมระบบ Auto-polling ทุก 3 วินาที (timeout 5 นาที), และชำระด้วยเงินเชื่อลูกค้า (CREDIT, P3) พร้อมตรวจสอบวงเงินคงเหลือ
    - สร้าง `sales.service.ts` เชื่อมต่อ API `POST /api/v1/sales` พร้อม Header `Idempotency-Key` ป้องกันการทำรายการซ้ำ
    - แสดง **Success Overlay** หลังบันทึกการขายสำเร็จ พร้อมเลขที่บิล ยอดรวม และปุ่ม "เริ่มบิลใหม่" เพื่อล้างตะกร้าสินค้า
+3. **แก้ไขความถูกต้องของยอดเงินชำระและเพิ่มปุ่มเงินสดด่วน**:
+   - แก้ไขการรับค่ายอดรวมใน `PosCheckoutModal` ให้ใช้ `summary.grandTotal` โดยตรง (อยู่ในหน่วยสตางค์อยู่แล้ว) เพื่อไม่ให้แปลงซ้ำซ้อนจนยอดเงินผิดพลาด
+   - ใน `PosPaymentCash.tsx` เพิ่มชุดปุ่มเงินสดด่วนมาตรฐานไทย: **พอดี**, **10**, **20**, **30**, **40**, **50**, **60**, **70**, **80**, **90**, **100**, **500**, **1000** บาท พร้อมพฤติกรรม Set/Replace ยอดรับทันที และ Touch Target $\ge 48\times 48\text{px}$ ตามมาตรฐาน Elderly-Friendly
 
 ---
 
@@ -109,8 +112,8 @@ src/
 2. สร้าง Services: `src/services/sales.service.ts`, `src/services/payments.service.ts`, `src/services/customer.service.ts`
 
 ### Phase 3: Core Checkout & Cash Payment Flow (User Story 1 - P1)
-1. สร้าง Component `PosCheckoutModal.tsx` และ `PosPaymentCash.tsx`
-2. จัดการแป้นตัวเลขสัมผัส `VirtualNumericKeypad` และคำนวณเงินทอนอัตโนมัติ
+1. สร้าง Component `PosCheckoutModal.tsx` โดยรับ `summary.grandTotal` ไปใช้ตรงๆ (หน่วยสตางค์อยู่แล้ว) เพื่อให้ยอดสุทธิแสดงผลตรงกับตะกร้า 100%
+2. ปรับปรุง `PosPaymentCash.tsx` จัดทำชุดปุ่มเงินสดด่วน: พอดี, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 500, 1000 บาท พฤติกรรม Set/Replace ทันที และแป้นตัวเลขสัมผัส `VirtualNumericKeypad` พร้อมคำนวณเงินทอนอัตโนมัติ
 3. สร้าง `PosSuccessOverlay.tsx` แสดงผลการขายสำเร็จ และส่งเสียง Success Beep ผ่าน Web Audio API
 4. เชื่อมต่อปุ่ม "ชำระเงิน" ใน `PosPage.tsx` เปิด `PosCheckoutModal`
 
