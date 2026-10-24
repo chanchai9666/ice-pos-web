@@ -10,8 +10,8 @@
 
 **Purpose**: จัดเตรียม Type Definitions และฟังก์ชันคำนวณสถานะสต็อกสำหรับการ์ดสินค้า
 
-- [ ] T001 [P] เพิ่มประเภทข้อมูล `ProductStockStatus` ('IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK') และ `ProductStockPresentation` ใน `src/types/inventory.ts`
-- [ ] T002 [P] สร้างฟังก์ชัน Helper `resolveProductStockPresentation` ตามสัญญาใน `data-model.md` ใน `src/utils/posStockHelper.ts`
+- [x] T001 [P] เพิ่มประเภทข้อมูล `ProductStockStatus` ('IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK') และ `ProductStockPresentation` ใน `src/types/inventory.ts`
+- [x] T002 [P] สร้างฟังก์ชัน Helper `resolveProductStockPresentation` ตามสัญญาใน `data-model.md` ใน `src/utils/posStockHelper.ts`
 
 ---
 

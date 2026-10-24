@@ -33,3 +33,43 @@ export interface StockQueryParams {
   page?: number;
   pageSize?: number;
 }
+
+/**
+ * สถานะระดับสต็อกสินค้าสำหรับ POS
+ */
+export type ProductStockStatus = 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK';
+
+/**
+ * ข้อมูลการนำเสนอผลสต็อกบนการ์ดสินค้า POS
+ */
+export interface ProductStockPresentation {
+  /** เป็นสินค้าขายตามน้ำหนักหรือไม่ */
+  isWeightBased: boolean;
+
+  /** ปริมาณสต็อกคงเหลือจริง (fallback เป็น 0 สำหรับสินค้าชิ้นที่ไม่มีข้อมูล) */
+  stockQuantity: number;
+
+  /** เกณฑ์สต็อกใกล้หมดที่ใช้เปรียบเทียบ (จาก product.minStock หรือ 5) */
+  threshold: number;
+
+  /** สถานะสต็อกของสินค้า */
+  status: ProductStockStatus;
+
+  /** คลาส Tailwind สำหรับเส้นขอบการ์ดสินค้า */
+  cardBorderClass: string;
+
+  /** คลาส Tailwind สำหรับเงาเรืองแสง */
+  cardShadowClass: string;
+
+  /** ข้อความป้ายสถานะมุมซ้ายบน (Badge) */
+  badgeText: string;
+
+  /** คลาส Tailwind สำหรับป้ายมุมซ้ายบน */
+  badgeClass: string;
+
+  /** ข้อความระบุจำนวนคงเหลือใต้ชื่อสินค้า */
+  detailStockText: string;
+
+  /** คลาสสีตัวอักษรสำหรับข้อความคงเหลือ */
+  detailStockColorClass: string;
+}
