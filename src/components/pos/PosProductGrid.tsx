@@ -11,6 +11,7 @@ import React from 'react';
 import { Product } from '@/types/catalog';
 import { StockLevelMap } from '@/types/inventory';
 import { formatSatangToBaht } from '@/utils/currency';
+import { resolveProductStockPresentation } from '@/utils/posStockHelper';
 import { Icons } from '@/components/ui/Icons';
 
 interface PosProductGridProps {
@@ -60,17 +61,14 @@ export function PosProductGrid({
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 select-none">
       {products.map((product) => {
-        const isWeightBased = product.productType === 'BY_WEIGHT';
-        const stock = stockMap[product.id];
-        const hasStockInfo = typeof stock === 'number';
-        const isOutOfStock = !isWeightBased && hasStockInfo && stock <= 0;
+        const stockInfo = resolveProductStockPresentation(product, stockMap);
 
         return (
           <button
             key={product.id}
             type="button"
             onClick={() => onSelectProduct(product)}
-            className="group relative bg-slate-900 hover:bg-slate-850 active:bg-cyan-950/40 border-2 border-slate-800 hover:border-cyan-500/60 active:border-cyan-400 rounded-2xl p-3 sm:p-4 flex flex-col justify-between text-left transition-all duration-150 shadow-md hover:shadow-cyan-500/10 cursor-pointer overflow-hidden min-h-[170px]"
+            className={`group relative bg-slate-900 hover:bg-slate-850 active:bg-cyan-950/40 ${stockInfo.cardBorderClass} rounded-2xl p-3 sm:p-4 flex flex-col justify-between text-left transition-all duration-150 ${stockInfo.cardShadowClass} cursor-pointer overflow-hidden min-h-[170px]`}
           >
             {/* ส่วนรูปภาพสินค้า */}
             <div className="relative w-full h-24 sm:h-28 rounded-xl bg-slate-800 flex items-center justify-center mb-3 overflow-hidden border border-slate-700/60 group-hover:border-slate-600">
@@ -93,22 +91,18 @@ export function PosProductGrid({
               )}
 
               {/* ป้ายแสดงประเภทสินค้า ชั่งขาย หรือ สต็อกคงเหลือ (มุมซ้ายบน) */}
-              {isWeightBased ? (
+              {stockInfo.isWeightBased ? (
                 <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 text-xs font-black shadow-md tracking-wide flex items-center gap-1 z-10">
                   <Icons.Scale className="w-3.5 h-3.5" />
-                  ชั่งขาย
+                  {stockInfo.badgeText}
                 </span>
-              ) : hasStockInfo ? (
-                isOutOfStock ? (
-                  <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-rose-600 text-white text-xs font-bold shadow-md z-10">
-                    สินค้าหมด
-                  </span>
-                ) : (
-                  <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-slate-950/85 backdrop-blur-sm text-xs font-bold text-emerald-400 border border-emerald-500/40 z-10">
-                    คงเหลือ: {stock}
-                  </span>
-                )
-              ) : null}
+              ) : (
+                <span
+                  className={`absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md text-xs z-10 ${stockInfo.badgeClass}`}
+                >
+                  {stockInfo.badgeText}
+                </span>
+              )}
 
               {/* ป้ายแสดงหน่วยนับ (มุมขวาล่าง) */}
               {product.baseUom?.name && (
@@ -129,15 +123,15 @@ export function PosProductGrid({
                 </p>
                 {/* ข้อมูลคงเหลือหรือชั่งขายใต้รหัสสินค้า */}
                 <div className="flex items-center text-xs mt-1">
-                  {isWeightBased ? (
+                  {stockInfo.isWeightBased ? (
                     <span className="text-amber-400 font-semibold text-[11px] flex items-center gap-1">
-                      <Icons.Scale className="w-3 h-3" /> สินค้าชั่งขาย
+                      <Icons.Scale className="w-3 h-3" /> {stockInfo.detailStockText}
                     </span>
-                  ) : hasStockInfo ? (
-                    <span className={`font-mono text-[11px] ${isOutOfStock ? 'text-rose-400 font-bold' : 'text-slate-400'}`}>
-                      {isOutOfStock ? 'สินค้าหมด' : `คงเหลือ ${stock} ${product.baseUom?.name || 'ชิ้น'}`}
+                  ) : (
+                    <span className={`font-mono text-[11px] ${stockInfo.detailStockColorClass}`}>
+                      {stockInfo.detailStockText}
                     </span>
-                  ) : null}
+                  )}
                 </div>
               </div>
 

@@ -19,7 +19,7 @@
 
 **Purpose**: เชื่อมโยงฟังก์ชัน Helper เข้ากับคอมโพเนนต์การ์ดสินค้าใน POS
 
-- [ ] T003 นำเข้า `resolveProductStockPresentation` และเตรียมโครงสร้างการนำเสนอผลสต็อกบนการ์ดสินค้าใน `src/components/pos/PosProductGrid.tsx`
+- [x] T003 นำเข้า `resolveProductStockPresentation` และเตรียมโครงสร้างการนำเสนอผลสต็อกบนการ์ดสินค้าใน `src/components/pos/PosProductGrid.tsx`
 
 ---
 
@@ -31,8 +31,8 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [US1] ปรับปรุง `src/components/pos/PosProductGrid.tsx` ให้แสดงตัวเลขสต็อกคงเหลือพร้อมหน่วยนับของสินค้าที่ไม่ใช่ชั่งขายทุกรายการ โดยกำหนดค่าเริ่มต้นเป็น 0 เสมอเมื่อไม่พบยอดสต็อกในสาขา
-- [ ] T005 [US1] คงการแสดงผลป้ายกำกับและข้อความ "ชั่งขาย" สำหรับสินค้าประเภทขายตามน้ำหนัก (`productType === 'BY_WEIGHT'`) โดยไม่แสดงตัวเลขคงเหลือเป็นชิ้นใน `src/components/pos/PosProductGrid.tsx`
+- [x] T004 [US1] ปรับปรุง `src/components/pos/PosProductGrid.tsx` ให้แสดงตัวเลขสต็อกคงเหลือพร้อมหน่วยนับของสินค้าที่ไม่ใช่ชั่งขายทุกรายการ โดยกำหนดค่าเริ่มต้นเป็น 0 เสมอเมื่อไม่พบยอดสต็อกในสาขา
+- [x] T005 [US1] คงการแสดงผลป้ายกำกับและข้อความ "ชั่งขาย" สำหรับสินค้าประเภทขายตามน้ำหนัก (`productType === 'BY_WEIGHT'`) โดยไม่แสดงตัวเลขคงเหลือเป็นชิ้นใน `src/components/pos/PosProductGrid.tsx`
 
 ---
 
@@ -44,9 +44,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] ปรับแต่งขอบการ์ดสินค้าเป็นเส้นขอบสีส้มหนา 2px (`border-amber-500`) พร้อมป้ายสีส้มและตัวหนังสือระบุสถานะใกล้หมดใน `src/components/pos/PosProductGrid.tsx`
-- [ ] T007 [US2] ปรับแต่งขอบการ์ดสินค้าเป็นเส้นขอบสีแดงหนา 2px (`border-rose-500`) พร้อมป้ายสีแดง "สินค้าหมด" ใน `src/components/pos/PosProductGrid.tsx`
-- [ ] T008 [US2] กำหนดให้สินค้าสต็อกปกติและสินค้าชั่งขายคงเส้นขอบมาตรฐาน (`border-slate-800 hover:border-cyan-500/60`) พร้อมรักษาคอนทราสต์เมื่อนำเมาส์ชี้หรือแตะสัมผัสใน `src/components/pos/PosProductGrid.tsx`
+- [x] T006 [US2] ปรับแต่งขอบการ์ดสินค้าเป็นเส้นขอบสีส้มหนา 2px (`border-amber-500`) พร้อมป้ายสีส้มและตัวหนังสือระบุสถานะใกล้หมดใน `src/components/pos/PosProductGrid.tsx`
+- [x] T007 [US2] ปรับแต่งขอบการ์ดสินค้าเป็นเส้นขอบสีแดงหนา 2px (`border-rose-500`) พร้อมป้ายสีแดง "สินค้าหมด" ใน `src/components/pos/PosProductGrid.tsx`
+- [x] T008 [US2] กำหนดให้สินค้าสต็อกปกติและสินค้าชั่งขายคงเส้นขอบมาตรฐาน (`border-slate-800 hover:border-cyan-500/60`) พร้อมรักษาคอนทราสต์เมื่อนำเมาส์ชี้หรือแตะสัมผัสใน `src/components/pos/PosProductGrid.tsx`
 
 ---
 
