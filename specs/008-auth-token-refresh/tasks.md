@@ -45,8 +45,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] เพิ่มตรรกะตรวจจับความล้มเหลวในการต่ออายุ Token ใน `src/services/api.ts` เพื่อเรียกใช้ Listener เซสชันหมดอายุเมื่อเซิร์ฟเวอร์ตอบกลับ 401/403 หรือไม่พบ Refresh Token ในระบบ
-- [ ] T008 [US2] เพิ่มฟังก์ชัน `handleSessionExpired` ใน `src/context/AuthContext.tsx` โดยลงทะเบียนผ่าน `registerSessionExpiredListener` เพื่อเคลียร์ State ผู้ใช้ (`user: null`) และนำทางไปยังหน้าจอ `/login`
+- [x] T007 [US2] เพิ่มตรรกะตรวจจับความล้มเหลวในการต่ออายุ Token ใน `src/services/api.ts` เพื่อเรียกใช้ Listener เซสชันหมดอายุเมื่อเซิร์ฟเวอร์ตอบกลับ 401/403 หรือไม่พบ Refresh Token ในระบบ
+- [x] T008 [US2] เพิ่มฟังก์ชัน `handleSessionExpired` ใน `src/context/AuthContext.tsx` โดยลงทะเบียนผ่าน `registerSessionExpiredListener` เพื่อเคลียร์ State ผู้ใช้ (`user: null`) และนำทางไปยังหน้าจอ `/login`
 
 ---
 
@@ -58,8 +58,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T009 [US3] เพิ่มการแสดงผล Toast Notification ประเภทเตือน (Warning) ด้วยข้อความภาษาไทย "เซสชันการใช้งานหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง" ใน `handleSessionExpired` ใน `src/context/AuthContext.tsx`
-- [ ] T010 [US3] ตรวจสอบและปรับปรุงหน้าจอเข้าสู่ระบบใน `src/app/(auth)/login/page.tsx` ให้ดึงข้อมูลสาขาล่าสุดที่คงไว้ใน Local Storage มาแสดงเป็นค่าเริ่มต้นในโหมด PIN Login อย่างถูกต้อง
+- [x] T009 [US3] เพิ่มการแสดงผล Toast Notification ประเภทเตือน (Warning) ด้วยข้อความภาษาไทย "เซสชันการใช้งานหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง" ใน `handleSessionExpired` ใน `src/context/AuthContext.tsx`
+- [x] T010 [US3] ตรวจสอบและปรับปรุงหน้าจอเข้าสู่ระบบใน `src/app/(auth)/login/page.tsx` ให้ดึงข้อมูลสาขาล่าสุดที่คงไว้ใน Local Storage มาแสดงเป็นค่าเริ่มต้นในโหมด PIN Login อย่างถูกต้อง
 
 ---
 
@@ -67,9 +67,9 @@
 
 **Purpose**: ตรวจสอบคุณภาพโค้ด ความเข้ากันได้ของระบบ และยืนยันความถูกต้องตามเกณฑ์ทั้งหมด
 
-- [ ] T011 [P] ตรวจสอบ TypeScript Strict Types ทั่วทั้งโปรเจกต์ด้วย `npx tsc --noEmit`
-- [ ] T012 [P] ตรวจสอบ Linting และมาตรฐานโค้ดด้วย `npm run lint`
-- [ ] T013 ดำเนินการทดสอบยืนยันตามสถานการณ์ใน `specs/008-auth-token-refresh/quickstart.md`
+- [x] T011 [P] ตรวจสอบ TypeScript Strict Types ทั่วทั้งโปรเจกต์ด้วย `npx tsc --noEmit`
+- [x] T012 [P] ตรวจสอบ Linting และมาตรฐานโค้ดด้วย `npm run lint`
+- [x] T013 ดำเนินการทดสอบยืนยันตามสถานการณ์ใน `specs/008-auth-token-refresh/quickstart.md`
 
 ---
 

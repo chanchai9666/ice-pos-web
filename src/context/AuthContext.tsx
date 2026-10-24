@@ -4,9 +4,12 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
+import { useRouter } from 'next/navigation';
 import { authService } from '@/services/auth.service';
+import { registerSessionExpiredListener } from '@/services/api';
 import {
   AuthResponse,
   Branch,
@@ -34,11 +37,14 @@ interface AuthContextType {
   ) => Promise<AuthResponse>;
   logout: () => void;
   setCurrentBranch: (branch: Branch) => void;
+  handleSessionExpired: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
   // เริ่มต้น State โดยตรงจาก LocalStorage ผ่านฟังก์ชัน Lazy Initializer
   const [user, setUser] = useState<UserProfile | null>(() => {
     try {
@@ -60,18 +66,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [isLoading] = useState<boolean>(false);
 
+  // จัดการเมื่อเซสชันหมดอายุจริง: ล้างสิทธิ์ คงสาขา และนำทางไปหน้าเข้าสู่ระบบพร้อมส่งสถานะ expired=1
+  const handleSessionExpired = useCallback(() => {
+    setUser(null);
+    clearAuthSession(true); // คงสาขาไว้เพื่อให้ล็อกอิน PIN ต่อได้ทันที
+    router.push('/login?expired=1');
+  }, [router]);
+
+  // ลงทะเบียนรับฟังเหตุการณ์เซสชันหมดอายุจาก API Interceptor
+  useEffect(() => {
+    const unsubscribe = registerSessionExpiredListener(() => {
+      handleSessionExpired();
+    });
+    return unsubscribe;
+  }, [handleSessionExpired]);
+
   const loginWithCredentials = useCallback(
     async (credentials: LoginRequest): Promise<AuthResponse> => {
       const auth = await authService.login(credentials);
 
-      // เครดենเชียลล็อกอินไม่มีข้อมูลสาขาแนบมาเหมือน PIN login
+      // เครเดนเชียลล็อกอินไม่มีข้อมูลสาขาแนบมาเหมือน PIN login
       // จึงค้นหาสาขาประจำตัวผู้ใช้เพื่อให้หน้าจอ POS/เปิดกะใช้งานได้
       let branchInfo: Branch | null = null;
       if (auth.user.branchId) {
         try {
           const branches = await authService.getBranches();
           branchInfo =
-            branches.find((branch) => branch.id === auth.user.branchId) ?? null;
+            branches.find((b) => b.id === auth.user.branchId) ?? null;
         } catch {
           // ดึงข้อมูลสาขาไม่สำเร็จ ไม่ควรทำให้การเข้าสู่ระบบล้มเหลว
         }
@@ -106,8 +127,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(() => {
     setUser(null);
     setBranch(null);
-    clearAuthSession();
-  }, []);
+    clearAuthSession(false); // ล็อกเอาท์แบบแมนนวล ล้างข้อมูลทั้งหมด
+    router.push('/login');
+  }, [router]);
 
   const handleSetCurrentBranch = useCallback((newBranch: Branch) => {
     setBranch(newBranch);
@@ -124,6 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loginWithPin,
         logout,
         setCurrentBranch: handleSetCurrentBranch,
+        handleSessionExpired,
       }}
     >
       {children}

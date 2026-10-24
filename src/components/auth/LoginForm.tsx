@@ -5,6 +5,7 @@ import { authService } from '@/services/auth.service';
 import { AuthResponse, Branch, LoginMode } from '@/types/auth';
 import {
   clearLockoutExpiry,
+  getCurrentBranch,
   getLastBranchId,
   getLastLoginMode,
   getLockoutExpiry,
@@ -42,7 +43,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       const list = await authService.getBranches();
       setBranches(list);
 
-      const savedBranchId = getLastBranchId();
+      const currentBranch = getCurrentBranch();
+      const savedBranchId = getLastBranchId() || currentBranch?.id;
       if (savedBranchId && list.some((b) => b.id === savedBranchId)) {
         setSelectedBranchId(savedBranchId);
       } else if (list.length === 1) {
@@ -85,7 +87,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         if (!active) return;
         setBranches(list);
 
-        const savedBranchId = getLastBranchId();
+        const currentBranch = getCurrentBranch();
+        const savedBranchId = getLastBranchId() || currentBranch?.id;
         if (savedBranchId && list.some((b) => b.id === savedBranchId)) {
           setSelectedBranchId(savedBranchId);
         } else if (list.length === 1) {
