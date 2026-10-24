@@ -75,9 +75,9 @@
 
 **Purpose**: ตรวจสอบคุณภาพโค้ด การแสดงผลบนจอสัมผัส และความเข้ากันได้ตามมาตรฐานของระบบ
 
-- [ ] T015 Run TypeScript build check (npm run build or npx tsc --noEmit) to ensure zero compilation errors
-- [ ] T016 Run ESLint check to ensure code conforms to repository linting rules
-- [ ] T017 Execute end-to-end verification scenarios per specs/006-pos-stock-and-cart/quickstart.md
+- [X] T015 Run TypeScript build check (npm run build or npx tsc --noEmit) to ensure zero compilation errors
+- [X] T016 Run ESLint check to ensure code conforms to repository linting rules
+- [X] T017 Execute end-to-end verification scenarios per specs/006-pos-stock-and-cart/quickstart.md
 
 ---
 
