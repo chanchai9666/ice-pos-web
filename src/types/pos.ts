@@ -23,6 +23,7 @@ export interface CartItem {
   taxRatePercent: number;  // อัตราภาษี (%)
   pricingType: 'PIECE' | 'WEIGHT'; // ประเภทการคิดราคา
   lineTotal: number;       // ราคารวมของรายการนี้ (price * quantity)
+  isHighlighted?: boolean; // สถานะไฮไลต์ชั่วคราวเมื่อเพิ่งเพิ่มหรืออัปเดตรายการ
 }
 
 /**
