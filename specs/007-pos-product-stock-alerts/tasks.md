@@ -66,9 +66,9 @@
 
 **Purpose**: ตรวจสอบคุณภาพโค้ด ความเข้ากันได้ของระบบ และยืนยันความถูกต้องตามเกณฑ์ทั้งหมด
 
-- [ ] T010 [P] ตรวจสอบ TypeScript Strict Types ทั่วทั้งโปรเจกต์ด้วย `npx tsc --noEmit`
-- [ ] T011 [P] ตรวจสอบ Linting และมาตรฐานโค้ดด้วย `npm run lint`
-- [ ] T012 ดำเนินการทดสอบยืนยันตามสถานการณ์ใน `specs/007-pos-product-stock-alerts/quickstart.md`
+- [x] T010 [P] ตรวจสอบ TypeScript Strict Types ทั่วทั้งโปรเจกต์ด้วย `npx tsc --noEmit`
+- [x] T011 [P] ตรวจสอบ Linting และมาตรฐานโค้ดด้วย `npm run lint`
+- [x] T012 ดำเนินการทดสอบยืนยันตามสถานการณ์ใน `specs/007-pos-product-stock-alerts/quickstart.md`
 
 ---
 
