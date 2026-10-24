@@ -13,12 +13,13 @@ export const inventoryService = {
    * GET /api/v1/inventory/stocks
    */
   async getStockLevels(params?: StockQueryParams): Promise<ApiResponse<StockLevel[]>> {
+    const pageSize = params?.pageSize ? Math.min(Math.max(params.pageSize, 1), 100) : 100;
     return api.get<StockLevel[]>('/api/v1/inventory/stocks', {
       params: {
         branchId: params?.branchId,
         lowStockOnly: params?.lowStockOnly,
         page: params?.page || 1,
-        pageSize: params?.pageSize || 100,
+        pageSize,
       },
     });
   },

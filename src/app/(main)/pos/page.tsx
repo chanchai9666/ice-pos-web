@@ -14,6 +14,7 @@ import { catalogService } from '@/services/catalog.service';
 import { inventoryService } from '@/services/inventory.service';
 import { Category, Product } from '@/types/catalog';
 import { StockLevelMap } from '@/types/inventory';
+import { CartItem } from '@/types/pos';
 import { PosSearchBar } from '@/components/pos/PosSearchBar';
 import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
 import { PosProductGrid } from '@/components/pos/PosProductGrid';
@@ -29,7 +30,7 @@ import { Icons } from '@/components/ui/Icons';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
-  const { addItem, addToast, activeShift, setActiveShift, isLoadingShift } = usePosCart();
+  const { items, addItem, addToast, activeShift, setActiveShift, isLoadingShift } = usePosCart();
 
   // ใช้ branchId จากสาขาที่เลือก หรือ fallback ไปยังสาขาประจำตัวผู้ใช้ (กรณี login ด้วย Username/Password)
   const effectiveBranchId = branch?.id ?? user?.branchId ?? undefined;
@@ -43,6 +44,18 @@ function PosTerminalInner() {
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
+
+  // คำนวณสต็อกคงเหลือสุทธิแบบ Real-time โดยหักจำนวนสินค้าที่อยู่ในตะกร้าออก (ยกเว้นสินค้าประเภทชั่งขาย)
+  const effectiveStockMap = useMemo(() => {
+    const map: StockLevelMap = { ...stockMap };
+    for (const item of items) {
+      if (item.pricingType !== 'WEIGHT') {
+        const baseStock = typeof map[item.productId] === 'number' ? map[item.productId] : 0;
+        map[item.productId] = baseStock - item.quantity;
+      }
+    }
+    return map;
+  }, [stockMap, items]);
 
   // การดำเนินการเมื่อคลิกปุ่มชำระเงิน (สกัดกั้นหากยังไม่ได้เปิดกะ)
   const handleCheckout = () => {
@@ -62,12 +75,11 @@ function PosTerminalInner() {
 
   // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
   const handleSelectProduct = (product: Product) => {
-    addItem(product, 1);
-
-    // หากเป็นสินค้าที่ไม่ใช่ชั่งขายและสต็อกหมด ให้แจ้งเตือนผู้ใช้งาน (Toast Notification)
+    // หากเป็นสินค้าที่ไม่ใช่ชั่งขายและสต็อกคงเหลือสุทธิหมดแล้ว ให้แจ้งเตือนผู้ใช้งาน (Toast Notification)
     if (product.productType !== 'BY_WEIGHT') {
-      const stock = typeof stockMap[product.id] === 'number' ? stockMap[product.id] : 0;
-      if (stock <= 0) {
+      const currentStock =
+        typeof effectiveStockMap[product.id] === 'number' ? effectiveStockMap[product.id] : 0;
+      if (currentStock <= 0) {
         addToast({
           type: 'INFO',
           title: 'สินค้าหมดสต็อก',
@@ -75,6 +87,8 @@ function PosTerminalInner() {
         });
       }
     }
+
+    addItem(product, 1);
   };
 
   // การจัดการเมื่อสแกนบาร์โค้ดจากเครื่องสแกนฮาร์ดแวร์
@@ -86,9 +100,11 @@ function PosTerminalInner() {
           (p) => p.barcode === barcode || p.sku?.toLowerCase() === barcode.toLowerCase()
         );
         if (localFound) {
-          addItem(localFound, 1);
-          const stock = typeof stockMap[localFound.id] === 'number' ? stockMap[localFound.id] : 0;
-          if (localFound.productType !== 'BY_WEIGHT' && stock <= 0) {
+          const currentStock =
+            typeof effectiveStockMap[localFound.id] === 'number'
+              ? effectiveStockMap[localFound.id]
+              : 0;
+          if (localFound.productType !== 'BY_WEIGHT' && currentStock <= 0) {
             addToast({
               type: 'INFO',
               title: 'สินค้าหมดสต็อก',
@@ -102,15 +118,18 @@ function PosTerminalInner() {
               code: barcode,
             });
           }
+          addItem(localFound, 1);
           return;
         }
 
         // 2. ค้นหาจาก API ด้วย Barcode / SKU Lookup
         const res = await catalogService.lookupProduct(barcode);
         if (res.data) {
-          addItem(res.data, 1);
-          const stock = typeof stockMap[res.data.id] === 'number' ? stockMap[res.data.id] : 0;
-          if (res.data.productType !== 'BY_WEIGHT' && stock <= 0) {
+          const currentStock =
+            typeof effectiveStockMap[res.data.id] === 'number'
+              ? effectiveStockMap[res.data.id]
+              : 0;
+          if (res.data.productType !== 'BY_WEIGHT' && currentStock <= 0) {
             addToast({
               type: 'INFO',
               title: 'สินค้าหมดสต็อก',
@@ -124,6 +143,7 @@ function PosTerminalInner() {
               code: barcode,
             });
           }
+          addItem(res.data, 1);
         } else {
           addToast({
             type: 'ERROR',
@@ -141,7 +161,7 @@ function PosTerminalInner() {
         });
       }
     },
-    [products, stockMap, addItem, addToast]
+    [products, effectiveStockMap, addItem, addToast]
   );
 
   // ดักจับบาร์โค้ดฮาร์ดแวร์ทั่วทั้งหน้าจอ
@@ -196,7 +216,7 @@ function PosTerminalInner() {
     try {
       const res = await inventoryService.getStockLevels({
         branchId: effectiveBranchId,
-        pageSize: 200,
+        pageSize: 100,
       });
       if (res.data && Array.isArray(res.data)) {
         const map: StockLevelMap = {};
@@ -205,6 +225,31 @@ function PosTerminalInner() {
             map[item.productId] = item.quantity;
           }
         });
+
+        // หากมีหน้าข้อมูลมากกว่า 1 หน้า ให้ดึงสต็อกหน้าที่เหลือมาประกอบให้ครบถ้วน
+        if (res.meta?.totalPages && res.meta.totalPages > 1) {
+          const pagePromises = [];
+          for (let p = 2; p <= res.meta.totalPages; p++) {
+            pagePromises.push(
+              inventoryService.getStockLevels({
+                branchId: effectiveBranchId,
+                page: p,
+                pageSize: 100,
+              })
+            );
+          }
+          const nextPages = await Promise.all(pagePromises);
+          nextPages.forEach((pageRes) => {
+            if (pageRes.data && Array.isArray(pageRes.data)) {
+              pageRes.data.forEach((item) => {
+                if (item.productId) {
+                  map[item.productId] = item.quantity;
+                }
+              });
+            }
+          });
+        }
+
         setStockMap(map);
       }
     } catch (err) {
@@ -215,6 +260,26 @@ function PosTerminalInner() {
   useEffect(() => {
     loadStockLevels();
   }, [loadStockLevels]);
+
+  // จัดการเมื่อการขายสำเร็จและเริ่มบิลใหม่: ปรับลดยอดสต็อกทันที (Optimistic) และดึงข้อมูลจริงจาก API (Revalidate)
+  const handleSaleSuccess = useCallback(
+    (soldItems: CartItem[]) => {
+      // 1. Optimistic update: ปรับลดยอดสต็อกในแมปทันที ป้องกันหน้าจอกระพริบ
+      setStockMap((prev) => {
+        const next = { ...prev };
+        soldItems.forEach((it) => {
+          if (it.pricingType !== 'WEIGHT' && typeof next[it.productId] === 'number') {
+            next[it.productId] = next[it.productId] - it.quantity;
+          }
+        });
+        return next;
+      });
+
+      // 2. ดึงข้อมูลยอดสต็อกคงเหลือล่าสุดจากเซิร์ฟเวอร์
+      loadStockLevels();
+    },
+    [loadStockLevels]
+  );
 
   // กรองรายการสินค้าตามหมวดหมู่และคำค้นหา
   const filteredProducts = useMemo(() => {
@@ -296,7 +361,7 @@ function PosTerminalInner() {
               products={filteredProducts}
               onSelectProduct={handleSelectProduct}
               isLoading={isLoadingCatalog}
-              stockMap={stockMap}
+              stockMap={effectiveStockMap}
             />
           </div>
         </div>
@@ -341,6 +406,7 @@ function PosTerminalInner() {
         onClose={() => setIsCheckoutModalOpen(false)}
         branchId={effectiveBranchId}
         cashierName={user?.fullName || user?.username}
+        onSaleSuccess={handleSaleSuccess}
       />
     </div>
   );

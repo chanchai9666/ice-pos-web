@@ -10,6 +10,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Icons } from '@/components/ui/Icons';
 import { usePosCart } from '@/context/PosCartContext';
+import { CartItem } from '@/types/pos';
 import { PaymentMethodType, CreateSaleRequest, SaleResponse } from '@/types/sale';
 import { CustomerSummary } from '@/types/customer';
 import { PosPaymentCash } from '@/components/pos/PosPaymentCash';
@@ -26,6 +27,7 @@ interface PosCheckoutModalProps {
   onClose: () => void;
   branchId?: string;
   cashierName?: string;
+  onSaleSuccess?: (soldItems: CartItem[], sale: SaleResponse) => void;
 }
 
 export function PosCheckoutModal({
@@ -33,6 +35,7 @@ export function PosCheckoutModal({
   onClose,
   branchId,
   cashierName,
+  onSaleSuccess,
 }: PosCheckoutModalProps) {
   const { items, summary, clearCart, addToast } = usePosCart();
 
@@ -69,15 +72,20 @@ export function PosCheckoutModal({
 
   // จัดการเมื่อเริ่มบิลใหม่
   const handleNewSale = useCallback(() => {
+    const soldItems = [...items];
+    const currentCompletedSale = completedSale;
     clearCart();
     setCompletedSale(null);
     onClose();
+    if (onSaleSuccess && currentCompletedSale) {
+      onSaleSuccess(soldItems, currentCompletedSale);
+    }
     addToast({
       type: 'INFO',
       title: 'เริ่มบิลใหม่',
       message: 'ล้างตะกร้าสินค้าเรียบร้อย พร้อมสำหรับลูกค้ารายถัดไป',
     });
-  }, [clearCart, onClose, addToast]);
+  }, [items, completedSale, clearCart, onClose, onSaleSuccess, addToast]);
 
   // การส่งคำขอบันทึกการขายด้วยเงินสด (CASH)
   const handleCashSubmit = async () => {
