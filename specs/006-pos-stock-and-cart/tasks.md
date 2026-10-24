@@ -15,8 +15,8 @@
 
 **⚠️ CRITICAL**: ต้องทำให้เสร็จก่อนเริ่มการแสดงผลสต็อกบนหน้าจอขาย
 
-- [ ] T003 Implement inventoryService.getStockLevels in src/services/inventory.service.ts matching GET /api/v1/inventory/stocks
-- [ ] T004 Integrate branch stock level fetching and stockMap state in src/app/(main)/pos/page.tsx
+- [X] T003 Implement inventoryService.getStockLevels in src/services/inventory.service.ts matching GET /api/v1/inventory/stocks
+- [X] T004 Integrate branch stock level fetching and stockMap state in src/app/(main)/pos/page.tsx
 
 **Checkpoint**: โครงสร้างข้อมูลสต็อกและเซอร์วิสพร้อมใช้งาน — สามารถเริ่มพัฒนา User Story แต่ละส่วนได้
 

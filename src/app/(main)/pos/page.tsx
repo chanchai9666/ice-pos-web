@@ -11,7 +11,9 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { PosCartProvider, usePosCart } from '@/context/PosCartContext';
 import { catalogService } from '@/services/catalog.service';
+import { inventoryService } from '@/services/inventory.service';
 import { Category, Product } from '@/types/catalog';
+import { StockLevelMap } from '@/types/inventory';
 import { PosSearchBar } from '@/components/pos/PosSearchBar';
 import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
 import { PosProductGrid } from '@/components/pos/PosProductGrid';
@@ -34,6 +36,7 @@ function PosTerminalInner() {
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [stockMap, setStockMap] = useState<StockLevelMap>({});
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
@@ -156,6 +159,32 @@ function PosTerminalInner() {
   useEffect(() => {
     loadProducts();
   }, [loadProducts]);
+
+  // ดึงข้อมูลยอดสต็อกสินค้าตามสาขาปัจจุบัน
+  const loadStockLevels = useCallback(async () => {
+    if (!effectiveBranchId) return;
+    try {
+      const res = await inventoryService.getStockLevels({
+        branchId: effectiveBranchId,
+        pageSize: 200,
+      });
+      if (res.data && Array.isArray(res.data)) {
+        const map: StockLevelMap = {};
+        res.data.forEach((item) => {
+          if (item.productId) {
+            map[item.productId] = item.quantity;
+          }
+        });
+        setStockMap(map);
+      }
+    } catch (err) {
+      console.warn('Failed to load branch stock levels:', err);
+    }
+  }, [effectiveBranchId]);
+
+  useEffect(() => {
+    loadStockLevels();
+  }, [loadStockLevels]);
 
   // กรองรายการสินค้าตามหมวดหมู่และคำค้นหา
   const filteredProducts = useMemo(() => {
