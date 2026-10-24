@@ -63,9 +63,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T012 [US3] Add lastActiveItemId state and tracking in addItem and updateQuantity in src/context/PosCartContext.tsx
-- [ ] T013 [US3] Implement auto-scroll ref and scrollIntoView logic for lastActiveItemId in src/components/pos/PosCartPanel.tsx
-- [ ] T014 [US3] Add visual pulse/ring highlight styling to PosCartItemRow when isHighlighted is true in src/components/pos/PosCartItemRow.tsx
+- [X] T012 [US3] Add lastActiveItemId state and tracking in addItem and updateQuantity in src/context/PosCartContext.tsx
+- [X] T013 [US3] Implement auto-scroll ref and scrollIntoView logic for lastActiveItemId in src/components/pos/PosCartPanel.tsx
+- [X] T014 [US3] Add visual pulse/ring highlight styling to PosCartItemRow when isHighlighted is true in src/components/pos/PosCartItemRow.tsx
 
 **Checkpoint**: User Story 3 ใช้งานได้สมบูรณ์ รายการล่าสุดในตะกร้าถูกเลื่อนแสดงทันที ไม่ค้างอยู่ด้านบน
 

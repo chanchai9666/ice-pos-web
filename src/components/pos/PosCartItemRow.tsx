@@ -14,6 +14,7 @@ import { Icons } from '@/components/ui/Icons';
 
 interface PosCartItemRowProps {
   item: CartItem;
+  isHighlighted?: boolean;
   onUpdateQuantity: (id: string, qty: number) => void;
   onRemoveItem: (id: string) => void;
   onOpenQuantityModal: (item: CartItem) => void;
@@ -21,12 +22,19 @@ interface PosCartItemRowProps {
 
 export function PosCartItemRow({
   item,
+  isHighlighted = false,
   onUpdateQuantity,
   onRemoveItem,
   onOpenQuantityModal,
 }: PosCartItemRowProps) {
   return (
-    <div className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 rounded-xl p-3 flex flex-col gap-2.5 transition-colors">
+    <div
+      className={`border rounded-xl p-3 flex flex-col gap-2.5 transition-all duration-300 ${
+        isHighlighted
+          ? 'bg-cyan-950/40 border-cyan-500/80 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/50'
+          : 'bg-slate-900/90 border-slate-800 hover:border-slate-700'
+      }`}
+    >
       {/* แถวบน: รูปภาพขนาดเล็ก ข้อมูลชื่อสินค้า และปุ่มลบ */}
       <div className="flex items-start justify-between gap-2.5">
         <div className="flex items-center gap-2.5 flex-1 min-w-0">

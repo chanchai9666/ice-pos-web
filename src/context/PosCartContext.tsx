@@ -20,6 +20,7 @@ interface PosCartContextType {
   activeShift: ShiftInfo | null;
   isLoadingShift: boolean;
   toasts: ScanToast[];
+  lastActiveItemId: string | null;
   addItem: (product: Product, quantity?: number, playSound?: boolean) => void;
   updateQuantity: (itemId: string, newQuantity: number) => void;
   removeItem: (itemId: string) => void;
@@ -40,6 +41,7 @@ export function PosCartProvider({
   branchId?: string;
 }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [lastActiveItemId, setLastActiveItemId] = useState<string | null>(null);
   const [activeShift, setActiveShift] = useState<ShiftInfo | null>(null);
   const [isLoadingShift, setIsLoadingShift] = useState<boolean>(false);
   const [toasts, setToasts] = useState<ScanToast[]>([]);
@@ -137,6 +139,7 @@ export function PosCartProvider({
             quantity: newQty,
             lineTotal: current.price * newQty,
           };
+          setLastActiveItemId(current.id);
           return updated;
         }
 
@@ -162,6 +165,7 @@ export function PosCartProvider({
           lineTotal: unitPrice * quantityToAdd,
         };
 
+        setLastActiveItemId(newItem.id);
         return [...prevItems, newItem];
       });
 
@@ -175,6 +179,7 @@ export function PosCartProvider({
   // ฟังก์ชันปรับจำนวนสินค้า
   const updateQuantity = useCallback(
     (itemId: string, newQuantity: number) => {
+      setLastActiveItemId(itemId);
       if (newQuantity <= 0) {
         setItems((prev) => prev.filter((item) => item.id !== itemId));
         return;
@@ -204,6 +209,7 @@ export function PosCartProvider({
   // ฟังก์ชันล้างตะกร้าทั้งหมด
   const clearCart = useCallback(() => {
     setItems([]);
+    setLastActiveItemId(null);
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {}
@@ -248,6 +254,7 @@ export function PosCartProvider({
         activeShift,
         isLoadingShift,
         toasts,
+        lastActiveItemId,
         addItem,
         updateQuantity,
         removeItem,

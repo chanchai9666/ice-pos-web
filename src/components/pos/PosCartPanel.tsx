@@ -7,7 +7,7 @@
  * ออกแบบตามมาตรฐาน Elderly-Friendly (ตัวเลขยอดเงินขนาดใหญ่พิเศษ, ปุ่มคิดเงินสูง 56px, กล่องยืนยันล้างบิล)
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { usePosCart } from '@/context/PosCartContext';
 import { CartItem } from '@/types/pos';
 import { PosCartItemRow } from '@/components/pos/PosCartItemRow';
@@ -21,10 +21,21 @@ interface PosCartPanelProps {
 }
 
 export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelProps) {
-  const { items, summary, updateQuantity, removeItem, clearCart } = usePosCart();
+  const { items, summary, updateQuantity, removeItem, clearCart, lastActiveItemId } = usePosCart();
 
   const [editingItem, setEditingItem] = useState<CartItem | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState<boolean>(false);
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  // เลื่อนมุมมองอัตโนมัติ (Auto-scroll) ไปยังรายการล่าสุดที่เพิ่งถูกเพิ่มหรือแก้ไขในบิล
+  useEffect(() => {
+    if (lastActiveItemId) {
+      const targetElement = itemRefs.current.get(lastActiveItemId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [lastActiveItemId, items.length]);
 
   const handleClearConfirmed = () => {
     clearCart();
@@ -77,13 +88,24 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
           </div>
         ) : (
           items.map((item) => (
-            <PosCartItemRow
+            <div
               key={item.id}
-              item={item}
-              onUpdateQuantity={updateQuantity}
-              onRemoveItem={removeItem}
-              onOpenQuantityModal={(it) => setEditingItem(it)}
-            />
+              ref={(el) => {
+                if (el) {
+                  itemRefs.current.set(item.id, el);
+                } else {
+                  itemRefs.current.delete(item.id);
+                }
+              }}
+            >
+              <PosCartItemRow
+                item={item}
+                isHighlighted={item.id === lastActiveItemId}
+                onUpdateQuantity={updateQuantity}
+                onRemoveItem={removeItem}
+                onOpenQuantityModal={(it) => setEditingItem(it)}
+              />
+            </div>
           ))
         )}
       </div>
