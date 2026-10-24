@@ -39,12 +39,14 @@ export function setAuthSession(auth: AuthResponse, branch?: Branch | null): void
   }
 }
 
-export function clearAuthSession(): void {
+export function clearAuthSession(preserveBranch: boolean = true): void {
   if (!isBrowser()) return;
   localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
   localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
   localStorage.removeItem(STORAGE_KEYS.USER_PROFILE);
-  localStorage.removeItem(STORAGE_KEYS.CURRENT_BRANCH);
+  if (!preserveBranch) {
+    localStorage.removeItem(STORAGE_KEYS.CURRENT_BRANCH);
+  }
 }
 
 // ==========================================

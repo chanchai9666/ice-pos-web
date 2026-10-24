@@ -71,3 +71,42 @@ export interface DevicePreferences {
   lastBranchId: string | null;
   lastLoginMode: LoginMode;
 }
+
+// ==========================================
+// การต่ออายุ Token และวงจรชีวิตของเซสชัน (Token Refresh & Session Lifecycle)
+// ==========================================
+
+/**
+ * เหตุการณ์เกี่ยวกับวงจรชีวิตของเซสชันผู้ใช้งาน
+ */
+export type SessionEventType =
+  | 'SESSION_REFRESHED'
+  | 'SESSION_EXPIRED'
+  | 'SESSION_NETWORK_ERROR';
+
+/**
+ * รายละเอียดของเหตุการณ์เซสชัน
+ */
+export interface SessionEventPayload {
+  type: SessionEventType;
+  message?: string;
+  timestamp: number;
+}
+
+/**
+ * ฟังก์ชัน Callback สำหรับลงทะเบียนรับฟังเหตุการณ์เซสชันหมดอายุ
+ */
+export type SessionExpiredListener = (payload: SessionEventPayload) => void;
+
+/**
+ * สถานะการขอต่ออายุ Token เบื้องหลัง (Interceptor Coordinator State)
+ */
+export interface TokenRefreshCoordinatorState {
+  isRefreshing: boolean;
+  refreshPromise: Promise<string> | null;
+  queuedRequests: Array<{
+    resolve: (token: string) => void;
+    reject: (error: unknown) => void;
+  }>;
+}
+

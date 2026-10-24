@@ -10,8 +10,8 @@
 
 **Purpose**: จัดเตรียมประเภทข้อมูลเกี่ยวกับ Session Lifecycle, Events และปรับปรุงนโยบายการจัดเก็บข้อมูลใน Local Storage
 
-- [ ] T001 [P] เพิ่มประเภทข้อมูล `TokenRefreshCoordinatorState`, `SessionEventType`, `SessionEventPayload` และ `SessionExpiredListener` ใน `src/types/auth.ts`
-- [ ] T002 [P] ปรับปรุงฟังก์ชัน `clearAuthSession` ใน `src/utils/storage.ts` ให้ล้างเฉพาะ Access Token, Refresh Token และ UserProfile โดยยังคงรักษา `CURRENT_BRANCH`, `LAST_BRANCH_ID` และตะกร้าสินค้าไว้ตาม FR-008 และ FR-010
+- [x] T001 [P] เพิ่มประเภทข้อมูล `TokenRefreshCoordinatorState`, `SessionEventType`, `SessionEventPayload` และ `SessionExpiredListener` ใน `src/types/auth.ts`
+- [x] T002 [P] ปรับปรุงฟังก์ชัน `clearAuthSession` ใน `src/utils/storage.ts` ให้ล้างเฉพาะ Access Token, Refresh Token และ UserProfile โดยยังคงรักษา `CURRENT_BRANCH`, `LAST_BRANCH_ID` และตะกร้าสินค้าไว้ตาม FR-008 และ FR-010
 
 ---
 
