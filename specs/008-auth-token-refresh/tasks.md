@@ -19,7 +19,7 @@
 
 **Purpose**: จัดเตรียมตัวแปรและโครงสร้างสำหรับบริหารจัดการการต่ออายุ Token และการกระจาย Event เซสชันหมดอายุ
 
-- [ ] T003 สร้างตัวแปรจัดการสถานะคิว `TokenRefreshCoordinatorState` พร้อมฟังก์ชัน `registerSessionExpiredListener` และกลไกแจ้งเตือน Session Expired ใน `src/services/api.ts`
+- [x] T003 สร้างตัวแปรจัดการสถานะคิว `TokenRefreshCoordinatorState` พร้อมฟังก์ชัน `registerSessionExpiredListener` และกลไกแจ้งเตือน Session Expired ใน `src/services/api.ts`
 
 ---
 
@@ -31,9 +31,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [US1] ติดตั้งตัวดักจับสถานะ HTTP 401 ในฟังก์ชัน `request<T>` ภายใน `src/services/api.ts` เพื่อเรียก `authService.refreshToken(refreshToken)` โดยอัตโนมัติเมื่อพบ 401
-- [ ] T005 [US1] ติดตั้งกลไก Single Promise และ Request Queueing ใน `src/services/api.ts` เพื่อรวมคำขอที่ได้รับ 401 พร้อมกันให้รอผลการต่ออายุเพียงครั้งเดียว และส่งคำขอเดิมซ้ำ (Silent Retry) ทั้งหมดเมื่อได้ Token ใหม่
-- [ ] T006 [US1] ปรับปรุง `src/services/api.ts` ให้อัปเดต Access Token และ Refresh Token ชุดใหม่ลงใน Local Storage ด้วย `setAuthSession` ทันทีที่ต่ออายุสำเร็จ
+- [x] T004 [US1] ติดตั้งตัวดักจับสถานะ HTTP 401 ในฟังก์ชัน `request<T>` ภายใน `src/services/api.ts` เพื่อเรียก `authService.refreshToken(refreshToken)` โดยอัตโนมัติเมื่อพบ 401
+- [x] T005 [US1] ติดตั้งกลไก Single Promise และ Request Queueing ใน `src/services/api.ts` เพื่อรวมคำขอที่ได้รับ 401 พร้อมกันให้รอผลการต่ออายุเพียงครั้งเดียว และส่งคำขอเดิมซ้ำ (Silent Retry) ทั้งหมดเมื่อได้ Token ใหม่
+- [x] T006 [US1] ปรับปรุง `src/services/api.ts` ให้อัปเดต Access Token และ Refresh Token ชุดใหม่ลงใน Local Storage ด้วย `setAuthSession` ทันทีที่ต่ออายุสำเร็จ
 
 ---
 
