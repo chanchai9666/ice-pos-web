@@ -76,11 +76,11 @@ export function ProductToolbar({
         </div>
 
         {/* ตัวกรองหมวดหมู่ */}
-        <div className="w-full sm:w-52">
+        <div className="relative w-full sm:w-56 shrink-0">
           <select
             value={selectedCategoryId}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
+            className="w-full h-[50px] pl-4 pr-10 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 cursor-pointer font-medium appearance-none transition-all shadow-inner"
           >
             <option value="">ทุกหมวดหมู่สินค้า</option>
             {categories.map((cat) => (
@@ -89,19 +89,25 @@ export function ProductToolbar({
               </option>
             ))}
           </select>
+          <span className="absolute inset-y-0 right-3.5 flex items-center pointer-events-none text-slate-400">
+            <Icons.ChevronDown className="w-5 h-5" />
+          </span>
         </div>
 
         {/* ตัวกรองสถานะ */}
-        <div className="w-full sm:w-44">
+        <div className="relative w-full sm:w-48 shrink-0">
           <select
             value={selectedStatus}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer font-medium"
+            className="w-full h-[50px] pl-4 pr-10 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 cursor-pointer font-medium appearance-none transition-all shadow-inner"
           >
             <option value="all">สถานะทั้งหมด</option>
             <option value="active">เปิดจำหน่าย</option>
             <option value="inactive">ปิดชั่วคราว</option>
           </select>
+          <span className="absolute inset-y-0 right-3.5 flex items-center pointer-events-none text-slate-400">
+            <Icons.ChevronDown className="w-5 h-5" />
+          </span>
         </div>
       </div>
 

@@ -89,14 +89,22 @@ export function CategoryList({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-base">
+              <colgroup>
+                <col className="w-[8%] min-w-[70px]" />
+                <col className="w-[30%] min-w-[200px]" />
+                <col className="w-[22%] min-w-[160px]" />
+                <col className="w-[22%] min-w-[150px]" />
+                <col className="w-[9%] min-w-[100px]" />
+                <col className="w-[9%] min-w-[110px]" />
+              </colgroup>
               <thead>
                 <tr className="border-b-2 border-slate-800 bg-slate-850 text-slate-300 font-bold uppercase tracking-wider text-sm">
-                  <th className="py-4 px-4 w-20 text-center">ลำดับ</th>
+                  <th className="py-4 px-4 text-center">ลำดับ</th>
                   <th className="py-4 px-4">ชื่อหมวดหมู่</th>
                   <th className="py-4 px-4">หมวดหมู่หลัก (Parent)</th>
                   <th className="py-4 px-4">คำอธิบาย</th>
-                  <th className="py-4 px-4 w-32 text-center">สถานะ</th>
-                  <th className="py-4 px-4 w-36 text-center">จัดการ</th>
+                  <th className="py-4 px-4 text-center">สถานะ</th>
+                  <th className="py-4 px-4 text-center">จัดการ</th>
                 </tr>
               </thead>
               <tbody className="divide-y-2 divide-slate-800/80 text-slate-200">

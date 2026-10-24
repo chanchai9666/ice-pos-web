@@ -218,7 +218,7 @@ export default function CatalogPage() {
   ];
 
   return (
-    <div className="space-y-5 max-w-7xl mx-auto">
+    <div className="space-y-6 w-full max-w-[1600px] mx-auto">
       {/* Toast Notification */}
       {toastMessage && (
         <div

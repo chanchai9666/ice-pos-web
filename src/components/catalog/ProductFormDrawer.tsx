@@ -254,6 +254,7 @@ export function ProductFormDrawer({
             รูปภาพสินค้า
           </label>
           <ImageUploader
+            key={`uploader-${product?.id || 'new'}`}
             currentImageUrl={imagePreview || imageUrl}
             onImageSelected={(file) => {
               setImageFile(file);

@@ -63,8 +63,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithCredentials = useCallback(
     async (credentials: LoginRequest): Promise<AuthResponse> => {
       const auth = await authService.login(credentials);
+
+      // เครดենเชียลล็อกอินไม่มีข้อมูลสาขาแนบมาเหมือน PIN login
+      // จึงค้นหาสาขาประจำตัวผู้ใช้เพื่อให้หน้าจอ POS/เปิดกะใช้งานได้
+      let branchInfo: Branch | null = null;
+      if (auth.user.branchId) {
+        try {
+          const branches = await authService.getBranches();
+          branchInfo =
+            branches.find((branch) => branch.id === auth.user.branchId) ?? null;
+        } catch {
+          // ดึงข้อมูลสาขาไม่สำเร็จ ไม่ควรทำให้การเข้าสู่ระบบล้มเหลว
+        }
+      }
+
       setUser(auth.user);
-      setAuthSession(auth);
+      if (branchInfo) {
+        setBranch(branchInfo);
+      }
+      setAuthSession(auth, branchInfo);
       return auth;
     },
     []

@@ -143,8 +143,7 @@
     "id": "shf-12345",
     "branchId": "br-001",
     "cashierId": "usr-002",
-    "cashierName": "สมศรี ใจดี",
-    "startingCash": 200000,
+    "openingCash": 200000,
     "openedAt": "2026-10-21T08:00:00Z",
     "status": "OPEN"
   }
@@ -170,10 +169,11 @@
 ```json
 {
   "branchId": "br-001",
-  "startingCash": 200000,
-  "notes": "เปิดกะรอบเช้า"
+  "openingCash": 200000
 }
 ```
+
+> `openingCash` เป็นจำนวนเงินหน่วยสตางค์ และเป็นชื่อฟิลด์ตาม Swagger จริง (ไม่ใช่ `startingCash`)
 
 ### Success Response (`201 Created`)
 ```json
@@ -183,9 +183,19 @@
   "data": {
     "id": "shf-12345",
     "branchId": "br-001",
-    "startingCash": 200000,
+    "cashierId": "usr-002",
+    "openingCash": 200000,
     "openedAt": "2026-10-21T08:00:00Z",
     "status": "OPEN"
   }
+}
+```
+
+### Error Response (`400 Bad Request`)
+```json
+{
+  "code": 4000,
+  "message": "มีกะการขายที่เปิดค้างอยู่แล้ว",
+  "data": null
 }
 ```

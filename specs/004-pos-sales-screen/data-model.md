@@ -70,9 +70,12 @@ export interface ShiftInfo {
   id: string;              // รหัสกะ (UUID)
   branchId: string;        // รหัสสาขา
   cashierId: string;       // รหัสแคชเชียร์ผู้เปิดกะ
-  cashierName: string;     // ชื่อแคชเชียร์
   openedAt: string;        // วันเวลาเปิดกะ
-  startingCash: number;    // เงินทอนเริ่มต้น (บาท)
+  closedAt?: string | null; // วันเวลาปิดกะ
+  openingCash: number;     // เงินทอนเริ่มต้น (สตางค์)
+  countedCash?: number | null;  // เงินสดนับได้จริงตอนปิดกะ (สตางค์)
+  expectedCash?: number | null; // เงินสดที่ระบบคำนวณคาดหวัง (สตางค์)
+  difference?: number | null;   // ผลต่างเงินสดขาด/เกิน (สตางค์)
   status: 'OPEN' | 'CLOSED'; // สถานะกะ
 }
 ```

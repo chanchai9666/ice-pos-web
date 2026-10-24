@@ -32,10 +32,12 @@ export function ImageUploader({
     }
   }, []);
 
-  // Sync with currentImageUrl when it changes
+  // Sync with currentImageUrl when it changes (including empty/null)
   React.useEffect(() => {
-    if (currentImageUrl) {
-      setPreviewUrl(currentImageUrl);
+    setPreviewUrl(currentImageUrl || null);
+    setErrorMessage(null);
+    if (!currentImageUrl && fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   }, [currentImageUrl]);
 
