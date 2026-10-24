@@ -27,23 +27,41 @@ export function PosCartItemRow({
 }: PosCartItemRowProps) {
   return (
     <div className="bg-slate-900/90 border border-slate-800 hover:border-slate-700 rounded-xl p-3 flex flex-col gap-2.5 transition-colors">
-      {/* แถวบน: ข้อมูลชื่อสินค้า และปุ่มลบ */}
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <h4 className="text-base font-bold text-white leading-snug line-clamp-1">
-            {item.name}
-          </h4>
-          <p className="text-xs text-slate-400 font-mono mt-0.5">
-            {formatSatangToBaht(item.price)} / {item.uomName}
-          </p>
+      {/* แถวบน: รูปภาพขนาดเล็ก ข้อมูลชื่อสินค้า และปุ่มลบ */}
+      <div className="flex items-start justify-between gap-2.5">
+        <div className="flex items-center gap-2.5 flex-1 min-w-0">
+          {/* รูปภาพสินค้าขนาดเล็ก (Thumbnail 44x44px) */}
+          <div className="relative w-11 h-11 shrink-0 rounded-lg bg-slate-800 border border-slate-700/60 overflow-hidden flex items-center justify-center">
+            <Icons.Package className="w-5 h-5 text-slate-500 absolute pointer-events-none" />
+            {item.imageUrl && (
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                loading="lazy"
+                className="w-full h-full object-cover relative z-10"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <h4 className="text-base font-bold text-white leading-snug line-clamp-1">
+              {item.name}
+            </h4>
+            <p className="text-xs text-slate-400 font-mono mt-0.5">
+              {formatSatangToBaht(item.price)} / {item.uomName}
+            </p>
+          </div>
         </div>
 
-        {/* ปุ่มลบรายการ */}
+        {/* ปุ่มลบรายการ (รักษาเป้าหมายสัมผัส >= 48px) */}
         <button
           type="button"
           onClick={() => onRemoveItem(item.id)}
           aria-label={`ลบ ${item.name} ออกจากตะกร้า`}
-          className="min-w-[48px] min-h-[48px] -mr-1 -mt-1 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer"
+          className="min-w-[48px] min-h-[48px] -mr-1 -mt-1 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
         >
           <Icons.Trash className="w-5 h-5" />
         </button>

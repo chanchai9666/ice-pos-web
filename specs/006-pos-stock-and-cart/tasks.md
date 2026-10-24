@@ -47,9 +47,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T009 [US2] Update PosCartItemRow layout to include a 44x44px product thumbnail image with rounded corners in src/components/pos/PosCartItemRow.tsx
-- [ ] T010 [US2] Implement fallback icon handling with Icons.Package and onError handling in src/components/pos/PosCartItemRow.tsx
-- [ ] T011 [US2] Ensure touch targets of +/- quantity buttons and delete button remain >= 48px in src/components/pos/PosCartItemRow.tsx
+- [X] T009 [US2] Update PosCartItemRow layout to include a 44x44px product thumbnail image with rounded corners in src/components/pos/PosCartItemRow.tsx
+- [X] T010 [US2] Implement fallback icon handling with Icons.Package and onError handling in src/components/pos/PosCartItemRow.tsx
+- [X] T011 [US2] Ensure touch targets of +/- quantity buttons and delete button remain >= 48px in src/components/pos/PosCartItemRow.tsx
 
 **Checkpoint**: User Story 2 ใช้งานได้สมบูรณ์ แถวรายการในตะกร้ามีรูปภาพประกอบชัดเจน
 
