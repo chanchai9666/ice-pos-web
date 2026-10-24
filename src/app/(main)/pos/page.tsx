@@ -63,6 +63,18 @@ function PosTerminalInner() {
   // การแตะเลือกสินค้าเพื่อเพิ่มลงตะกร้า
   const handleSelectProduct = (product: Product) => {
     addItem(product, 1);
+
+    // หากเป็นสินค้าที่ไม่ใช่ชั่งขายและสต็อกหมด ให้แจ้งเตือนผู้ใช้งาน (Toast Notification)
+    if (product.productType !== 'BY_WEIGHT') {
+      const stock = typeof stockMap[product.id] === 'number' ? stockMap[product.id] : 0;
+      if (stock <= 0) {
+        addToast({
+          type: 'INFO',
+          title: 'สินค้าหมดสต็อก',
+          message: `สินค้า "${product.name}" มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
+        });
+      }
+    }
   };
 
   // การจัดการเมื่อสแกนบาร์โค้ดจากเครื่องสแกนฮาร์ดแวร์
@@ -75,12 +87,21 @@ function PosTerminalInner() {
         );
         if (localFound) {
           addItem(localFound, 1);
-          addToast({
-            type: 'SUCCESS',
-            title: 'เพิ่มสินค้าลงบิลแล้ว',
-            message: localFound.name,
-            code: barcode,
-          });
+          const stock = typeof stockMap[localFound.id] === 'number' ? stockMap[localFound.id] : 0;
+          if (localFound.productType !== 'BY_WEIGHT' && stock <= 0) {
+            addToast({
+              type: 'INFO',
+              title: 'สินค้าหมดสต็อก',
+              message: `สินค้า "${localFound.name}" มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
+            });
+          } else {
+            addToast({
+              type: 'SUCCESS',
+              title: 'เพิ่มสินค้าลงบิลแล้ว',
+              message: localFound.name,
+              code: barcode,
+            });
+          }
           return;
         }
 
@@ -88,12 +109,21 @@ function PosTerminalInner() {
         const res = await catalogService.lookupProduct(barcode);
         if (res.data) {
           addItem(res.data, 1);
-          addToast({
-            type: 'SUCCESS',
-            title: 'เพิ่มสินค้าลงบิลแล้ว',
-            message: res.data.name,
-            code: barcode,
-          });
+          const stock = typeof stockMap[res.data.id] === 'number' ? stockMap[res.data.id] : 0;
+          if (res.data.productType !== 'BY_WEIGHT' && stock <= 0) {
+            addToast({
+              type: 'INFO',
+              title: 'สินค้าหมดสต็อก',
+              message: `สินค้า "${res.data.name}" มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
+            });
+          } else {
+            addToast({
+              type: 'SUCCESS',
+              title: 'เพิ่มสินค้าลงบิลแล้ว',
+              message: res.data.name,
+              code: barcode,
+            });
+          }
         } else {
           addToast({
             type: 'ERROR',
@@ -111,7 +141,7 @@ function PosTerminalInner() {
         });
       }
     },
-    [products, addItem, addToast]
+    [products, stockMap, addItem, addToast]
   );
 
   // ดักจับบาร์โค้ดฮาร์ดแวร์ทั่วทั้งหน้าจอ

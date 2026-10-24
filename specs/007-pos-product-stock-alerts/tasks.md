@@ -58,7 +58,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T009 [US3] ปรับปรุงฟังก์ชัน `handleSelectProduct` ใน `src/app/(main)/pos/page.tsx` ให้เพิ่มสินค้าลงตะกร้าตามปกติ พร้อมแสดง Toast Notification แจ้งเตือนเมื่อสินค้าที่เลือกมีสต็อก `<= 0`
+- [x] T009 [US3] ปรับปรุงฟังก์ชัน `handleSelectProduct` ใน `src/app/(main)/pos/page.tsx` ให้เพิ่มสินค้าลงตะกร้าตามปกติ พร้อมแสดง Toast Notification แจ้งเตือนเมื่อสินค้าที่เลือกมีสต็อก `<= 0`
 
 ---
 
