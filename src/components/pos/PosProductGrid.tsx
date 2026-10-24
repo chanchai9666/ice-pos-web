@@ -9,6 +9,7 @@
 
 import React from 'react';
 import { Product } from '@/types/catalog';
+import { StockLevelMap } from '@/types/inventory';
 import { formatSatangToBaht } from '@/utils/currency';
 import { Icons } from '@/components/ui/Icons';
 
@@ -16,12 +17,14 @@ interface PosProductGridProps {
   products: Product[];
   onSelectProduct: (product: Product) => void;
   isLoading?: boolean;
+  stockMap?: StockLevelMap;
 }
 
 export function PosProductGrid({
   products,
   onSelectProduct,
   isLoading = false,
+  stockMap = {},
 }: PosProductGridProps) {
   if (isLoading) {
     return (
@@ -57,6 +60,11 @@ export function PosProductGrid({
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 select-none">
       {products.map((product) => {
+        const isWeightBased = product.productType === 'BY_WEIGHT';
+        const stock = stockMap[product.id];
+        const hasStockInfo = typeof stock === 'number';
+        const isOutOfStock = !isWeightBased && hasStockInfo && stock <= 0;
+
         return (
           <button
             key={product.id}
@@ -84,9 +92,27 @@ export function PosProductGrid({
                 />
               )}
 
-              {/* ป้ายแสดงหน่วยนับ */}
+              {/* ป้ายแสดงประเภทสินค้า ชั่งขาย หรือ สต็อกคงเหลือ (มุมซ้ายบน) */}
+              {isWeightBased ? (
+                <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 text-xs font-black shadow-md tracking-wide flex items-center gap-1 z-10">
+                  <Icons.Scale className="w-3.5 h-3.5" />
+                  ชั่งขาย
+                </span>
+              ) : hasStockInfo ? (
+                isOutOfStock ? (
+                  <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-rose-600 text-white text-xs font-bold shadow-md z-10">
+                    สินค้าหมด
+                  </span>
+                ) : (
+                  <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-slate-950/85 backdrop-blur-sm text-xs font-bold text-emerald-400 border border-emerald-500/40 z-10">
+                    คงเหลือ: {stock}
+                  </span>
+                )
+              ) : null}
+
+              {/* ป้ายแสดงหน่วยนับ (มุมขวาล่าง) */}
               {product.baseUom?.name && (
-                <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm text-[11px] font-medium text-slate-300 border border-slate-700/60">
+                <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm text-[11px] font-medium text-slate-300 border border-slate-700/60 z-10">
                   {product.baseUom.name}
                 </span>
               )}
@@ -101,6 +127,18 @@ export function PosProductGrid({
                 <p className="text-xs text-slate-400 truncate mt-0.5 font-mono">
                   {product.barcode || product.sku}
                 </p>
+                {/* ข้อมูลคงเหลือหรือชั่งขายใต้รหัสสินค้า */}
+                <div className="flex items-center text-xs mt-1">
+                  {isWeightBased ? (
+                    <span className="text-amber-400 font-semibold text-[11px] flex items-center gap-1">
+                      <Icons.Scale className="w-3 h-3" /> สินค้าชั่งขาย
+                    </span>
+                  ) : hasStockInfo ? (
+                    <span className={`font-mono text-[11px] ${isOutOfStock ? 'text-rose-400 font-bold' : 'text-slate-400'}`}>
+                      {isOutOfStock ? 'สินค้าหมด' : `คงเหลือ ${stock} ${product.baseUom?.name || 'ชิ้น'}`}
+                    </span>
+                  ) : null}
+                </div>
               </div>
 
               {/* ส่วนราคาขาย */}

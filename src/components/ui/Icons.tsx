@@ -128,6 +128,16 @@ export const Icons = {
       <path d="m9 18 6-6-6-6" />
     </svg>
   ),
+  ChevronDown: ({ className = 'w-5 h-5', size }: IconProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  ),
+  ChevronUp: ({ className = 'w-5 h-5', size }: IconProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="m18 15-6-6-6 6" />
+    </svg>
+  ),
   Menu: ({ className = 'w-5 h-5', size }: IconProps) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <line x1="4" x2="20" y1="12" y2="12" />
@@ -321,6 +331,15 @@ export const Icons = {
       <path d="m4.9 19.1 2.9-2.9" />
       <path d="M2 12h4" />
       <path d="m4.9 4.9 2.9 2.9" />
+    </svg>
+  ),
+  Scale: ({ className = 'w-5 h-5', size }: IconProps) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+      <path d="M7 21h10" />
+      <path d="M12 3v18" />
+      <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
     </svg>
   ),
 };

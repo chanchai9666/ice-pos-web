@@ -30,10 +30,10 @@
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Update PosProductGridProps to accept stockMap in src/components/pos/PosProductGrid.tsx
-- [ ] T006 [US1] Implement stock level badges (in-stock, low-stock, out-of-stock) for PRICE_PER_UNIT products in src/components/pos/PosProductGrid.tsx
-- [ ] T007 [US1] Implement "ชั่งขาย" badge for BY_WEIGHT products in src/components/pos/PosProductGrid.tsx
-- [ ] T008 [US1] Connect stockMap from page state into PosProductGrid in src/app/(main)/pos/page.tsx
+- [X] T005 [US1] Update PosProductGridProps to accept stockMap in src/components/pos/PosProductGrid.tsx
+- [X] T006 [US1] Implement stock level badges (in-stock, low-stock, out-of-stock) for PRICE_PER_UNIT products in src/components/pos/PosProductGrid.tsx
+- [X] T007 [US1] Implement "ชั่งขาย" badge for BY_WEIGHT products in src/components/pos/PosProductGrid.tsx
+- [X] T008 [US1] Connect stockMap from page state into PosProductGrid in src/app/(main)/pos/page.tsx
 
 **Checkpoint**: User Story 1 ใช้งานได้สมบูรณ์ แคชเชียร์มองเห็นสต็อกและประเภทชั่งขายอย่างถูกต้อง
 

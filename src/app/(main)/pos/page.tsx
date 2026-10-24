@@ -266,6 +266,7 @@ function PosTerminalInner() {
               products={filteredProducts}
               onSelectProduct={handleSelectProduct}
               isLoading={isLoadingCatalog}
+              stockMap={stockMap}
             />
           </div>
         </div>
