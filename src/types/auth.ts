@@ -70,6 +70,9 @@ export type LoginMode = 'pin' | 'credentials';
 export interface RequestOptions extends RequestInit {
   params?: Record<string, string | number | boolean | undefined>;
   _isRetry?: boolean;
+  loadingMessage?: string;
+  silent?: boolean;
+  timeoutMs?: number;
 }
 
 // ข้อมูลที่บันทึกไว้ในอุปกรณ์ (Device Preferences)
