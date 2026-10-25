@@ -13,6 +13,7 @@ import {
   getRefreshToken,
   setAuthSession,
 } from '@/utils/storage';
+import { overlayCoordinator } from '@/services/overlay-coordinator';
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8080';
@@ -161,10 +162,40 @@ export async function request<T>(
     requestHeaders['Authorization'] = `Bearer ${token}`;
   }
 
+  const isSilent = Boolean(options.silent);
+  const isRetry = Boolean(options._isRetry);
+
+  // คำนวณระยะเวลา Timeout ตามประเภทของ Endpoint
+  const isPaymentOrTransaction =
+    endpoint.includes('/sales') ||
+    endpoint.includes('/orders') ||
+    endpoint.includes('/checkout') ||
+    endpoint.includes('/payments');
+  const defaultTimeout = isPaymentOrTransaction ? 30000 : 15000;
+  const timeoutMs = options.timeoutMs !== undefined ? options.timeoutMs : defaultTimeout;
+
+  const abortController = new AbortController();
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  if (timeoutMs > 0) {
+    timeoutId = setTimeout(() => {
+      abortController.abort();
+    }, timeoutMs);
+  }
+
+  if (options.signal) {
+    options.signal.addEventListener('abort', () => abortController.abort());
+  }
+
+  // เริ่มแสดง Loading Overlay (ยกเว้นงานเบื้องหลังแบบเงียบ หรือ Retry รอบใน)
+  if (!isSilent && !isRetry) {
+    overlayCoordinator.startRequest(options.loadingMessage);
+  }
+
   try {
     const response = await fetch(url, {
       credentials: options.credentials || 'include',
       ...restOptions,
+      signal: abortController.signal,
       headers: requestHeaders,
     });
 
@@ -237,6 +268,16 @@ export async function request<T>(
 
     return data;
   } catch (error) {
+    if (
+      error instanceof Error &&
+      (error.name === 'AbortError' || abortController.signal.aborted)
+    ) {
+      throw new ApiError(
+        'การเชื่อมต่อขัดข้องหรือหมดเวลา กรุณาตรวจสอบสัญญาณอินเทอร์เน็ตและลองใหม่อีกครั้ง',
+        408
+      );
+    }
+
     if (error instanceof ApiError) {
       throw error;
     }
@@ -245,6 +286,13 @@ export async function request<T>(
       'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการเชื่อมต่อเครือข่ายและสถานะ API',
       503
     );
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    if (!isSilent && !isRetry) {
+      overlayCoordinator.endRequest();
+    }
   }
 }
 

@@ -32,10 +32,10 @@
 
 **Independent Test**: ทำการเลือกสินค้าและกดปุ่มยืนยันชำระเงิน ตรวจสอบว่าหน้าจอถูกบล็อกด้วย Backdrop และข้อความโหลดทันที ไม่สามารถคลิกปุ่มซ้ำได้ และปลดล็อกเมื่อทำรายการสำเร็จหรือเกิดข้อผิดพลาด
 
-- [ ] T007 [US1] Integrate `overlayCoordinator.startRequest()` and `overlayCoordinator.endRequest()` into `request()` in `src/services/api.ts`
-- [ ] T008 [US1] Add timeout auto-dismissal (15s default, 30s payment/checkout) with `AbortController` in `src/services/api.ts`
-- [ ] T009 [US1] Ensure checkout and payment submission in `src/components/pos/PosCheckoutModal.tsx` activates the blocking overlay with message "กำลังประมวลผลการชำระเงิน กรุณารอสักครู่..."
-- [ ] T010 [US1] Ensure error handling in `src/services/api.ts` dismisses overlay and propagates Thai error alert cleanly without UI freeze
+- [X] T007 [US1] Integrate `overlayCoordinator.startRequest()` and `overlayCoordinator.endRequest()` into `request()` in `src/services/api.ts`
+- [X] T008 [US1] Add timeout auto-dismissal (15s default, 30s payment/checkout) with `AbortController` in `src/services/api.ts`
+- [X] T009 [US1] Ensure checkout and payment submission in `src/components/pos/PosCheckoutModal.tsx` activates the blocking overlay with message "กำลังประมวลผลการชำระเงิน กรุณารอสักครู่..."
+- [X] T010 [US1] Ensure error handling in `src/services/api.ts` dismisses overlay and propagates Thai error alert cleanly without UI freeze
 
 **Checkpoint**: ระบบป้องกันการกดส่งข้อมูลซ้ำในธุรกรรมสำคัญสำเร็จตามข้อกำหนด MVP
 

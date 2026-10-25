@@ -27,6 +27,8 @@ export const salesService = {
       method: 'POST',
       headers,
       body: JSON.stringify(saleData),
+      loadingMessage: 'กำลังประมวลผลการชำระเงิน กรุณารอสักครู่...',
+      timeoutMs: 30000,
     });
   },
 
