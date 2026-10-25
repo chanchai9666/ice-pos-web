@@ -47,12 +47,20 @@ export const authService = {
   },
 
   /**
-   * ขอต่ออายุ Access Token
+   * ขอต่ออายุ Access Token (รองรับทั้งการส่ง Refresh Token และการใช้ Cookie)
    */
-  async refreshToken(refreshToken: string): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/api/v1/auth/refresh', {
-      refreshToken,
-    });
+  async refreshToken(refreshToken?: string): Promise<AuthResponse> {
+    const response = await api.post<AuthResponse>(
+      '/api/v1/auth/refresh',
+      refreshToken ? { refreshToken } : {}
+    );
     return response.data;
+  },
+
+  /**
+   * ออกจากระบบและสั่งให้เซิร์ฟเวอร์เพิกถอนสิทธิ์พร้อมล้าง HttpOnly Cookie
+   */
+  async logout(): Promise<void> {
+    await api.post<void>('/api/v1/auth/logout');
   },
 };

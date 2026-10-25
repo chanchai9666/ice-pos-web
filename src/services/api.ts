@@ -1,6 +1,7 @@
 import {
   ApiResponse,
   AuthResponse,
+  RequestOptions,
   SessionEventPayload,
   SessionExpiredListener,
   TokenRefreshCoordinatorState,
@@ -30,11 +31,6 @@ export class ApiError extends Error {
     this.code = code;
     this.details = details;
   }
-}
-
-interface RequestOptions extends RequestInit {
-  params?: Record<string, string | number | boolean | undefined>;
-  _isRetry?: boolean;
 }
 
 // ==========================================
@@ -82,25 +78,21 @@ function notifySessionExpired(payload?: Partial<SessionEventPayload>): void {
 }
 
 /**
- * ฟังก์ชันหลักในการขอต่ออายุ Access Token ใหม่ด้วย Refresh Token
+ * ฟังก์ชันหลักในการขอต่ออายุ Access Token ใหม่ด้วย Refresh Token (รองรับ Hybrid Cookie + Payload)
  */
 async function performTokenRefresh(): Promise<string> {
   const refreshToken = getRefreshToken();
-  if (!refreshToken) {
-    clearAuthSession();
-    notifySessionExpired();
-    throw new ApiError('ไม่พบ Refresh Token ในระบบ กรุณาเข้าสู่ระบบใหม่', 401);
-  }
 
   try {
     const refreshUrl = `${API_BASE_URL}/api/v1/auth/refresh`;
     const res = await fetch(refreshUrl, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify({ refreshToken }),
+      body: JSON.stringify(refreshToken ? { refreshToken } : {}),
     });
 
     let data: ApiResponse<AuthResponse>;
@@ -110,16 +102,18 @@ async function performTokenRefresh(): Promise<string> {
       throw new ApiError('รูปแบบการตอบกลับจากระบบไม่ถูกต้อง', res.status);
     }
 
-    if (!res.ok || (data.code !== undefined && data.code !== 0) || !data.data?.accessToken) {
+    if (!res.ok || (data.code !== undefined && data.code !== 0)) {
       throw new ApiError(data.message || 'Refresh token is invalid or expired', data.code || res.status);
     }
 
     const newAuth = data.data;
-    // อัปเดต Token ชุดใหม่ลงใน Storage โดยคงข้อมูลสาขาเดิมไว้
-    const currentBranch = getCurrentBranch();
-    setAuthSession(newAuth, currentBranch);
+    if (newAuth) {
+      // อัปเดต Token ชุดใหม่ลงใน Storage โดยคงข้อมูลสาขาเดิมไว้
+      const currentBranch = getCurrentBranch();
+      setAuthSession(newAuth, currentBranch);
+    }
 
-    return newAuth.accessToken;
+    return newAuth?.accessToken || 'refreshed';
   } catch (error) {
     // ล้างเฉพาะ Token และแจ้งเตือนเซสชันหมดอายุ
     clearAuthSession();
@@ -169,6 +163,7 @@ export async function request<T>(
 
   try {
     const response = await fetch(url, {
+      credentials: options.credentials || 'include',
       ...restOptions,
       headers: requestHeaders,
     });
@@ -183,11 +178,12 @@ export async function request<T>(
       );
     }
 
-    // กรณีได้รับ HTTP 401 และไม่ใช่ Endpoint เข้าสู่ระบบหรือ Refresh Token
+    // กรณีได้รับ HTTP 401 และไม่ใช่ Endpoint เข้าสู่ระบบ, ออกจากระบบ หรือ Refresh Token
     const isAuthEndpoint =
       endpoint.startsWith('/api/v1/auth/login') ||
       endpoint.startsWith('/api/v1/auth/pin-login') ||
-      endpoint.startsWith('/api/v1/auth/refresh');
+      endpoint.startsWith('/api/v1/auth/refresh') ||
+      endpoint.startsWith('/api/v1/auth/logout');
 
     if (response.status === 401 && !isAuthEndpoint && !_isRetry) {
       // 1. หากมีคำขออื่นกำลัง Refresh อยู่ ให้คำขอนี้รอในคิว

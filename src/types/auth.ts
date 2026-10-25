@@ -54,17 +54,23 @@ export interface PinLoginRequest {
   pin: string;
 }
 
-// ผลลัพธ์เมื่อเข้าสู่ระบบสำเร็จ
+// ผลลัพธ์เมื่อเข้าสู่ระบบสำเร็จ (รองรับทั้งแบบ Hybrid และ Cookie-based)
 export interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  tokenType: string;
-  expiresIn: number;
+  accessToken?: string;
+  refreshToken?: string;
+  tokenType?: string;
+  expiresIn?: number;
   user: UserProfile;
 }
 
 // โหมดการเข้าสู่ระบบ
 export type LoginMode = 'pin' | 'credentials';
+
+// ตัวเลือกการส่งคำขอระดับเครือข่าย (Request Options)
+export interface RequestOptions extends RequestInit {
+  params?: Record<string, string | number | boolean | undefined>;
+  _isRetry?: boolean;
+}
 
 // ข้อมูลที่บันทึกไว้ในอุปกรณ์ (Device Preferences)
 export interface DevicePreferences {
@@ -82,7 +88,8 @@ export interface DevicePreferences {
 export type SessionEventType =
   | 'SESSION_REFRESHED'
   | 'SESSION_EXPIRED'
-  | 'SESSION_NETWORK_ERROR';
+  | 'SESSION_NETWORK_ERROR'
+  | 'LOGOUT';
 
 /**
  * รายละเอียดของเหตุการณ์เซสชัน

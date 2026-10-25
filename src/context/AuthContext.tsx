@@ -19,7 +19,6 @@ import {
 } from '@/types/auth';
 import {
   clearAuthSession,
-  getAccessToken,
   getCurrentBranch,
   getUserProfile,
   setAuthSession,
@@ -35,7 +34,7 @@ interface AuthContextType {
     credentials: PinLoginRequest,
     branchInfo?: Branch | null
   ) => Promise<AuthResponse>;
-  logout: () => void;
+  logout: () => Promise<void>;
   setCurrentBranch: (branch: Branch) => void;
   handleSessionExpired: () => void;
 }
@@ -45,11 +44,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
-  // เริ่มต้น State โดยตรงจาก LocalStorage ผ่านฟังก์ชัน Lazy Initializer
+  // เริ่มต้น State โดยตรงจาก LocalStorage (รองรับทั้งโหมด Cookie และ Token)
   const [user, setUser] = useState<UserProfile | null>(() => {
     try {
-      const token = getAccessToken();
-      return token ? getUserProfile() : null;
+      return getUserProfile();
     } catch {
       return null;
     }
@@ -57,8 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [branch, setBranch] = useState<Branch | null>(() => {
     try {
-      const token = getAccessToken();
-      return token ? getCurrentBranch() : null;
+      return getCurrentBranch();
     } catch {
       return null;
     }
@@ -124,11 +121,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     []
   );
 
-  const logout = useCallback(() => {
-    setUser(null);
-    setBranch(null);
-    clearAuthSession(false); // ล็อกเอาท์แบบแมนนวล ล้างข้อมูลทั้งหมด
-    router.push('/login');
+  const logout = useCallback(async () => {
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.warn('Server logout error (proceeding with local cleanup):', err);
+    } finally {
+      setUser(null);
+      clearAuthSession(true); // คงสาขาไว้เพื่อให้แคชเชียร์ล็อกอิน PIN ต่อได้ทันที
+      router.push('/login');
+    }
   }, [router]);
 
   const handleSetCurrentBranch = useCallback((newBranch: Branch) => {

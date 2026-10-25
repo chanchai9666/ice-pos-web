@@ -30,9 +30,19 @@ export function getRefreshToken(): string | null {
 
 export function setAuthSession(auth: AuthResponse, branch?: Branch | null): void {
   if (!isBrowser()) return;
-  localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, auth.accessToken);
-  localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, auth.refreshToken);
-  localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(auth.user));
+  if (auth.accessToken) {
+    localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, auth.accessToken);
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+  }
+  if (auth.refreshToken) {
+    localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, auth.refreshToken);
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+  }
+  if (auth.user) {
+    localStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(auth.user));
+  }
   if (branch) {
     localStorage.setItem(STORAGE_KEYS.CURRENT_BRANCH, JSON.stringify(branch));
     localStorage.setItem(STORAGE_KEYS.LAST_BRANCH_ID, branch.id);

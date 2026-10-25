@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Icons } from '@/components/ui/Icons';
 import { Badge } from '@/components/ui/Badge';
@@ -12,13 +11,11 @@ export interface AppHeaderProps {
 }
 
 export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProps) {
-  const router = useRouter();
   const { user, branch, logout } = useAuth();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
-      logout();
-      router.push('/login');
+      await logout();
     }
   };
 
@@ -98,14 +95,14 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
           </div>
         )}
 
-        {/* ปุ่มออกจากระบบ */}
+        {/* ปุ่มออกจากระบบ (Elderly-Friendly >= 48px touch target) */}
         <button
           type="button"
           onClick={handleLogout}
           title="ออกจากระบบ"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition-all text-xs font-medium cursor-pointer"
+          className="flex items-center justify-center gap-2 px-3 py-2 min-h-[48px] rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition-all text-sm font-medium cursor-pointer"
         >
-          <Icons.LogOut className="w-4 h-4" />
+          <Icons.LogOut className="w-5 h-5" />
           <span className="hidden sm:inline">ออกจากระบบ</span>
         </button>
       </div>
