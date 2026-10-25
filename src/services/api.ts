@@ -80,6 +80,8 @@ function notifySessionExpired(payload?: Partial<SessionEventPayload>): void {
 
 /**
  * ฟังก์ชันหลักในการขอต่ออายุ Access Token ใหม่ด้วย Refresh Token (รองรับ Hybrid Cookie + Payload)
+ * เป็นคำของานเบื้องหลังแบบเงียบ (Silent Background Task) ที่ไม่เรียกใช้งาน overlayCoordinator
+ * เพื่อไม่ให้มี Full Blocking Overlay ขัดขวางการทำงานต่อเนื่องของแคชเชียร์ ตามธรรมนูญ v1.5.1
  */
 async function performTokenRefresh(): Promise<string> {
   const refreshToken = getRefreshToken();

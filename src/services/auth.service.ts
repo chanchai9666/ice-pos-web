@@ -48,11 +48,13 @@ export const authService = {
 
   /**
    * ขอต่ออายุ Access Token (รองรับทั้งการส่ง Refresh Token และการใช้ Cookie)
+   * ดำเนินการแบบเงียบ (silent: true) ไม่ให้แสดง blocking overlay ตามธรรมนูญ v1.5.1
    */
   async refreshToken(refreshToken?: string): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>(
       '/api/v1/auth/refresh',
-      refreshToken ? { refreshToken } : {}
+      refreshToken ? { refreshToken } : {},
+      { silent: true }
     );
     return response.data;
   },

@@ -60,8 +60,8 @@
 
 **Independent Test**: ขณะเลือกดูสินค้าบนหน้าจอขาย POS จำลองให้ Access Token หมดอายุ ตรวจสอบว่าระบบต่ออายุ Token เบื้องหลังสำเร็จโดยไม่มี Full Blocking Overlay ขัดขวางการทำงาน
 
-- [ ] T013 [US3] Configure `performTokenRefresh()` in `src/services/api.ts` to pass `{ silent: true }` so it bypasses overlay coordinator
-- [ ] T014 [US3] Verify that background network requests and token refresh execute without mounting or triggering the global blocking backdrop
+- [X] T013 [US3] Configure `performTokenRefresh()` in `src/services/api.ts` to pass `{ silent: true }` so it bypasses overlay coordinator
+- [X] T014 [US3] Verify that background network requests and token refresh execute without mounting or triggering the global blocking backdrop
 
 **Checkpoint**: คำของานเบื้องหลังแบบเงียบทำงานได้อย่างราบรื่นโดยไม่กระทบต่อประสบการณ์ของแคชเชียร์
 
