@@ -17,10 +17,10 @@
 
 **⚠️ CRITICAL**: ต้องสร้าง Coordinator และ Context ให้เสร็จสมบูรณ์ก่อนเพื่อรองรับการเรียกใช้งานในทุก User Story
 
-- [ ] T003 Implement `overlayCoordinator` with reference counter, listener subscription, and emergency reset in `src/services/overlay-coordinator.ts`
-- [ ] T004 Create `LoadingOverlayContext` and `LoadingOverlayProvider` subscribing to coordinator state in `src/context/LoadingOverlayContext.tsx`
-- [ ] T005 [P] Create Elderly-Friendly presentation component `LoadingOverlay` with high contrast backdrop and large spinner in `src/components/ui/LoadingOverlay.tsx`
-- [ ] T006 Mount `LoadingOverlayProvider` and `<LoadingOverlay />` at the root application layout in `src/app/layout.tsx`
+- [X] T003 Implement `overlayCoordinator` with reference counter, listener subscription, and emergency reset in `src/services/overlay-coordinator.ts`
+- [X] T004 Create `LoadingOverlayContext` and `LoadingOverlayProvider` subscribing to coordinator state in `src/context/LoadingOverlayContext.tsx`
+- [X] T005 [P] Create Elderly-Friendly presentation component `LoadingOverlay` with high contrast backdrop and large spinner in `src/components/ui/LoadingOverlay.tsx`
+- [X] T006 Mount `LoadingOverlayProvider` and `<LoadingOverlay />` at the root application layout in `src/app/layout.tsx`
 
 **Checkpoint**: โครงสร้างพื้นฐาน Overlay พร้อมใช้งานและพร้อมเชื่อมโยงกับคำขอเครือข่าย
 

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { LoadingOverlayProvider } from "@/context/LoadingOverlayContext";
+import { LoadingOverlay } from "@/components/ui/LoadingOverlay";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +31,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <LoadingOverlayProvider>
+            {children}
+            <LoadingOverlay />
+          </LoadingOverlayProvider>
+        </AuthProvider>
       </body>
     </html>
   );
