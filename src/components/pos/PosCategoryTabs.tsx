@@ -29,12 +29,13 @@ export function PosCategoryTabs({
         {/* แท็บ "สินค้าทั้งหมด" */}
         <button
           type="button"
+          disabled={isLoading}
           onClick={() => onSelectCategory('ALL')}
           className={`min-h-[48px] px-5 py-2.5 rounded-xl text-base font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 border shadow-sm ${
             selectedCategoryId === 'ALL'
               ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-400/50 shadow-cyan-500/20'
               : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700'
-          }`}
+          } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
         >
           <span>สินค้าทั้งหมด</span>
         </button>
@@ -46,12 +47,13 @@ export function PosCategoryTabs({
             <button
               key={category.id}
               type="button"
+              disabled={isLoading}
               onClick={() => onSelectCategory(category.id)}
               className={`min-h-[48px] px-5 py-2.5 rounded-xl text-base font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 border shadow-sm ${
                 isSelected
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-400/50 shadow-cyan-500/20'
                   : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700'
-              }`}
+              } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
             >
               <span>{category.name}</span>
             </button>

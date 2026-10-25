@@ -29,7 +29,21 @@ export function PosProductGrid({
 }: PosProductGridProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div
+        aria-busy="true"
+        aria-live="polite"
+        className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pointer-events-none select-none min-h-[300px]"
+      >
+        {/* แถบ Overlay สถานะกำลังโหลดข้อมูลสินค้า */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-950/40 backdrop-blur-[2px] rounded-2xl">
+          <div className="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-slate-900 border-2 border-cyan-500/50 shadow-2xl">
+            <div className="w-6 h-6 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+            <span className="text-lg font-bold text-white tracking-wide">
+              กำลังโหลดรายการสินค้า...
+            </span>
+          </div>
+        </div>
+
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}

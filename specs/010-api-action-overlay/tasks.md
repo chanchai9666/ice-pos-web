@@ -47,8 +47,8 @@
 
 **Independent Test**: ทำการพิมพ์ค้นหาสินค้าหรือกดสลับหมวดหมู่สินค้า ตรวจสอบว่าระบบแสดงข้อความโหลดบอกความคืบหน้าและควบคุมไม่ให้กดซ้ำรัวๆ
 
-- [ ] T011 [US2] Update catalog/product search and category change triggers to display loading overlay/indicator in `src/components/pos/PosProductGrid.tsx`
-- [ ] T012 [US2] Support custom `loadingMessage` parameter in `src/services/product.service.ts` for product fetching and filtering
+- [X] T011 [US2] Update catalog/product search and category change triggers to display loading overlay/indicator in `src/components/pos/PosProductGrid.tsx`
+- [X] T012 [US2] Support custom `loadingMessage` parameter in `src/services/product.service.ts` for product fetching and filtering
 
 **Checkpoint**: การค้นหาและสลับหมวดหมู่สินค้าทำงานร่วมกับระบบแสดงสถานะได้อย่างราบรื่น
 

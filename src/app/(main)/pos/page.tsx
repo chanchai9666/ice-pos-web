@@ -353,6 +353,7 @@ function PosTerminalInner() {
             categories={categories}
             selectedCategoryId={selectedCategoryId}
             onSelectCategory={setSelectedCategoryId}
+            isLoading={isLoadingCatalog}
           />
 
           {/* ตารางการ์ดสินค้า */}

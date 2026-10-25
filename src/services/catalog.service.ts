@@ -4,7 +4,7 @@
  */
 
 import { api } from '@/services/api';
-import { ApiResponse } from '@/types/auth';
+import { ApiResponse, RequestOptions } from '@/types/auth';
 import {
   Category,
   CreateCategoryRequest,
@@ -24,8 +24,10 @@ export const catalogService = {
   /**
    * ดึงรายการหมวดหมู่สินค้าทั้งหมด
    */
-  async getCategories(params?: CategoryQueryParams): Promise<ApiResponse<Category[]>> {
+  async getCategories(params?: CategoryQueryParams, options?: RequestOptions): Promise<ApiResponse<Category[]>> {
     return api.get<Category[]>('/api/v1/categories', {
+      loadingMessage: 'กำลังโหลดหมวดหมู่สินค้า...',
+      ...options,
       params: {
         page: params?.page,
         pageSize: params?.pageSize,
@@ -36,29 +38,38 @@ export const catalogService = {
   /**
    * ดึงข้อมูลหมวดหมู่สินค้าตาม ID
    */
-  async getCategoryById(id: string): Promise<ApiResponse<Category>> {
-    return api.get<Category>(`/api/v1/categories/${id}`);
+  async getCategoryById(id: string, options?: RequestOptions): Promise<ApiResponse<Category>> {
+    return api.get<Category>(`/api/v1/categories/${id}`, options);
   },
 
   /**
    * สร้างหมวดหมู่สินค้าใหม่
    */
-  async createCategory(data: CreateCategoryRequest): Promise<ApiResponse<Category>> {
-    return api.post<Category>('/api/v1/categories', data);
+  async createCategory(data: CreateCategoryRequest, options?: RequestOptions): Promise<ApiResponse<Category>> {
+    return api.post<Category>('/api/v1/categories', data, {
+      loadingMessage: 'กำลังบันทึกหมวดหมู่สินค้า...',
+      ...options,
+    });
   },
 
   /**
    * แก้ไขหมวดหมู่สินค้า
    */
-  async updateCategory(id: string, data: UpdateCategoryRequest): Promise<ApiResponse<Category>> {
-    return api.put<Category>(`/api/v1/categories/${id}`, data);
+  async updateCategory(id: string, data: UpdateCategoryRequest, options?: RequestOptions): Promise<ApiResponse<Category>> {
+    return api.put<Category>(`/api/v1/categories/${id}`, data, {
+      loadingMessage: 'กำลังอัปเดตหมวดหมู่สินค้า...',
+      ...options,
+    });
   },
 
   /**
    * ลบหมวดหมู่สินค้า
    */
-  async deleteCategory(id: string): Promise<ApiResponse<null>> {
-    return api.delete<null>(`/api/v1/categories/${id}`);
+  async deleteCategory(id: string, options?: RequestOptions): Promise<ApiResponse<null>> {
+    return api.delete<null>(`/api/v1/categories/${id}`, {
+      loadingMessage: 'กำลังลบหมวดหมู่สินค้า...',
+      ...options,
+    });
   },
 
   // ==========================================
@@ -68,8 +79,10 @@ export const catalogService = {
   /**
    * ค้นหาและดูรายการสินค้า
    */
-  async getProducts(params?: ProductQueryParams): Promise<ApiResponse<Product[]>> {
+  async getProducts(params?: ProductQueryParams, options?: RequestOptions): Promise<ApiResponse<Product[]>> {
     return api.get<Product[]>('/api/v1/products', {
+      loadingMessage: options?.loadingMessage || 'กำลังโหลดรายการสินค้า...',
+      ...options,
       params: {
         search: params?.search,
         categoryId: params?.categoryId || params?.category_id,
@@ -84,43 +97,52 @@ export const catalogService = {
   /**
    * ดึงข้อมูลสินค้าตาม ID
    */
-  async getProductById(id: string): Promise<ApiResponse<Product>> {
-    return api.get<Product>(`/api/v1/products/${id}`);
+  async getProductById(id: string, options?: RequestOptions): Promise<ApiResponse<Product>> {
+    return api.get<Product>(`/api/v1/products/${id}`, options);
   },
 
   /**
    * ค้นหาสินค้าด้วย SKU หรือ Barcode (Lookup)
    */
-  async lookupProduct(code: string): Promise<ApiResponse<Product>> {
-    return api.get<Product>(`/api/v1/products/lookup/${encodeURIComponent(code)}`);
+  async lookupProduct(code: string, options?: RequestOptions): Promise<ApiResponse<Product>> {
+    return api.get<Product>(`/api/v1/products/lookup/${encodeURIComponent(code)}`, options);
   },
 
   /**
    * สร้างสินค้าใหม่
    */
-  async createProduct(data: CreateProductRequest): Promise<ApiResponse<Product>> {
-    return api.post<Product>('/api/v1/products', data);
+  async createProduct(data: CreateProductRequest, options?: RequestOptions): Promise<ApiResponse<Product>> {
+    return api.post<Product>('/api/v1/products', data, {
+      loadingMessage: 'กำลังบันทึกข้อมูลสินค้า...',
+      ...options,
+    });
   },
 
   /**
    * แก้ไขข้อมูลสินค้า
    */
-  async updateProduct(id: string, data: UpdateProductRequest): Promise<ApiResponse<Product>> {
-    return api.put<Product>(`/api/v1/products/${id}`, data);
+  async updateProduct(id: string, data: UpdateProductRequest, options?: RequestOptions): Promise<ApiResponse<Product>> {
+    return api.put<Product>(`/api/v1/products/${id}`, data, {
+      loadingMessage: 'กำลังอัปเดตข้อมูลสินค้า...',
+      ...options,
+    });
   },
 
   /**
    * ลบสินค้า
    */
-  async deleteProduct(id: string): Promise<ApiResponse<null>> {
-    return api.delete<null>(`/api/v1/products/${id}`);
+  async deleteProduct(id: string, options?: RequestOptions): Promise<ApiResponse<null>> {
+    return api.delete<null>(`/api/v1/products/${id}`, {
+      loadingMessage: 'กำลังลบรายการสินค้า...',
+      ...options,
+    });
   },
 
   /**
    * สร้างบาร์โค้ดภายในร้านอัตโนมัติ (Internal Barcode)
    */
-  async generateInternalBarcode(id: string): Promise<ApiResponse<Product>> {
-    return api.post<Product>(`/api/v1/products/${id}/internal-barcode`);
+  async generateInternalBarcode(id: string, options?: RequestOptions): Promise<ApiResponse<Product>> {
+    return api.post<Product>(`/api/v1/products/${id}/internal-barcode`, undefined, options);
   },
 
   /**
