@@ -71,8 +71,8 @@
 
 **Purpose**: ตรวจสอบความสมบูรณ์ ความสอดคล้องกับธรรมนูญ และการทดสอบตามสถานการณ์
 
-- [ ] T015 [P] Verify Elderly-Friendly accessibility, minimum font size 18px, and WCAG 2.1 AA contrast in `src/components/ui/LoadingOverlay.tsx`
-- [ ] T016 Run full validation scenarios per `quickstart.md` across POS checkout, error recovery, and silent refresh
+- [X] T015 [P] Verify Elderly-Friendly accessibility, minimum font size 18px, and WCAG 2.1 AA contrast in `src/components/ui/LoadingOverlay.tsx`
+- [X] T016 Run full validation scenarios per `quickstart.md` across POS checkout, error recovery, and silent refresh
 
 ---
 
