@@ -121,24 +121,12 @@ export function PosProductGrid({
                 <p className="text-xs text-slate-400 truncate mt-0.5 font-mono">
                   {product.barcode || product.sku}
                 </p>
-                {/* ข้อมูลคงเหลือหรือชั่งขายใต้รหัสสินค้า */}
-                <div className="flex items-center text-xs mt-1">
-                  {stockInfo.isWeightBased ? (
-                    <span className="text-amber-400 font-semibold text-[11px] flex items-center gap-1">
-                      <Icons.Scale className="w-3 h-3" /> {stockInfo.detailStockText}
-                    </span>
-                  ) : (
-                    <span className={`font-mono text-[11px] ${stockInfo.detailStockColorClass}`}>
-                      {stockInfo.detailStockText}
-                    </span>
-                  )}
-                </div>
               </div>
 
               {/* ส่วนราคาขาย */}
               <div className="pt-2 flex items-baseline justify-between border-t border-slate-800/80">
                 <span className="text-lg sm:text-xl font-extrabold text-cyan-400">
-                  ฿{formatSatangToBaht(product.price ?? 0)}
+                  {formatSatangToBaht(product.price ?? 0)}
                 </span>
                 <span className="text-xs text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">
                   + เพิ่ม
