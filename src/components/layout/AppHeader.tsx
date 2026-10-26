@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Icons } from '@/components/ui/Icons';
 import { Badge } from '@/components/ui/Badge';
+import { triggerCameraScanner } from '@/utils/navigation';
 
 export interface AppHeaderProps {
   onToggleSidebar: () => void;
@@ -12,6 +14,8 @@ export interface AppHeaderProps {
 
 export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProps) {
   const { user, branch, logout } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
@@ -74,6 +78,19 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
             <span className="text-slate-500 font-mono">({branch.code})</span>
           </div>
         )}
+
+        {/* ปุ่มสแกนสินค้าด้วยกล้องแบบ Primary Accent (เฉพาะหน้าจอ Desktop >= 1024px) */}
+        <button
+          type="button"
+          onClick={() => triggerCameraScanner(router, pathname)}
+          title="สแกนสินค้าด้วยกล้อง"
+          className="hidden lg:flex items-center gap-2.5 px-4 py-2 min-h-[48px] rounded-xl bg-gradient-to-r from-cyan-500 via-cyan-400 to-blue-600 hover:from-cyan-400 hover:to-blue-500 active:scale-95 text-slate-950 font-bold text-sm transition-all duration-200 shadow-md shadow-cyan-500/30 hover:shadow-cyan-400/50 cursor-pointer"
+        >
+          <div className="p-1 rounded-lg bg-slate-950/20 text-slate-950">
+            <Icons.Camera className="w-5 h-5" />
+          </div>
+          <span className="tracking-wide">สแกนสินค้า</span>
+        </button>
 
         {/* ผู้ใช้งานและระดับสิทธิ์ */}
         {user && (
