@@ -15,6 +15,7 @@ import {
   Branch,
   LoginRequest,
   PinLoginRequest,
+  SessionEventPayload,
   UserProfile,
 } from '@/types/auth';
 import {
@@ -36,7 +37,7 @@ interface AuthContextType {
   ) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   setCurrentBranch: (branch: Branch) => void;
-  handleSessionExpired: () => void;
+  handleSessionExpired: (payload?: SessionEventPayload) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,17 +64,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [isLoading] = useState<boolean>(false);
 
-  // จัดการเมื่อเซสชันหมดอายุจริง: ล้างสิทธิ์ คงสาขา และนำทางไปหน้าเข้าสู่ระบบพร้อมส่งสถานะ expired=1
-  const handleSessionExpired = useCallback(() => {
-    setUser(null);
-    clearAuthSession(true); // คงสาขาไว้เพื่อให้ล็อกอิน PIN ต่อได้ทันที
-    router.push('/login?expired=1');
-  }, [router]);
+  // จัดการเมื่อเซสชันหมดอายุหรือเครือข่ายหมดเวลา: ล้างสิทธิ์ คงสาขา และนำทางไปหน้าเข้าสู่ระบบ
+  const handleSessionExpired = useCallback(
+    (payload?: SessionEventPayload) => {
+      setUser(null);
+      clearAuthSession(true); // คงสาขาไว้เพื่อให้ล็อกอิน PIN ต่อได้ทันที
+      if (payload?.type === 'SESSION_NETWORK_ERROR') {
+        router.push('/login?timeout=1');
+      } else {
+        router.push('/login?expired=1');
+      }
+    },
+    [router]
+  );
 
   // ลงทะเบียนรับฟังเหตุการณ์เซสชันหมดอายุจาก API Interceptor
   useEffect(() => {
-    const unsubscribe = registerSessionExpiredListener(() => {
-      handleSessionExpired();
+    const unsubscribe = registerSessionExpiredListener((payload) => {
+      handleSessionExpired(payload);
     });
     return unsubscribe;
   }, [handleSessionExpired]);

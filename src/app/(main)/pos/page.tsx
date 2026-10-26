@@ -19,6 +19,8 @@ import { PosSearchBar } from '@/components/pos/PosSearchBar';
 import { PosCategoryTabs } from '@/components/pos/PosCategoryTabs';
 import { PosProductGrid } from '@/components/pos/PosProductGrid';
 import { PosCartPanel } from '@/components/pos/PosCartPanel';
+import { PosCartFloatingBar } from '@/components/pos/PosCartFloatingBar';
+import { PosCartBottomSheet } from '@/components/pos/PosCartBottomSheet';
 import { PosScanToast } from '@/components/pos/PosScanToast';
 import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
 import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
@@ -30,7 +32,7 @@ import { Icons } from '@/components/ui/Icons';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
-  const { items, addItem, addToast, activeShift, setActiveShift, isLoadingShift } = usePosCart();
+  const { items, summary, addItem, addToast, activeShift, setActiveShift, isLoadingShift } = usePosCart();
 
   // ใช้ branchId จากสาขาที่เลือก หรือ fallback ไปยังสาขาประจำตัวผู้ใช้ (กรณี login ด้วย Username/Password)
   const effectiveBranchId = branch?.id ?? user?.branchId ?? undefined;
@@ -44,6 +46,7 @@ function PosTerminalInner() {
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
+  const [isCartBottomSheetOpen, setIsCartBottomSheetOpen] = useState<boolean>(false);
 
   // คำนวณสต็อกคงเหลือสุทธิแบบ Real-time โดยหักจำนวนสินค้าที่อยู่ในตะกร้าออก (ยกเว้นสินค้าประเภทชั่งขาย)
   const effectiveStockMap = useMemo(() => {
@@ -324,10 +327,10 @@ function PosTerminalInner() {
         onOpenShiftClick={() => setIsOpenShiftModalOpen(true)}
       />
 
-      {/* โครงสร้างเลย์เอาต์หลัก 2 คอลัมน์ (ซ้าย 60-65% แคตตาล็อก, ขวา 35-40% ตะกร้าและคิดเงิน) */}
+      {/* โครงสร้างเลย์เอาต์หลัก 2 คอลัมน์ (ซ้าย 60-65% แคตตาล็อก, ขวา 35-40% ตะกร้าและคิดเงิน บน Desktop; เต็มจอแคตตาล็อกบน Mobile/Tablet) */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden">
-        {/* คอลัมน์ซ้าย: แคตตาล็อกสินค้า (สัดส่วน 7 จาก 12 คอลัมน์ ≈ 60%) */}
-        <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-full overflow-hidden bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 space-y-4">
+        {/* คอลัมน์ซ้าย: แคตตาล็อกสินค้า (เต็มจอเมื่อ < 1024px, 60% เมื่อ >= 1024px) */}
+        <div className="col-span-1 lg:col-span-7 xl:col-span-8 flex flex-col h-full overflow-hidden bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 space-y-4">
           {/* ช่องค้นหาด่วน และปุ่มเปิดกล้องสแกนบาร์โค้ด */}
           <div className="flex items-center gap-3">
             <div className="flex-1">
@@ -367,14 +370,31 @@ function PosTerminalInner() {
           </div>
         </div>
 
-        {/* คอลัมน์ขวา: ตะกร้าขายสินค้า (สัดส่วน 5 จาก 12 คอลัมน์ ≈ 40%) */}
-        <div id="pos-cart-container" className="lg:col-span-5 xl:col-span-4 flex flex-col h-full overflow-hidden bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl">
+        {/* คอลัมน์ขวา: ตะกร้าขายสินค้า (แสดงเฉพาะบน Desktop >= 1024px) */}
+        <div id="pos-cart-container" className="hidden lg:flex lg:col-span-5 xl:col-span-4 flex-col h-full overflow-hidden bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl">
           <PosCartPanel
             onCheckout={handleCheckout}
             isShiftActive={!!activeShift}
           />
         </div>
       </div>
+
+      {/* แถบสรุปยอดและปุ่มชำระเงินด่วนสำหรับอุปกรณ์พกพา */}
+      <PosCartFloatingBar
+        itemCount={summary.totalQuantity}
+        totalAmount={summary.grandTotal}
+        onOpenCart={() => setIsCartBottomSheetOpen(true)}
+        onCheckout={handleCheckout}
+        isShiftActive={!!activeShift}
+      />
+
+      {/* ลิ้นชักตะกร้าสินค้าแบบเลื่อนขึ้นสำหรับอุปกรณ์พกพา */}
+      <PosCartBottomSheet
+        isOpen={isCartBottomSheetOpen}
+        onClose={() => setIsCartBottomSheetOpen(false)}
+        onCheckout={handleCheckout}
+        isShiftActive={!!activeShift}
+      />
 
       {/* แบนเนอร์แจ้งเตือนการสแกนบาร์โค้ด */}
       <PosScanToast />

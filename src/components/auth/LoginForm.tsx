@@ -220,7 +220,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         />
       )}
 
-      {branchesError && !errorMessage && (
+      {branchesError && !errorMessage && mode === 'pin' && (
         <p className="text-xs text-amber-500 text-center mt-3">
           {branchesError}
         </p>

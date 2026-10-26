@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { RouteGuard } from '@/components/layout/RouteGuard';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { AppSidebar } from '@/components/layout/AppSidebar';
+import { AppBottomNav } from '@/components/layout/AppBottomNav';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -33,10 +34,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             onCloseMobile={() => setIsMobileOpen(false)}
           />
 
-          <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-950/50">
+          <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-950/50 pb-20 lg:pb-6">
             {children}
           </main>
         </div>
+
+        {/* แถบนำทางด้านล่างสำหรับอุปกรณ์พกพา */}
+        <AppBottomNav onToggleMenu={() => setIsMobileOpen((prev) => !prev)} />
       </div>
     </RouteGuard>
   );

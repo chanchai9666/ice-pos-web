@@ -9,6 +9,7 @@ function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isExpired = searchParams.get('expired') === '1';
+  const isTimeout = searchParams.get('timeout') === '1';
 
   const handleLoginSuccess = (auth: AuthResponse) => {
     // หากเป็นแคชเชียร์ ให้นำทางไปยังหน้าขาย POS
@@ -23,15 +24,30 @@ function LoginContent() {
   return (
     <div className="w-full max-w-md">
       {/* การแจ้งเตือนเซสชันหมดอายุตามมาตรฐาน Elderly-Friendly (ข้อความชัดเจน, คอนทราสต์สูง) */}
-      {isExpired && (
-        <div className="mb-6 p-4 rounded-2xl bg-amber-500/15 border-2 border-amber-500 text-amber-200 shadow-lg shadow-amber-950/30 flex items-start space-x-3.5 animate-fadeIn">
-          <div className="w-7 h-7 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center flex-shrink-0 font-bold text-base mt-0.5">
+      {isExpired && !isTimeout && (
+        <div className="mb-6 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-100 shadow-sm flex items-start space-x-3.5 animate-fadeIn">
+          <div className="w-7 h-7 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center flex-shrink-0 font-bold text-base mt-0.5 shadow-sm">
             !
           </div>
           <div>
-            <h4 className="text-base font-bold text-amber-400">เซสชันหมดอายุ</h4>
-            <p className="text-sm text-amber-200/90 mt-0.5 leading-relaxed">
+            <h4 className="text-base font-bold text-amber-900 dark:text-amber-200">เซสชันหมดอายุ</h4>
+            <p className="text-sm text-amber-800 dark:text-amber-300/90 mt-0.5 leading-relaxed font-medium">
               เซสชันการใช้งานหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้งเพื่อปฏิบัติงานต่อ
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* การแจ้งเตือนการเชื่อมต่อขัดข้องหรือหมดเวลาตามมาตรฐาน Elderly-Friendly */}
+      {isTimeout && (
+        <div className="mb-6 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-100 shadow-sm flex items-start space-x-3.5 animate-fadeIn">
+          <div className="w-7 h-7 rounded-full bg-rose-600 text-white flex items-center justify-center flex-shrink-0 font-bold text-base mt-0.5 shadow-sm">
+            !
+          </div>
+          <div>
+            <h4 className="text-base font-bold text-rose-900 dark:text-rose-200">การเชื่อมต่อขัดข้องหรือหมดเวลา</h4>
+            <p className="text-sm text-rose-700 dark:text-rose-300/90 mt-0.5 leading-relaxed font-medium">
+              การเชื่อมต่อขัดข้องหรือหมดเวลา กรุณาตรวจสอบสัญญาณอินเทอร์เน็ตและเข้าสู่ระบบใหม่อีกครั้ง
             </p>
           </div>
         </div>
@@ -64,7 +80,7 @@ function LoginContent() {
       </div>
 
       {/* Card Body */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-slate-800 transition-all duration-200">
         <LoginForm onSuccess={handleLoginSuccess} />
       </div>
 

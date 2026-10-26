@@ -12,6 +12,22 @@ install: ## Install dependencies with npm ci
 	$(NPM) ci
 
 dev: ## Start development server (next dev)
+	@printf "Enter NEXT_PUBLIC_API_URL [http://127.0.0.1:8080]: "; \
+	read input_url; \
+	url=$${input_url:-http://127.0.0.1:8080}; \
+	if [ ! -f .env.local ]; then \
+		if [ -f .env.example ]; then \
+			cp .env.example .env.local; \
+		else \
+			touch .env.local; \
+		fi; \
+	fi; \
+	if grep -q "^NEXT_PUBLIC_API_URL=" .env.local; then \
+		awk -v val="$$url" '/^NEXT_PUBLIC_API_URL=/ {print "NEXT_PUBLIC_API_URL=" val; next} {print}' .env.local > .env.local.tmp && mv .env.local.tmp .env.local; \
+	else \
+		echo "NEXT_PUBLIC_API_URL=$$url" >> .env.local; \
+	fi; \
+	echo "✓ NEXT_PUBLIC_API_URL set to: $$url in .env.local"
 	$(NPM) run dev
 
 build: ## Production build (next build, type-checked)

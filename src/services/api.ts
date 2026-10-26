@@ -274,6 +274,20 @@ export async function request<T>(
       error instanceof Error &&
       (error.name === 'AbortError' || abortController.signal.aborted)
     ) {
+      const isLoginEndpoint =
+        endpoint.startsWith('/api/v1/auth/login') ||
+        endpoint.startsWith('/api/v1/auth/pin-login');
+
+      if (!isLoginEndpoint) {
+        clearAuthSession(true);
+        notifySessionExpired({
+          type: 'SESSION_NETWORK_ERROR',
+          message:
+            'การเชื่อมต่อขัดข้องหรือหมดเวลา กรุณาตรวจสอบสัญญาณอินเทอร์เน็ตและลองใหม่อีกครั้ง',
+          timestamp: Date.now(),
+        });
+      }
+
       throw new ApiError(
         'การเชื่อมต่อขัดข้องหรือหมดเวลา กรุณาตรวจสอบสัญญาณอินเทอร์เน็ตและลองใหม่อีกครั้ง',
         408
