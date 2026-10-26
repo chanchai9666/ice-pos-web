@@ -7,9 +7,11 @@
  * ออกแบบตามมาตรฐาน Elderly-Friendly (เลย์เอาต์ 2 คอลัมน์, เป้าหมายสัมผัส >= 48px, คอนทราสต์สูง)
  */
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { PosCartProvider, usePosCart } from '@/context/PosCartContext';
+import { OPEN_CAMERA_SCANNER_EVENT } from '@/utils/navigation';
 import { catalogService } from '@/services/catalog.service';
 import { inventoryService } from '@/services/inventory.service';
 import { Category, Product } from '@/types/catalog';
@@ -29,6 +31,7 @@ import { PosCheckoutModal } from '@/components/pos/PosCheckoutModal';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
+import { BarcodeScanResult } from '@/types/scanner';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
@@ -47,6 +50,38 @@ function PosTerminalInner() {
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
   const [isCartBottomSheetOpen, setIsCartBottomSheetOpen] = useState<boolean>(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Helper สำหรับสั่งเปิดกล้องสแกน (หรือแจ้งเปิดกะก่อนหากยังไม่ได้เปิดกะการขาย)
+  const openCameraScanner = useCallback(() => {
+    if (activeShift) {
+      setIsCameraModalOpen(true);
+    } else {
+      setIsOpenShiftModalOpen(true);
+    }
+  }, [activeShift]);
+
+  // รับ Custom Event จาก Navbar เมื่ออยู่ในหน้า POS อยู่แล้ว
+  useEffect(() => {
+    const handleScannerEvent = () => {
+      openCameraScanner();
+    };
+
+    window.addEventListener(OPEN_CAMERA_SCANNER_EVENT, handleScannerEvent);
+    return () => {
+      window.removeEventListener(OPEN_CAMERA_SCANNER_EVENT, handleScannerEvent);
+    };
+  }, [openCameraScanner]);
+
+  // ตรวจจับ URL Query Param ?scan=camera เมื่อผู้ใช้กดสแกนจากหน้าอื่นแล้ว Redirect มาที่ POS
+  useEffect(() => {
+    if (searchParams.get('scan') === 'camera') {
+      openCameraScanner();
+      router.replace('/pos', { scroll: false });
+    }
+  }, [searchParams, openCameraScanner, router]);
 
   // คำนวณสต็อกคงเหลือสุทธิแบบ Real-time โดยหักจำนวนสินค้าที่อยู่ในตะกร้าออก (ยกเว้นสินค้าประเภทชั่งขาย)
   const effectiveStockMap = useMemo(() => {
@@ -94,9 +129,9 @@ function PosTerminalInner() {
     addItem(product, 1);
   };
 
-  // การจัดการเมื่อสแกนบาร์โค้ดจากเครื่องสแกนฮาร์ดแวร์
+  // การจัดการเมื่อสแกนบาร์โค้ดจากเครื่องสแกนฮาร์ดแวร์หรือกล้อง
   const handleBarcodeScanned = useCallback(
-    async (barcode: string) => {
+    async (barcode: string): Promise<BarcodeScanResult> => {
       try {
         // 1. ค้นหาในแคชรายการสินค้าที่มีอยู่แล้วก่อน
         const localFound = products.find(
@@ -122,7 +157,7 @@ function PosTerminalInner() {
             });
           }
           addItem(localFound, 1);
-          return;
+          return { success: true, productName: localFound.name };
         }
 
         // 2. ค้นหาจาก API ด้วย Barcode / SKU Lookup
@@ -147,6 +182,7 @@ function PosTerminalInner() {
             });
           }
           addItem(res.data, 1);
+          return { success: true, productName: res.data.name };
         } else {
           addToast({
             type: 'ERROR',
@@ -154,6 +190,7 @@ function PosTerminalInner() {
             message: `ไม่พบข้อมูลสินค้าสำหรับรหัส "${barcode}"`,
             code: barcode,
           });
+          return { success: false };
         }
       } catch {
         addToast({
@@ -162,6 +199,7 @@ function PosTerminalInner() {
           message: `ไม่พบข้อมูลสินค้าสำหรับรหัส "${barcode}"`,
           code: barcode,
         });
+        return { success: false };
       }
     },
     [products, effectiveStockMap, addItem, addToast]
@@ -342,7 +380,7 @@ function PosTerminalInner() {
             </div>
             <button
               type="button"
-              onClick={() => setIsCameraModalOpen(true)}
+              onClick={openCameraScanner}
               className="h-12 px-4 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-2.5 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0"
               title="เปิดกล้องสแกนบาร์โค้ด"
             >
@@ -438,7 +476,9 @@ export default function PosPage() {
 
   return (
     <PosCartProvider branchId={branch?.id ?? user?.branchId ?? undefined}>
-      <PosTerminalInner />
+      <Suspense fallback={<div className="p-4 text-slate-400">กำลังโหลดจุดขาย...</div>}>
+        <PosTerminalInner />
+      </Suspense>
     </PosCartProvider>
   );
 }
