@@ -142,22 +142,27 @@ function PosTerminalInner() {
             typeof effectiveStockMap[localFound.id] === 'number'
               ? effectiveStockMap[localFound.id]
               : 0;
+          const formattedPrice = `฿${Number(localFound.price ?? 0).toLocaleString('th-TH', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`;
+
           if (localFound.productType !== 'BY_WEIGHT' && currentStock <= 0) {
             addToast({
               type: 'INFO',
               title: 'สินค้าหมดสต็อก',
-              message: `สินค้า "${localFound.name}" มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
+              message: `สินค้า "${localFound.name}" (${formattedPrice}) มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
             });
           } else {
             addToast({
               type: 'SUCCESS',
               title: 'เพิ่มสินค้าลงบิลแล้ว',
-              message: localFound.name,
+              message: `${localFound.name} (${formattedPrice})`,
               code: barcode,
             });
           }
           addItem(localFound, 1);
-          return { success: true, productName: localFound.name };
+          return { success: true, productName: localFound.name, price: localFound.price };
         }
 
         // 2. ค้นหาจาก API ด้วย Barcode / SKU Lookup
@@ -167,22 +172,27 @@ function PosTerminalInner() {
             typeof effectiveStockMap[res.data.id] === 'number'
               ? effectiveStockMap[res.data.id]
               : 0;
+          const formattedPrice = `฿${Number(res.data.price ?? 0).toLocaleString('th-TH', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}`;
+
           if (res.data.productType !== 'BY_WEIGHT' && currentStock <= 0) {
             addToast({
               type: 'INFO',
               title: 'สินค้าหมดสต็อก',
-              message: `สินค้า "${res.data.name}" มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
+              message: `สินค้า "${res.data.name}" (${formattedPrice}) มีสต็อกในระบบเป็น 0 (อนุญาตให้ขายต่อได้)`,
             });
           } else {
             addToast({
               type: 'SUCCESS',
               title: 'เพิ่มสินค้าลงบิลแล้ว',
-              message: res.data.name,
+              message: `${res.data.name} (${formattedPrice})`,
               code: barcode,
             });
           }
           addItem(res.data, 1);
-          return { success: true, productName: res.data.name };
+          return { success: true, productName: res.data.name, price: res.data.price };
         } else {
           addToast({
             type: 'ERROR',

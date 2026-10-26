@@ -102,6 +102,7 @@ export function PosCameraScannerModal({
             status: 'SUCCESS',
             barcode: cleaned,
             productName: result.productName,
+            price: result.price,
             timestamp: Date.now(),
           });
           playSuccessBeep();
@@ -444,15 +445,23 @@ export function PosCameraScannerModal({
             </div>
             <div className="min-w-0 flex-1 text-xs sm:text-sm">
               {lastScanFeedback.status === 'SUCCESS' ? (
-                <p className="truncate font-medium">
-                  <span className="font-bold text-emerald-300">สแกนสำเร็จ: </span>
-                  {lastScanFeedback.productName || lastScanFeedback.barcode}
-                  {lastScanFeedback.productName && (
-                    <span className="text-emerald-400/70 font-mono text-xs ml-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1 truncate">
+                    <span className="font-bold text-emerald-300">สแกนสำเร็จ: </span>
+                    <span className="font-medium text-emerald-100">
+                      {lastScanFeedback.productName || lastScanFeedback.barcode}
+                    </span>
+                    <span className="text-emerald-400/80 font-mono text-xs ml-1.5 inline-block">
                       ({lastScanFeedback.barcode})
                     </span>
-                  )}
-                </p>
+                  </div>
+                  <div className="shrink-0 px-2.5 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-bold font-mono text-xs sm:text-sm shadow-sm whitespace-nowrap">
+                    ฿{Number(lastScanFeedback.price ?? 0).toLocaleString('th-TH', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </div>
+                </div>
               ) : (
                 <p className="truncate font-medium">
                   <span className="font-bold text-rose-300">ไม่พบสินค้าในระบบ: </span>

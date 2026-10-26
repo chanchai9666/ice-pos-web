@@ -8,6 +8,8 @@ export interface BarcodeScanResult {
   success: boolean;
   /** ชื่อสินค้าที่ค้นพบ (มีค่าเมื่อ success === true) */
   productName?: string;
+  /** ราคาขายต่อหน่วยของสินค้า (มีค่าเมื่อ success === true) */
+  price?: number;
 }
 
 export interface ScanSessionCounters {
@@ -26,6 +28,8 @@ export interface ScanFeedbackResult {
   barcode: string;
   /** ชื่อสินค้า (กรณีพบ) */
   productName?: string;
+  /** ราคาขายต่อหน่วย (กรณีพบ) */
+  price?: number;
   /** เวลาที่สแกน (Unix timestamp ms) */
   timestamp: number;
 }
