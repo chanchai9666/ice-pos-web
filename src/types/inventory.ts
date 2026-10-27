@@ -73,3 +73,36 @@ export interface ProductStockPresentation {
   /** คลาสสีตัวอักษรสำหรับข้อความคงเหลือ */
   detailStockColorClass: string;
 }
+
+/**
+ * ประเภทการปรับยอดสต็อกสินค้า (Stock Adjustment Type)
+ * อิงตาม Swagger schema: ice-pos-api_internal_delivery_http_dto.AdjustStockRequest
+ */
+export type StockAdjustmentType =
+  | 'IN'        // รับสินค้าเข้า (+)
+  | 'OUT'       // ปรับยอดสินค้าออก (-)
+  | 'ADJUST'    // ปรับปรุงยอดทั่วไป (+/-)
+  | 'AUDIT'     // ตรวจนับสต็อกตามจริง
+  | 'DAMAGE'    // สินค้าชำรุดเสียหาย (-)
+  | 'EXPIRED';  // สินค้าหมดอายุ (-)
+
+/**
+ * ข้อมูลคำขอปรับยอดสต็อกสินค้า (Adjust Stock Request DTO)
+ */
+export interface AdjustStockRequest {
+  branchId: string;
+  productId: string;
+  type: StockAdjustmentType;
+  quantityDelta: number;
+  reason: string;
+  idempotencyKey?: string;
+}
+
+/**
+ * ข้อมูลสรุปมูลค่าสต็อกสินค้าคงคลัง (Inventory Valuation Response)
+ */
+export interface InventoryValuationResponse {
+  totalSkus?: number;
+  totalQuantity?: number;
+  totalValuation?: number;
+}

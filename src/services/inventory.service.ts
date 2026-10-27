@@ -5,7 +5,7 @@
 
 import { api } from '@/services/api';
 import { ApiResponse } from '@/types/auth';
-import { StockLevel, StockQueryParams } from '@/types/inventory';
+import { StockLevel, StockQueryParams, AdjustStockRequest, InventoryValuationResponse } from '@/types/inventory';
 
 export const inventoryService = {
   /**
@@ -20,6 +20,40 @@ export const inventoryService = {
         lowStockOnly: params?.lowStockOnly,
         page: params?.page || 1,
         pageSize,
+      },
+    });
+  },
+
+  /**
+   * ปรับยอดสต็อกสินค้า (Adjust Stock)
+   * POST /api/v1/inventory/adjust?branchId={branchId}
+   */
+  async adjustStock(
+    branchId: string,
+    request: AdjustStockRequest
+  ): Promise<ApiResponse<{ message?: string }>> {
+    return api.post<{ message?: string }>(
+      '/api/v1/inventory/adjust',
+      {
+        ...request,
+        branchId,
+      },
+      {
+        params: { branchId },
+      }
+    );
+  },
+
+  /**
+   * ดูรายงานสรุปมูลค่าสินค้าคงคลัง (Inventory Valuation Report)
+   * GET /api/v1/reports/inventory-valuation?branchId={branchId}
+   */
+  async getInventoryValuation(
+    branchId?: string
+  ): Promise<ApiResponse<InventoryValuationResponse>> {
+    return api.get<InventoryValuationResponse>('/api/v1/reports/inventory-valuation', {
+      params: {
+        branchId: branchId || undefined,
       },
     });
   },
