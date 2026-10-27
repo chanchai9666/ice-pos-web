@@ -7,6 +7,7 @@ import { bahtToSatang, satangToBahtNumber } from '@/utils/currency';
 import { ImageUploader } from '@/components/catalog/ImageUploader';
 import { Icons } from '@/components/ui/Icons';
 import { VirtualNumericKeypad } from '@/components/ui/VirtualNumericKeypad';
+import { BarcodeCaptureModal } from '@/components/shared/BarcodeCaptureModal';
 
 export interface ProductFormModalProps {
   isOpen: boolean;
@@ -56,6 +57,7 @@ export function ProductFormModal({
   // Loading & Validation
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGeneratingBarcode, setIsGeneratingBarcode] = useState(false);
+  const [isBarcodeScanOpen, setIsBarcodeScanOpen] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const lastSubmitTimeRef = useRef<number>(0);
 
@@ -108,6 +110,7 @@ export function ProductFormModal({
     setKeypadField(null);
     setSkuCheckStatus('idle');
     setDuplicateSkuProduct(null);
+    setIsBarcodeScanOpen(false);
   }, [isOpen, product, categories, uoms]);
 
   // ตรวจสอบความซ้ำซ้อนของรหัส SKU แบบ Real-time ผ่าน /api/v1/products/sku?sku={sku}
@@ -198,6 +201,13 @@ export function ProductFormModal({
       setBarcode(localBarcode);
       setIsInternalBarcode(true);
     }
+  };
+
+  // Handler จับบาร์โค้ดจากกล้อง (Single-Capture)
+  const handleBarcodeCapture = (scannedCode: string) => {
+    setBarcode(scannedCode);
+    setIsInternalBarcode(false);
+    setIsBarcodeScanOpen(false);
   };
 
   // Client Validation
@@ -468,19 +478,29 @@ export function ProductFormModal({
 
             {/* แถวที่ 2 คอลัมน์ 2: บาร์โค้ดสินค้า + ปุ่มสร้างอัตโนมัติ */}
             <div className="space-y-2">
-              <div className="min-h-[32px] flex items-center justify-between">
+              <div className="min-h-[36px] flex flex-wrap items-center justify-between gap-2">
                 <label className="block text-base font-bold text-slate-200">
                   บาร์โค้ดสินค้า
                 </label>
-                <button
-                  type="button"
-                  onClick={handleGenerateBarcode}
-                  disabled={isGeneratingBarcode}
-                  className="min-h-[32px] px-3 py-1 text-xs font-bold text-cyan-300 bg-cyan-950/60 hover:bg-cyan-900/80 active:scale-95 border border-cyan-500/50 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all"
-                >
-                  <Icons.Sparkles className="w-3.5 h-3.5" />
-                  <span>สร้างบาร์โค้ดอัตโนมัติ</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsBarcodeScanOpen(true)}
+                    className="min-h-[36px] px-3 py-1.5 text-xs font-bold text-cyan-300 bg-cyan-950/60 hover:bg-cyan-900/80 active:scale-95 border border-cyan-500/50 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all"
+                  >
+                    <Icons.Camera className="w-4 h-4" />
+                    <span>สแกนบาร์โค้ด</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleGenerateBarcode}
+                    disabled={isGeneratingBarcode}
+                    className="min-h-[36px] px-3 py-1.5 text-xs font-bold text-cyan-300 bg-cyan-950/60 hover:bg-cyan-900/80 active:scale-95 border border-cyan-500/50 rounded-lg flex items-center gap-1.5 cursor-pointer transition-all"
+                  >
+                    <Icons.Sparkles className="w-3.5 h-3.5" />
+                    <span>สร้างบาร์โค้ดอัตโนมัติ</span>
+                  </button>
+                </div>
               </div>
               <div className="relative">
                 <input
@@ -772,6 +792,12 @@ export function ProductFormModal({
             </div>
           </div>
         )}
+        {/* Modal สแกนบาร์โค้ดด้วยกล้องแบบ Single-Capture */}
+        <BarcodeCaptureModal
+          isOpen={isBarcodeScanOpen}
+          onClose={() => setIsBarcodeScanOpen(false)}
+          onCapture={handleBarcodeCapture}
+        />
       </div>
     </div>
   );
