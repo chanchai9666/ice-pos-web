@@ -59,6 +59,10 @@ export function ProductFormModal({
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const lastSubmitTimeRef = useRef<number>(0);
 
+  // SKU Duplicate Check State
+  const [skuCheckStatus, setSkuCheckStatus] = useState<'idle' | 'checking' | 'available' | 'duplicate'>('idle');
+  const [duplicateSkuProduct, setDuplicateSkuProduct] = useState<{ id: string; name: string; sku: string } | null>(null);
+
   // Reset or Populate form on open/change
   useEffect(() => {
     if (!isOpen) return;
@@ -102,7 +106,75 @@ export function ProductFormModal({
     }
     setFormErrors({});
     setKeypadField(null);
+    setSkuCheckStatus('idle');
+    setDuplicateSkuProduct(null);
   }, [isOpen, product, categories, uoms]);
+
+  // ตรวจสอบความซ้ำซ้อนของรหัส SKU แบบ Real-time ผ่าน /api/v1/products/sku?sku={sku}
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const trimmedSku = sku.trim();
+
+    // 1. ถ้าเว้นว่าง ให้กลับสถานะเป็น idle
+    if (!trimmedSku) {
+      setSkuCheckStatus('idle');
+      setDuplicateSkuProduct(null);
+      return;
+    }
+
+    // 2. กรณีแก้ไขสินค้าเดิม และ SKU ตรงกับเดิม ถือว่าใช้ได้ ไม่ต้องเตือนซ้ำ
+    if (isEditing && product?.sku && trimmedSku.toUpperCase() === product.sku.trim().toUpperCase()) {
+      setSkuCheckStatus('available');
+      setDuplicateSkuProduct(null);
+      return;
+    }
+
+    setSkuCheckStatus('checking');
+    const controller = new AbortController();
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await catalogService.searchProductsBySku(trimmedSku, {
+          signal: controller.signal,
+        });
+
+        if (res && Array.isArray(res.data)) {
+          // ค้นหาตัวที่ Exact Match (Case-insensitive) และไม่ใช่ตัวมันเอง
+          const matched = res.data.find(
+            (p) =>
+              p.sku &&
+              p.sku.trim().toUpperCase() === trimmedSku.toUpperCase() &&
+              (!isEditing || p.id !== product?.id)
+          );
+
+          if (matched) {
+            setSkuCheckStatus('duplicate');
+            setDuplicateSkuProduct({
+              id: matched.id,
+              name: matched.name,
+              sku: matched.sku,
+            });
+          } else {
+            setSkuCheckStatus('available');
+            setDuplicateSkuProduct(null);
+          }
+        } else {
+          setSkuCheckStatus('available');
+          setDuplicateSkuProduct(null);
+        }
+      } catch (err: unknown) {
+        if ((err as Error)?.name === 'AbortError') return;
+        // หากเกิด network error หรืออื่นๆ ให้คงสถานะ idle เพื่อไม่ให้บล็อก
+        setSkuCheckStatus('idle');
+      }
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [sku, isOpen, isEditing, product?.id, product?.sku]);
 
   // Handler สร้างบาร์โค้ดภายในร้าน
   const handleGenerateBarcode = async () => {
@@ -132,7 +204,13 @@ export function ProductFormModal({
   const validate = () => {
     const errors: Record<string, string> = {};
     if (!name.trim()) errors.name = 'กรุณาระบุชื่อสินค้า';
-    if (!sku.trim()) errors.sku = 'กรุณาระบุรหัสสินค้า (SKU)';
+    if (!sku.trim()) {
+      errors.sku = 'กรุณาระบุรหัสสินค้า (SKU)';
+    } else if (skuCheckStatus === 'duplicate') {
+      errors.sku = `รหัส SKU นี้มีอยู่ในระบบแล้ว (สินค้า: ${duplicateSkuProduct?.name || ''})`;
+    } else if (skuCheckStatus === 'checking') {
+      errors.sku = 'กำลังตรวจสอบรหัส SKU กรุณารอสักครู่...';
+    }
     if (!baseUomId) errors.baseUomId = 'กรุณาเลือกหน่วยนับหลัก';
     const priceNum = parseFloat(priceBaht);
     if (isNaN(priceNum) || priceNum < 0) errors.price = 'ราคาขายต้องเป็นตัวเลขมากกว่าหรือเท่ากับ 0';
@@ -320,19 +398,70 @@ export function ProductFormModal({
 
             {/* แถวที่ 2 คอลัมน์ 1: รหัส SKU */}
             <div className="space-y-2">
-              <div className="min-h-[32px] flex items-center">
+              <div className="min-h-[32px] flex items-center justify-between">
                 <label className="block text-base font-bold text-slate-200">
                   รหัส SKU <span className="text-rose-400">*</span>
                 </label>
+                {skuCheckStatus === 'checking' && (
+                  <span className="text-xs font-semibold text-cyan-400 flex items-center gap-1.5 animate-pulse">
+                    <Icons.Refresh className="w-3.5 h-3.5 animate-spin" />
+                    <span>กำลังตรวจสอบ...</span>
+                  </span>
+                )}
+                {skuCheckStatus === 'available' && sku.trim() && (
+                  <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                    <Icons.Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>รหัสนี้ใช้ได้</span>
+                  </span>
+                )}
+                {skuCheckStatus === 'duplicate' && (
+                  <span className="text-xs font-semibold text-rose-400 flex items-center gap-1">
+                    <Icons.AlertCircle className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <span>รหัสซ้ำในระบบ</span>
+                  </span>
+                )}
               </div>
-              <input
-                type="text"
-                value={sku}
-                onChange={(e) => setSku(e.target.value)}
-                placeholder="เช่น ICE-001"
-                className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 font-mono focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 outline-none uppercase"
-              />
-              {formErrors.sku && (
+              <div className="relative">
+                <input
+                  type="text"
+                  value={sku}
+                  onChange={(e) => {
+                    setSku(e.target.value);
+                    if (formErrors.sku) {
+                      setFormErrors((prev) => {
+                        const next = { ...prev };
+                        delete next.sku;
+                        return next;
+                      });
+                    }
+                  }}
+                  placeholder="เช่น ICE-001"
+                  className={`w-full h-[50px] px-4 pr-11 bg-slate-950 border-2 rounded-xl text-base text-slate-100 font-mono outline-none uppercase transition-colors ${
+                    skuCheckStatus === 'duplicate'
+                      ? 'border-rose-500 focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20'
+                      : skuCheckStatus === 'available' && sku.trim()
+                      ? 'border-emerald-500/80 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20'
+                      : 'border-slate-700 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20'
+                  }`}
+                />
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                  {skuCheckStatus === 'checking' && (
+                    <Icons.Refresh className="w-5 h-5 text-cyan-400 animate-spin" />
+                  )}
+                  {skuCheckStatus === 'available' && sku.trim() && (
+                    <Icons.Check className="w-5 h-5 text-emerald-400 stroke-[2.5]" />
+                  )}
+                  {skuCheckStatus === 'duplicate' && (
+                    <Icons.AlertCircle className="w-5 h-5 text-rose-400 stroke-[2.5]" />
+                  )}
+                </div>
+              </div>
+              {skuCheckStatus === 'duplicate' && duplicateSkuProduct && (
+                <span className="text-xs font-semibold text-rose-400 block bg-rose-950/40 border border-rose-800/60 rounded-lg px-2.5 py-1.5 mt-1">
+                  ⚠️ รหัส SKU นี้ถูกใช้งานแล้วโดยสินค้า: <strong className="text-rose-300 font-bold">{duplicateSkuProduct.name}</strong>
+                </span>
+              )}
+              {formErrors.sku && skuCheckStatus !== 'duplicate' && (
                 <span className="text-sm font-semibold text-rose-400 block">{formErrors.sku}</span>
               )}
             </div>

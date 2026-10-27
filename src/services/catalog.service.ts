@@ -109,6 +109,20 @@ export const catalogService = {
   },
 
   /**
+   * ค้นหารายการสินค้าตามรหัส SKU (Prefix Search)
+   * ใช้สำหรับตรวจเช็คความซ้ำซ้อนหรือค้นหาด่วน (ค่าเริ่มต้นเป็น silent request ไม่แสดง blocking overlay)
+   */
+  async searchProductsBySku(sku: string, options?: RequestOptions): Promise<ApiResponse<Product[]>> {
+    return api.get<Product[]>('/api/v1/products/sku', {
+      silent: true,
+      ...options,
+      params: {
+        sku: sku.trim(),
+      },
+    });
+  },
+
+  /**
    * สร้างสินค้าใหม่
    */
   async createProduct(data: CreateProductRequest, options?: RequestOptions): Promise<ApiResponse<Product>> {
