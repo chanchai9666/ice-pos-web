@@ -27,6 +27,7 @@ import { PosScanToast } from '@/components/pos/PosScanToast';
 import { PosCameraScannerModal } from '@/components/pos/PosCameraScannerModal';
 import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
 import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
+import { PosCloseShiftModal } from '@/components/pos/PosCloseShiftModal';
 import { PosCheckoutModal } from '@/components/pos/PosCheckoutModal';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
@@ -49,6 +50,7 @@ function PosTerminalInner() {
   const [isLoadingCatalog, setIsLoadingCatalog] = useState<boolean>(true);
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
+  const [isCloseShiftModalOpen, setIsCloseShiftModalOpen] = useState<boolean>(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
   const [isCartBottomSheetOpen, setIsCartBottomSheetOpen] = useState<boolean>(false);
 
@@ -369,6 +371,7 @@ function PosTerminalInner() {
         shift={activeShift}
         isLoading={isLoadingShift}
         onOpenShiftClick={() => setIsOpenShiftModalOpen(true)}
+        onCloseShiftClick={() => setIsCloseShiftModalOpen(true)}
       />
 
       {/* โครงสร้างเลย์เอาต์หลัก 2 คอลัมน์ (ซ้าย 60-65% แคตตาล็อก, ขวา 35-40% ตะกร้าและคิดเงิน บน Desktop; เต็มจอแคตตาล็อกบน Mobile/Tablet) */}
@@ -461,6 +464,21 @@ function PosTerminalInner() {
             type: 'SUCCESS',
             title: 'เปิดกะการขายสำเร็จ',
             message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${(newShift.openingCash / 100).toLocaleString()}`,
+          });
+        }}
+      />
+
+      {/* หน้าต่างปิดกะการขาย */}
+      <PosCloseShiftModal
+        isOpen={isCloseShiftModalOpen}
+        shift={activeShift}
+        onClose={() => setIsCloseShiftModalOpen(false)}
+        onSuccess={(closedShift) => {
+          setActiveShift(null);
+          addToast({
+            type: 'SUCCESS',
+            title: 'ปิดกะการขายสำเร็จ',
+            message: `ปิดกะขายเรียบร้อย เงินสดที่นับได้ ฿${((closedShift.countedCash ?? 0) / 100).toLocaleString()}`,
           });
         }}
       />

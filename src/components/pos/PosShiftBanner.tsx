@@ -16,12 +16,14 @@ interface PosShiftBannerProps {
   shift: ShiftInfo | null;
   isLoading: boolean;
   onOpenShiftClick: () => void;
+  onCloseShiftClick?: () => void;
 }
 
 export function PosShiftBanner({
   shift,
   isLoading,
   onOpenShiftClick,
+  onCloseShiftClick,
 }: PosShiftBannerProps) {
   if (isLoading) {
     return (
@@ -84,8 +86,22 @@ export function PosShiftBanner({
         <span>เงินทอนเริ่มต้น: <span className="text-cyan-400 font-bold">฿{formatSatangToBaht(shift.openingCash)}</span></span>
       </div>
 
-      <div className="text-xs text-slate-400">
-        แคชเชียร์: <span className="text-slate-200 font-medium">{shift.cashierName || 'แคชเชียร์'}</span>
+      <div className="flex items-center gap-3">
+        <div className="text-xs text-slate-400">
+          แคชเชียร์: <span className="text-slate-200 font-medium">{shift.cashierName || 'แคชเชียร์'}</span>
+        </div>
+
+        {onCloseShiftClick && (
+          <button
+            type="button"
+            onClick={onCloseShiftClick}
+            className="min-h-[44px] sm:min-h-[48px] px-3.5 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 hover:text-rose-200 border border-rose-500/40 text-xs sm:text-sm font-bold flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+            title="ปิดกะการขายและนับเงินสด"
+          >
+            <Icons.LogOut className="w-4 h-4 stroke-[2.5]" />
+            <span>ปิดกะ</span>
+          </button>
+        )}
       </div>
     </div>
   );
