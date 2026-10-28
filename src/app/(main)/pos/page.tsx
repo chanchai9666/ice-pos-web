@@ -29,6 +29,7 @@ import { PosShiftBanner } from '@/components/pos/PosShiftBanner';
 import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
 import { PosCloseShiftModal } from '@/components/pos/PosCloseShiftModal';
 import { PosCheckoutModal } from '@/components/pos/PosCheckoutModal';
+import { PosSalesHistoryModal } from '@/components/pos/PosSalesHistoryModal';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
@@ -51,6 +52,8 @@ function PosTerminalInner() {
   const [isCameraModalOpen, setIsCameraModalOpen] = useState<boolean>(false);
   const [isOpenShiftModalOpen, setIsOpenShiftModalOpen] = useState<boolean>(false);
   const [isCloseShiftModalOpen, setIsCloseShiftModalOpen] = useState<boolean>(false);
+  const [isSalesHistoryModalOpen, setIsSalesHistoryModalOpen] = useState<boolean>(false);
+  const [reprintReceiptNo, setReprintReceiptNo] = useState<string | null>(null);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState<boolean>(false);
   const [isCartBottomSheetOpen, setIsCartBottomSheetOpen] = useState<boolean>(false);
 
@@ -390,11 +393,21 @@ function PosTerminalInner() {
             <button
               type="button"
               onClick={openCameraScanner}
-              className="h-12 px-4 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-2.5 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0"
+              className="h-12 px-4 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-2.5 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0 cursor-pointer"
               title="เปิดกล้องสแกนบาร์โค้ด"
             >
               <Icons.Camera className="w-5 h-5 text-cyan-400" />
               <span className="hidden sm:inline text-sm font-semibold">สแกนด้วยกล้อง</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsSalesHistoryModalOpen(true)}
+              className="h-12 px-3.5 sm:px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0 cursor-pointer"
+              title="ดูประวัติการขายและบิลย้อนหลัง"
+            >
+              <Icons.Receipt className="w-5 h-5 text-amber-400" />
+              <span className="hidden md:inline text-sm font-semibold">ประวัติบิลขาย</span>
             </button>
           </div>
 
@@ -479,6 +492,24 @@ function PosTerminalInner() {
             type: 'SUCCESS',
             title: 'ปิดกะการขายสำเร็จ',
             message: `ปิดกะขายเรียบร้อย เงินสดที่นับได้ ฿${((closedShift.countedCash ?? 0) / 100).toLocaleString()}`,
+          });
+        }}
+      />
+
+      {/* หน้าต่างประวัติรายการขายและการยกเลิกบิล */}
+      <PosSalesHistoryModal
+        isOpen={isSalesHistoryModalOpen}
+        branchId={effectiveBranchId}
+        onClose={() => setIsSalesHistoryModalOpen(false)}
+        onReprintReceipt={(saleNo) => {
+          setReprintReceiptNo(saleNo);
+        }}
+        onVoidSuccess={() => {
+          loadStockLevels();
+          addToast({
+            type: 'SUCCESS',
+            title: 'ยกเลิกบิลสำเร็จ',
+            message: 'ยกเลิกบิลขายและปรับปรุงสต็อกสินค้าคืนคลังเรียบร้อยแล้ว',
           });
         }}
       />
