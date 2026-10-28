@@ -31,6 +31,7 @@ import { GoodsReceiptTable } from '@/components/inventory/goods-receipts/GoodsRe
 import { CreateGoodsReceiptModal } from '@/components/inventory/goods-receipts/CreateGoodsReceiptModal';
 import { GoodsReceiptDetailModal } from '@/components/inventory/goods-receipts/GoodsReceiptDetailModal';
 import { SupplierTable } from '@/components/inventory/SupplierTable';
+import { StockTransferTable } from '@/components/inventory/StockTransferTable';
 import { Icons } from '@/components/ui/Icons';
 
 export default function InventoryPage() {
@@ -679,6 +680,15 @@ export default function InventoryPage() {
       {activeTab === 'suppliers' && (
         <div className="space-y-6 animate-in fade-in duration-200">
           <SupplierTable />
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* แท็บที่ 5: โอนย้ายสินค้าระหว่างสาขา (Stock Transfers)    */}
+      {/* ======================================================== */}
+      {activeTab === 'transfers' && (
+        <div className="space-y-6 animate-in fade-in duration-200">
+          <StockTransferTable currentBranchId={selectedBranchId} />
         </div>
       )}
 

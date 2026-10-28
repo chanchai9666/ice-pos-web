@@ -5,7 +5,14 @@
 
 import { api } from '@/services/api';
 import { ApiResponse } from '@/types/auth';
-import { StockLevel, StockQueryParams, AdjustStockRequest, InventoryValuationResponse } from '@/types/inventory';
+import {
+  StockLevel,
+  StockQueryParams,
+  AdjustStockRequest,
+  InventoryValuationResponse,
+  CreateStockTransferRequest,
+  StockTransferResponse,
+} from '@/types/inventory';
 
 export const inventoryService = {
   /**
@@ -55,5 +62,35 @@ export const inventoryService = {
         branchId: branchId || undefined,
       },
     });
+  },
+
+  /**
+   * สร้างใบโอนย้ายสินค้าระหว่างสาขา (Create Stock Transfer)
+   * POST /api/v1/inventory/transfers
+   */
+  async createStockTransfer(
+    request: CreateStockTransferRequest
+  ): Promise<ApiResponse<StockTransferResponse>> {
+    return api.post<StockTransferResponse>(
+      '/api/v1/inventory/transfers',
+      request,
+      {
+        loadingMessage: 'กำลังสร้างใบโอนย้ายสินค้าระหว่างสาขา...',
+      }
+    );
+  },
+
+  /**
+   * รับสินค้าโอนย้ายเข้าสาขาปลายทาง (Receive Stock Transfer)
+   * POST /api/v1/inventory/transfers/{id}/receive
+   */
+  async receiveStockTransfer(id: string): Promise<ApiResponse<void>> {
+    return api.post<void>(
+      `/api/v1/inventory/transfers/${id}/receive`,
+      undefined,
+      {
+        loadingMessage: 'กำลังบันทึกการรับสินค้าโอนเข้าสาขา...',
+      }
+    );
   },
 };

@@ -113,3 +113,52 @@ export interface InventoryValuationResponse {
   totalCostValue?: number; // สตางค์
   totalSaleValue?: number; // สตางค์
 }
+
+/**
+ * ข้อมูลแถวสินค้าในคำขอสร้างใบโอนย้ายสินค้า (Stock Transfer Line Request)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.StockTransferLineRequest
+ */
+export interface StockTransferLineRequest {
+  productId: string;
+  qty?: number;
+  quantity?: number;
+  uomId?: string;
+}
+
+/**
+ * คำขอสร้างใบโอนย้ายสินค้าระหว่างสาขา (Create Stock Transfer Request)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.CreateStockTransferRequest
+ */
+export interface CreateStockTransferRequest {
+  fromBranchId: string;
+  toBranchId: string;
+  lines: StockTransferLineRequest[];
+}
+
+/**
+ * แถวสินค้าในใบโอนย้ายสินค้า (Stock Transfer Line Item Response)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.StockTransferLineItemResponse
+ */
+export interface StockTransferLineItemResponse {
+  id?: string;
+  productId: string;
+  product?: Product;
+  quantity: number;
+  uomId?: string;
+}
+
+/**
+ * ข้อมูลใบโอนย้ายสินค้าระหว่างสาขา (Stock Transfer Response)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.StockTransferResponse
+ */
+export interface StockTransferResponse {
+  id: string;
+  transferNo: string;
+  fromBranchId: string;
+  toBranchId: string;
+  status: 'PENDING' | 'RECEIVED' | 'CANCELLED' | string;
+  lines?: StockTransferLineItemResponse[];
+  createdBy?: string;
+  createdAt?: string;
+  receivedAt?: string;
+}
