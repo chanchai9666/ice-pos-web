@@ -14,6 +14,7 @@ import {
   CreateProductRequest,
   UpdateProductRequest,
   ProductQueryParams,
+  FileUploadResponse,
 } from '@/types/catalog';
 
 export const catalogService = {
@@ -164,32 +165,31 @@ export const catalogService = {
 
   /**
    * อัปโหลดรูปภาพสินค้าพร้อมแปลงเป็น WebP
+   * อ้างอิงสเปก: POST /products/{id}/image (multipart/form-data, field "file")
+   * คืนค่า ProductResponse ที่อัปเดต imageUrl แล้ว
+   * ใช้ api.post เพื่อให้ได้ 401-refresh, timeout และ loading overlay เหมือน endpoint อื่น
    */
-  async uploadProductImage(id: string, file: File): Promise<ApiResponse<{ imageUrl?: string } | Product>> {
+  async uploadProductImage(id: string, file: File): Promise<ApiResponse<Product>> {
     const formData = new FormData();
     formData.append('file', file);
 
-    const { API_BASE_URL } = await import('@/services/api');
-    const { getAccessToken } = await import('@/utils/storage');
-
-    const token = getAccessToken();
-    const headers: Record<string, string> = {
-      Accept: 'application/json',
-    };
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(`${API_BASE_URL}/api/v1/products/${id}/image`, {
-      method: 'POST',
-      headers,
-      body: formData,
+    return api.post<Product>(`/api/v1/products/${id}/image`, formData, {
+      timeoutMs: 60000,
+      loadingMessage: 'กำลังอัปโหลดรูปภาพสินค้า...',
     });
+  },
 
-    const data = await response.json();
-    if (!response.ok || (data.code !== undefined && data.code !== 0)) {
-      throw new Error(data.message || 'ไม่สามารถอัปโหลดรูปภาพได้');
-    }
-    return data;
+  /**
+   * อัปโหลดไฟล์รูปภาพทั่วไป (ยังไม่ผูกกับสินค้า)
+   * อ้างอิงสเปก: POST /uploads/images -> FileUploadResponse
+   */
+  async uploadImage(file: File): Promise<ApiResponse<FileUploadResponse>> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return api.post<FileUploadResponse>('/api/v1/uploads/images', formData, {
+      timeoutMs: 60000,
+      loadingMessage: 'กำลังอัปโหลดรูปภาพ...',
+    });
   },
 };

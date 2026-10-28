@@ -32,6 +32,7 @@ import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
 import { BarcodeScanResult } from '@/types/scanner';
+import { formatSatangToBaht } from '@/utils/currency';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
@@ -142,10 +143,7 @@ function PosTerminalInner() {
             typeof effectiveStockMap[localFound.id] === 'number'
               ? effectiveStockMap[localFound.id]
               : 0;
-          const formattedPrice = `฿${Number(localFound.price ?? 0).toLocaleString('th-TH', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`;
+          const formattedPrice = `฿${formatSatangToBaht(localFound.price)}`;
 
           if (localFound.productType !== 'BY_WEIGHT' && currentStock <= 0) {
             addToast({
@@ -165,17 +163,14 @@ function PosTerminalInner() {
           return { success: true, productName: localFound.name, price: localFound.price };
         }
 
-        // 2. ค้นหาจาก API ด้วย Barcode / SKU Lookup
-        const res = await catalogService.lookupProduct(barcode);
+        // 2. ค้นหาจาก API ด้วย Barcode / SKU Lookup แบบ silent เพื่อไม่ให้แสดง global loading overlay
+        const res = await catalogService.lookupProduct(barcode, { silent: true });
         if (res.data) {
           const currentStock =
             typeof effectiveStockMap[res.data.id] === 'number'
               ? effectiveStockMap[res.data.id]
               : 0;
-          const formattedPrice = `฿${Number(res.data.price ?? 0).toLocaleString('th-TH', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}`;
+          const formattedPrice = `฿${formatSatangToBaht(res.data.price)}`;
 
           if (res.data.productType !== 'BY_WEIGHT' && currentStock <= 0) {
             addToast({
@@ -278,9 +273,10 @@ function PosTerminalInner() {
         });
 
         // หากมีหน้าข้อมูลมากกว่า 1 หน้า ให้ดึงสต็อกหน้าที่เหลือมาประกอบให้ครบถ้วน
-        if (res.meta?.totalPages && res.meta.totalPages > 1) {
+        const totalPages = res.meta?.pagination?.totalPages ?? 1;
+        if (totalPages > 1) {
           const pagePromises = [];
-          for (let p = 2; p <= res.meta.totalPages; p++) {
+          for (let p = 2; p <= totalPages; p++) {
             pagePromises.push(
               inventoryService.getStockLevels({
                 branchId: effectiveBranchId,
@@ -363,7 +359,7 @@ function PosTerminalInner() {
             จุดขายสินค้าหน้าร้าน (POS Terminal)
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            สาขา: <span className="text-slate-200 font-medium">{branch?.name || '-'}</span> • แคชเชียร์: <span className="text-slate-200 font-medium">{user?.fullName || user?.username}</span>
+            สาขา: <span className="text-slate-200 font-medium">{branch?.name || '-'}</span> • แคชเชียร์: <span className="text-slate-200 font-medium">{user?.name || user?.username}</span>
           </p>
         </div>
       </div>
@@ -474,7 +470,7 @@ function PosTerminalInner() {
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
         branchId={effectiveBranchId}
-        cashierName={user?.fullName || user?.username}
+        cashierName={user?.name || user?.username}
         onSaleSuccess={handleSaleSuccess}
       />
     </div>

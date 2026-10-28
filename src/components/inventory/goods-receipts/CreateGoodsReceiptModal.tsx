@@ -36,7 +36,7 @@ interface ReceiptLineState {
   rejectedQuantity: number;
   rejectReason: string;
   unitCostBaht: string;
-  lotNumber: string;
+  batchCode: string;
   expiryDate: string;
   purchaseOrderLineId?: string;
   uomName?: string;
@@ -105,7 +105,7 @@ export function CreateGoodsReceiptModal({
               rejectedQuantity: 0,
               rejectReason: '',
               unitCostBaht: toBaht(item.unitCost).toFixed(2),
-              lotNumber: '',
+              batchCode: '',
               expiryDate: '',
               purchaseOrderLineId: item.purchaseOrderLineId,
               uomName: item.uomName || undefined,
@@ -129,7 +129,7 @@ export function CreateGoodsReceiptModal({
                 rejectedQuantity: 0,
                 rejectReason: '',
                 unitCostBaht: toBaht(l.unitCost).toFixed(2),
-                lotNumber: '',
+                batchCode: '',
                 expiryDate: '',
                 purchaseOrderLineId: l.id,
                 uomName: l.uom?.name,
@@ -183,7 +183,7 @@ export function CreateGoodsReceiptModal({
         unitCostBaht: product.costPerBaseUnit
           ? toBaht(product.costPerBaseUnit).toFixed(2)
           : '0.00',
-        lotNumber: '',
+        batchCode: '',
         expiryDate: '',
         uomName: product.purchaseUom?.name || product.baseUom?.name,
       },
@@ -212,7 +212,7 @@ export function CreateGoodsReceiptModal({
             unitCostBaht: product.costPerBaseUnit
               ? toBaht(product.costPerBaseUnit).toFixed(2)
               : '0.00',
-            lotNumber: '',
+            batchCode: '',
             expiryDate: '',
             uomName: product.purchaseUom?.name || product.baseUom?.name,
           });
@@ -315,7 +315,7 @@ export function CreateGoodsReceiptModal({
           rejectedQuantity: l.rejectedQuantity > 0 ? l.rejectedQuantity : undefined,
           rejectReason: l.rejectReason.trim() || undefined,
           unitCost: toSatang(l.unitCostBaht),
-          lotNumber: l.lotNumber.trim() || undefined,
+          batchCode: l.batchCode.trim() || undefined,
           expiryDate: formatToRFC3339(l.expiryDate),
           purchaseOrderLineId: l.purchaseOrderLineId,
         })),
@@ -350,7 +350,7 @@ export function CreateGoodsReceiptModal({
               <div>
                 <h2 className="text-xl font-black text-white tracking-tight">
                   {sourcePO
-                    ? `ตรวจรับสินค้าตามใบสั่งซื้อ (${sourcePO.poNumber})`
+                    ? `ตรวจรับสินค้าตามใบสั่งซื้อ (${sourcePO.poNo})`
                     : 'สร้างใบตรวจรับสินค้าเข้าคลัง (Direct Goods Receipt)'}
                 </h2>
                 <p className="text-xs text-slate-400">
@@ -593,10 +593,10 @@ export function CreateGoodsReceiptModal({
                           <td className="py-3 px-3">
                             <input
                               type="text"
-                              value={line.lotNumber}
+                              value={line.batchCode}
                               onChange={(e) => {
                                 const updated = [...lines];
-                                updated[idx].lotNumber = e.target.value;
+                                updated[idx].batchCode = e.target.value;
                                 setLines(updated);
                               }}
                               placeholder="LOT-..."

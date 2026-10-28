@@ -115,7 +115,7 @@ export function GoodsReceiptTable({
                   {/* เลขที่ใบตรวจรับ */}
                   <td className="py-3.5 px-4 font-semibold text-white">
                     <span className="text-cyan-400 font-mono font-bold text-base">
-                      {gr.receiptNumber || 'GR-DRAFT'}
+                      {gr.receiptNo || 'GR-DRAFT'}
                     </span>
                     {gr.note && (
                       <p className="text-xs text-slate-400 truncate max-w-[200px] mt-0.5">

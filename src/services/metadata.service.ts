@@ -8,6 +8,17 @@ import { api } from '@/services/api';
 import { ApiResponse } from '@/types/auth';
 import { Tax, Uom } from '@/types/catalog';
 
+/**
+ * สเปกส่ง UomResponse มาเป็น nameTh / nameEn (ไม่มี name)
+ * normalize เป็น name ให้ UI ใช้ชื่อเดียวได้ทั่วโปรเจกต์
+ */
+function normalizeUom(raw: Uom): Uom {
+  return {
+    ...raw,
+    name: raw.name || raw.nameTh || raw.nameEn || raw.code || '',
+  };
+}
+
 export const metadataService = {
   /**
    * ดูรายการอัตราภาษีทั้งหมด
@@ -20,6 +31,10 @@ export const metadataService = {
    * ดูรายการหน่วยนับสินค้าทั้งหมด
    */
   async getUoms(): Promise<ApiResponse<Uom[]>> {
-    return api.get<Uom[]>('/api/v1/uoms');
+    const res = await api.get<Uom[]>('/api/v1/uoms');
+    if (res.data && Array.isArray(res.data)) {
+      res.data = res.data.map(normalizeUom);
+    }
+    return res;
   },
 };

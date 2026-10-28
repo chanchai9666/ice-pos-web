@@ -23,6 +23,8 @@ export interface QRPaymentResponse {
 
 /**
  * ข้อมูลการตรวจสอบสถานะการชำระเงินผ่าน QR พร้อมเพย์
+ * หมายเหตุ: สเปกประกาศ data ของ /payments/{ref}/status เป็น object ลอย ๆ
+ * ไม่มี DTO — ฟิลด์ด้านล่างอิงพฤติกรรมที่คาดหวัง ต้องยืนยันกับ backend
  */
 export interface QRStatusResponse {
   qrRef: string;

@@ -213,7 +213,7 @@ export default function InventoryPage() {
 
       if (res && res.data) {
         setPurchaseOrders(res.data);
-        setTotalPOs(res.meta?.totalItems ?? res.data.length);
+        setTotalPOs(res.meta?.pagination?.totalItems ?? res.data.length);
       } else {
         setPurchaseOrders([]);
         setTotalPOs(0);
@@ -253,7 +253,7 @@ export default function InventoryPage() {
 
       if (res && res.data) {
         setGoodsReceipts(res.data);
-        setTotalGRs(res.meta?.totalItems ?? res.data.length);
+        setTotalGRs(res.meta?.pagination?.totalItems ?? res.data.length);
       } else {
         setGoodsReceipts([]);
         setTotalGRs(0);
@@ -307,7 +307,7 @@ export default function InventoryPage() {
   const handleConfirmPO = async (po: PurchaseOrder) => {
     try {
       await procurementService.confirmPurchaseOrder(po.id);
-      showToast(`ยืนยันการสั่งซื้อ ${po.poNumber || ''} เรียบร้อยแล้ว`, 'success');
+      showToast(`ยืนยันการสั่งซื้อ ${po.poNo || ''} เรียบร้อยแล้ว`, 'success');
       fetchPurchaseOrders();
     } catch (err: unknown) {
       console.error('Confirm PO failed:', err);
@@ -317,13 +317,13 @@ export default function InventoryPage() {
 
   const handleCancelPO = async (po: PurchaseOrder) => {
     const confirmCancel = window.confirm(
-      `คุณต้องการยกเลิกใบสั่งซื้อ ${po.poNumber || ''} ใช่หรือไม่?`
+      `คุณต้องการยกเลิกใบสั่งซื้อ ${po.poNo || ''} ใช่หรือไม่?`
     );
     if (!confirmCancel) return;
 
     try {
       await procurementService.cancelPurchaseOrder(po.id);
-      showToast(`ยกเลิกใบสั่งซื้อ ${po.poNumber || ''} เรียบร้อยแล้ว`, 'success');
+      showToast(`ยกเลิกใบสั่งซื้อ ${po.poNo || ''} เรียบร้อยแล้ว`, 'success');
       fetchPurchaseOrders();
     } catch (err: unknown) {
       console.error('Cancel PO failed:', err);
@@ -333,13 +333,13 @@ export default function InventoryPage() {
 
   const handleForceClosePO = async (po: PurchaseOrder) => {
     const confirmClose = window.confirm(
-      `คุณต้องการบังคับปิดใบสั่งซื้อ ${po.poNumber || ''} ใช่หรือไม่?`
+      `คุณต้องการบังคับปิดใบสั่งซื้อ ${po.poNo || ''} ใช่หรือไม่?`
     );
     if (!confirmClose) return;
 
     try {
       await procurementService.forceClosePurchaseOrder(po.id);
-      showToast(`ปิดใบสั่งซื้อ ${po.poNumber || ''} เรียบร้อยแล้ว`, 'success');
+      showToast(`ปิดใบสั่งซื้อ ${po.poNo || ''} เรียบร้อยแล้ว`, 'success');
       fetchPurchaseOrders();
     } catch (err: unknown) {
       console.error('Force close PO failed:', err);
@@ -370,7 +370,7 @@ export default function InventoryPage() {
     try {
       await procurementService.completeGoodsReceipt(gr.id);
       showToast(
-        `ยืนยันตรวจรับ ${gr.receiptNumber || ''} นำสต็อกเข้าคลังเรียบร้อยแล้ว`,
+        `ยืนยันตรวจรับ ${gr.receiptNo || ''} นำสต็อกเข้าคลังเรียบร้อยแล้ว`,
         'success'
       );
       fetchGoodsReceipts();
@@ -384,13 +384,13 @@ export default function InventoryPage() {
 
   const handleCancelGR = async (gr: GoodsReceipt) => {
     const confirmCancel = window.confirm(
-      `คุณต้องการยกเลิกใบตรวจรับ ${gr.receiptNumber || ''} ใช่หรือไม่?`
+      `คุณต้องการยกเลิกใบตรวจรับ ${gr.receiptNo || ''} ใช่หรือไม่?`
     );
     if (!confirmCancel) return;
 
     try {
       await procurementService.cancelGoodsReceipt(gr.id);
-      showToast(`ยกเลิกใบตรวจรับ ${gr.receiptNumber || ''} เรียบร้อยแล้ว`, 'success');
+      showToast(`ยกเลิกใบตรวจรับ ${gr.receiptNo || ''} เรียบร้อยแล้ว`, 'success');
       fetchGoodsReceipts();
     } catch (err: unknown) {
       console.error('Cancel GR failed:', err);
@@ -457,12 +457,12 @@ export default function InventoryPage() {
     }
 
     const totalValuationBaht =
-      typeof valuationData?.totalValuation === 'number'
-        ? valuationData.totalValuation
+      typeof valuationData?.totalCostValue === 'number'
+        ? valuationData.totalCostValue
         : computedValuationSatang;
 
     return {
-      totalSkus: valuationData?.totalSkus ?? totalSkus,
+      totalSkus: valuationData?.totalItems ?? totalSkus,
       lowStockCount,
       outOfStockCount,
       totalValuationBaht,

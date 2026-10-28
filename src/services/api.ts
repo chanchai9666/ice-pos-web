@@ -1,6 +1,7 @@
 import {
   ApiResponse,
   AuthResponse,
+  ErrorDetail,
   RequestOptions,
   SessionEventPayload,
   SessionExpiredListener,
@@ -20,17 +21,21 @@ export const API_BASE_URL =
 
 export class ApiError extends Error {
   public code: number;
-  public details?: Array<{ field: string; issue: string }>;
+  public details?: ErrorDetail[];
+  /** HTTP status ของ response (ถ้ามี) — ใช้แยกกรณี 404/401 ได้แม่นกว่า code ของ envelope */
+  public status?: number;
 
   constructor(
     message: string,
     code: number = 5000,
-    details?: Array<{ field: string; issue: string }>
+    details?: ErrorDetail[],
+    status?: number
   ) {
     super(message);
     this.name = 'ApiError';
     this.code = code;
     this.details = details;
+    this.status = status;
   }
 }
 
@@ -265,7 +270,12 @@ export async function request<T>(
           ? 'ข้อมูลเข้าสู่ระบบไม่ถูกต้อง หรือบัญชีถูกระงับการใช้งาน'
           : 'เกิดข้อผิดพลาดในการประมวลผล กรุณาลองใหม่อีกครั้ง');
 
-      throw new ApiError(errorMessage, data.code || response.status, data.details);
+      throw new ApiError(
+        errorMessage,
+        data.code || response.status,
+        data.details,
+        response.status
+      );
     }
 
     return data;

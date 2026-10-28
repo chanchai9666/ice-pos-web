@@ -36,21 +36,44 @@ export interface UpdateCategoryRequest {
   isActive?: boolean;
 }
 
+// ข้อมูลผลลัพธ์การอัปโหลดไฟล์รูปภาพ
+// อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.FileUploadResponse
+export interface FileUploadResponse {
+  fileName: string;
+  filePath: string;
+  fileSize: number;
+  contentType: string;
+  imageUrl?: string;
+  fullUrl?: string;
+  width?: number;
+  height?: number;
+  originalSize?: number;
+}
+
 // ข้อมูลหน่วยนับสินค้า
+// อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.UomResponse
+// หมายเหตุ: สเปกแยก nameTh / nameEn — ชั้น service จะ normalize เป็น name ให้ UI ใช้
 export interface Uom {
   id: string;
-  code: string;
-  name: string;
+  code?: string;
+  name: string;      // ชื่อที่ใช้แสดงผล (normalize มาจาก nameTh)
+  nameTh?: string;
+  nameEn?: string;
+  category?: string;
   isActive: boolean;
+  createdAt?: string;
 }
 
 // ข้อมูลอัตราภาษีมูลค่าเพิ่ม
+// อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.TaxResponse
+// หมายเหตุ: rate เป็นเศษส่วน (0.07 = 7%) และสเปกไม่มี code
 export interface Tax {
   id: string;
-  code: string;
+  code?: string;
   name: string;
   rate: number; // e.g. 0.07 สำหรับ 7%
   isActive: boolean;
+  isIncludeInPrice?: boolean;
 }
 
 // ข้อมูลสินค้า
@@ -78,7 +101,8 @@ export interface Product {
   minStock: number;
   trackExpiry: boolean;
   imageUrl?: string;
-  imageTimestamp?: number; // สำหรับ Client-side Cache-Busting รูปภาพ
+  imageTimestamp?: number; // สำหรับ Client-side Cache-Busting รูปภาพ (ไม่ได้มาจาก API)
+  version?: number;
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;

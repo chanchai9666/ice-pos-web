@@ -134,7 +134,7 @@ export function PurchaseOrderTable({
                   <td className="py-3.5 px-4 font-semibold text-white">
                     <div className="flex items-center gap-2">
                       <span className="text-cyan-400 font-mono font-bold text-base">
-                        {po.poNumber || 'PO-DRAFT'}
+                        {po.poNo || 'PO-DRAFT'}
                       </span>
                     </div>
                     {po.note && (
@@ -181,7 +181,7 @@ export function PurchaseOrderTable({
 
                   {/* ยอดรวมสุทธิ */}
                   <td className="py-3.5 px-4 text-right font-bold text-emerald-400 text-base font-mono">
-                    {formatSatangToBaht(po.totalAmount, { showUnit: true })}
+                    {formatSatangToBaht(po.grandTotal ?? 0, { showUnit: true })}
                   </td>
 
                   {/* สถานะ */}

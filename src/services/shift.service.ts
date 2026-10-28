@@ -17,8 +17,12 @@ export const shiftService = {
         params: { branchId },
       });
     } catch (error) {
-      // หากเซิร์ฟเวอร์ตอบ 404 หรือไม่มีกะเปิดอยู่ ให้คืนค่า data: null เพื่อให้หน้าจอแสดงสถานะยังไม่ได้เปิดกะ
-      if (error instanceof ApiError && (error.code === 404 || error.code === 4040)) {
+      // สเปกประกาศว่า GET /shifts/active ตอบ 200 พร้อม data = null เมื่อยังไม่เปิดกะ
+      // แต่บาง deployment ตอบ 404 — รองรับทั้งสองทางเพื่อไม่ให้หน้าจอค้าง
+      if (
+        error instanceof ApiError &&
+        (error.status === 404 || error.code === 404 || error.code === 4040)
+      ) {
         return {
           code: 0,
           message: 'ไม่มีกะที่เปิดใช้งานอยู่',

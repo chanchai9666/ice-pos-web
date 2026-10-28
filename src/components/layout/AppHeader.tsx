@@ -96,11 +96,11 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
         {user && (
           <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-800/50 border border-slate-700/40">
             <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-xs font-bold text-white shadow-sm">
-              {user.fullName ? user.fullName.charAt(0) : user.username.charAt(0).toUpperCase()}
+              {user.name ? user.name.charAt(0) : user.username.charAt(0).toUpperCase()}
             </div>
             <div className="hidden md:flex flex-col text-left">
               <span className="text-xs font-semibold text-slate-200 leading-tight">
-                {user.fullName || user.username}
+                {user.name || user.username}
               </span>
               <span className="text-[10px] text-slate-400 leading-tight">
                 @{user.username}

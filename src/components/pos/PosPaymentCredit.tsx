@@ -10,7 +10,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Icons } from '@/components/ui/Icons';
 import { customerService } from '@/services/customer.service';
-import { CustomerSummary } from '@/types/customer';
+import { CustomerSummary, getAvailableCredit } from '@/types/customer';
 import { formatSatangToBaht } from '@/utils/currency';
 
 interface PosPaymentCreditProps {
@@ -57,7 +57,7 @@ export function PosPaymentCredit({
   }, [search, searchQuery]);
 
   // ตรวจสอบวงเงินคงเหลือ
-  const availableCredit = selectedCustomer?.availableCredit ?? 0;
+  const availableCredit = getAvailableCredit(selectedCustomer ?? { creditLimit: 0, outstandingBalance: 0 } as CustomerSummary);
   const isCreditEnough = availableCredit >= grandTotalSatang;
   const remainingAfterSale = availableCredit - grandTotalSatang;
 
@@ -106,7 +106,7 @@ export function PosPaymentCredit({
           ) : (
             customers.map((c) => {
               const isSelected = selectedCustomer?.id === c.id;
-              const hasCredit = (c.availableCredit || 0) >= grandTotalSatang;
+              const hasCredit = getAvailableCredit(c) >= grandTotalSatang;
 
               return (
                 <button
@@ -151,7 +151,7 @@ export function PosPaymentCredit({
                         hasCredit ? 'text-emerald-400' : 'text-rose-400'
                       }`}
                     >
-                      {formatSatangToBaht(c.availableCredit || 0)}
+                      {formatSatangToBaht(getAvailableCredit(c))}
                     </span>
                   </div>
                 </button>

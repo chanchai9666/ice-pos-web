@@ -82,7 +82,7 @@ export function PurchaseOrderDetailModal({
             <div>
               <div className="flex items-center gap-2.5">
                 <h2 className="text-xl font-black text-white font-mono">
-                  {po.poNumber || 'ใบสั่งซื้อฉบับร่าง'}
+                  {po.poNo || 'ใบสั่งซื้อฉบับร่าง'}
                 </h2>
                 {renderStatusBadge(po.status)}
               </div>
@@ -224,7 +224,7 @@ export function PurchaseOrderDetailModal({
               <div className="flex justify-between text-slate-400">
                 <span>ยอดรวมสินค้า:</span>
                 <span className="font-mono text-slate-200">
-                  {formatSatangToBaht(po.totalAmount)} บาท
+                  {formatSatangToBaht(po.subtotal ?? 0)} บาท
                 </span>
               </div>
               {po.taxAmount > 0 && (
@@ -238,7 +238,7 @@ export function PurchaseOrderDetailModal({
               <div className="flex justify-between pt-2 border-t border-slate-800 text-base font-bold">
                 <span className="text-white">ยอดสุทธิ:</span>
                 <span className="font-mono text-emerald-400 text-lg">
-                  {formatSatangToBaht(po.totalAmount + (po.taxAmount || 0), {
+                  {formatSatangToBaht(po.grandTotal ?? 0, {
                     showUnit: true,
                   })}
                 </span>

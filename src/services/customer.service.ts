@@ -7,23 +7,32 @@ import { request } from '@/services/api';
 import { ApiResponse } from '@/types/auth';
 import { CustomerSummary } from '@/types/customer';
 
+export interface SearchCustomersParams {
+  search?: string;
+  branchId?: string;
+  isMember?: boolean;
+  page?: number;
+  pageSize?: number;
+}
+
 export const customerService = {
   /**
    * ค้นหารายการลูกค้าและตรวจสอบยอดเงินเชื่อคงเหลือ
-   * @param query คำค้นหา (ชื่อ, รหัส, เบอร์โทร)
-   * @param branchId UUID ของสาขา
+   * อ้างอิงสเปก: GET /customers (query: branchId, search, isMember, page, pageSize)
    */
   searchCustomers: async (
     query: string = '',
-    branchId?: string
+    branchId?: string,
+    options?: Omit<SearchCustomersParams, 'search' | 'branchId'>
   ): Promise<ApiResponse<CustomerSummary[]>> => {
     return request<CustomerSummary[]>('/api/v1/customers', {
       method: 'GET',
       params: {
         search: query || undefined,
         branchId: branchId || undefined,
-        page: 1,
-        pageSize: 20,
+        isMember: options?.isMember,
+        page: options?.page ?? 1,
+        pageSize: options?.pageSize ?? 20,
       },
     });
   },

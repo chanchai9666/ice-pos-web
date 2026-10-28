@@ -27,6 +27,8 @@ export const inventoryService = {
   /**
    * ปรับยอดสต็อกสินค้า (Adjust Stock)
    * POST /api/v1/inventory/adjust?branchId={branchId}
+   * หมายเหตุ: สเปกประกาศ branchId เป็น query parameter ที่ required
+   * จึงส่งทาง query เท่านั้น ไม่ส่งซ้ำใน body
    */
   async adjustStock(
     branchId: string,
@@ -34,10 +36,7 @@ export const inventoryService = {
   ): Promise<ApiResponse<{ message?: string }>> {
     return api.post<{ message?: string }>(
       '/api/v1/inventory/adjust',
-      {
-        ...request,
-        branchId,
-      },
+      request,
       {
         params: { branchId },
       }

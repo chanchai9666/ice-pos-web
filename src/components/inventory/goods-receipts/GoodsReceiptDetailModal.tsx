@@ -62,7 +62,7 @@ export function GoodsReceiptDetailModal({
             <div>
               <div className="flex items-center gap-2.5">
                 <h2 className="text-xl font-black text-white font-mono">
-                  {gr.receiptNumber || 'ใบตรวจรับฉบับร่าง'}
+                  {gr.receiptNo || 'ใบตรวจรับฉบับร่าง'}
                 </h2>
                 {renderStatusBadge(gr.status)}
               </div>
@@ -71,8 +71,8 @@ export function GoodsReceiptDetailModal({
                 {gr.receivedDate
                   ? new Date(gr.receivedDate).toLocaleDateString('th-TH')
                   : '-'}{' '}
-                {gr.completedAt &&
-                  `(ยืนยันเมื่อ: ${new Date(gr.completedAt).toLocaleString('th-TH')})`}
+                {gr.updatedAt &&
+                  `(ยืนยันเมื่อ: ${new Date(gr.updatedAt).toLocaleString('th-TH')})`}
               </p>
             </div>
           </div>
@@ -193,9 +193,9 @@ export function GoodsReceiptDetailModal({
                         {formatSatangToBaht(line.unitCost, { showUnit: true })}
                       </td>
                       <td className="py-3 px-3 text-xs">
-                        {line.lotNumber && (
+                        {line.batchCode && (
                           <div className="font-mono text-cyan-300">
-                            Lot: {line.lotNumber}
+                            Lot: {line.batchCode}
                           </div>
                         )}
                         {line.expiryDate && (
@@ -203,7 +203,7 @@ export function GoodsReceiptDetailModal({
                             Exp: {new Date(line.expiryDate).toLocaleDateString('th-TH')}
                           </div>
                         )}
-                        {!line.lotNumber && !line.expiryDate && (
+                        {!line.batchCode && !line.expiryDate && (
                           <span className="text-slate-500">-</span>
                         )}
                       </td>

@@ -12,7 +12,7 @@ import { Icons } from '@/components/ui/Icons';
 import { usePosCart } from '@/context/PosCartContext';
 import { CartItem } from '@/types/pos';
 import { PaymentMethodType, CreateSaleRequest, SaleResponse } from '@/types/sale';
-import { CustomerSummary } from '@/types/customer';
+import { CustomerSummary, getAvailableCredit } from '@/types/customer';
 import { PosPaymentCash } from '@/components/pos/PosPaymentCash';
 import { PosPaymentQR } from '@/components/pos/PosPaymentQR';
 import { PosPaymentCredit } from '@/components/pos/PosPaymentCredit';
@@ -235,7 +235,7 @@ export function PosCheckoutModal({
       return;
     }
 
-    if ((selectedCustomer.availableCredit || 0) < grandTotalSatang) {
+    if (getAvailableCredit(selectedCustomer) < grandTotalSatang) {
       setErrorMessage('วงเงินเครดิตคงเหลือของลูกค้าไม่เพียงพอสำหรับยอดบิลนี้');
       playErrorBuzzer();
       return;

@@ -49,16 +49,25 @@ export interface CreateSaleRequest {
 
 /**
  * รายละเอียดแถวสินค้าในผลลัพธ์บิลขาย (Sale Line Item Response)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.SaleLineResponse
+ * หมายเหตุ: สเปกส่ง product เป็น object เต็ม ไม่ได้แบน productName/uomName
  */
 export interface SaleLineResponse {
   id: string;
   productId: string;
-  productName: string;
+  product?: {
+    id?: string;
+    name?: string;
+    sku?: string;
+    [key: string]: unknown;
+  } | null;
   uomId: string;
-  uomName: string;
-  quantity: number;
+  qty: number;
   unitPrice: number;        // หน่วยสตางค์
-  lineTotal: number;        // หน่วยสตางค์
+  lineDiscount?: number;    // หน่วยสตางค์
+  grossTotal?: number;      // หน่วยสตางค์
+  netTotal?: number;        // หน่วยสตางค์
+  taxAmount?: number;       // หน่วยสตางค์
 }
 
 /**
@@ -75,6 +84,7 @@ export interface SalePaymentResponse {
 
 /**
  * ข้อมูลผลลัพธ์การบันทึกการขาย (Sale Response)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.SaleResponse
  */
 export interface SaleResponse {
   id: string;                       // รหัสบิลขาย (UUID)
@@ -83,11 +93,16 @@ export interface SaleResponse {
   shiftId?: string;                 // รหัสกะการขาย
   cashierId: string;                // รหัสแคชเชียร์
   customerId?: string;              // รหัสลูกค้า (ถ้ามี)
-  status: 'COMPLETED' | 'VOIDED';   // สถานะบิลขาย
+  status: 'COMPLETED' | 'VOIDED' | string; // สถานะบิลขาย
+  subTotal?: number;                // ยอดก่อนภาษี/ส่วนลด (หน่วยสตางค์)
+  vatAmount?: number;               // ยอดภาษีมูลค่าเพิ่ม (หน่วยสตางค์)
   grandTotal: number;               // ยอดสุทธิทั้งบิล (หน่วยสตางค์)
   billDiscount: number;             // ส่วนลดระดับบิล (หน่วยสตางค์)
   creditPart?: number;              // ยอดเงินเชื่อ (หน่วยสตางค์)
+  note?: string;                    // หมายเหตุบิล
+  occurredAt?: string;              // วันเวลาที่เกิดรายการ
   idempotencyKey?: string;
+  version?: number;
   lines: SaleLineResponse[];        // รายการสินค้า
   payments: SalePaymentResponse[];  // รายการการชำระเงิน
   createdAt: string;                // วันเวลาที่สร้างบิล

@@ -97,13 +97,9 @@ export default function CatalogPage() {
 
       if (res && res.data) {
         setProducts(res.data);
-        if (res.meta) {
-          setTotalItems(res.meta.totalItems || res.data.length);
-          setTotalPages(res.meta.totalPages || 1);
-        } else {
-          setTotalItems(res.data.length);
-          setTotalPages(1);
-        }
+        const pagination = res.meta?.pagination;
+        setTotalItems(pagination?.totalItems ?? res.data.length);
+        setTotalPages(pagination?.totalPages ?? 1);
       }
     } catch (err: unknown) {
       const error = err as Error;

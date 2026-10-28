@@ -59,10 +59,7 @@ export function ProductSelectModal({
         ]);
 
         let loadedProducts = productsRes?.data || [];
-        const productTotalPages =
-          (productsRes?.meta as { pagination?: { totalPages?: number } } | undefined)?.pagination?.totalPages ||
-          productsRes?.meta?.totalPages ||
-          1;
+        const productTotalPages = productsRes?.meta?.pagination?.totalPages ?? 1;
 
         if (productTotalPages > 1) {
           const productPagePromises = [];
@@ -97,10 +94,7 @@ export function ProductSelectModal({
             map[s.productId] = s.quantity;
           });
 
-          const stockTotalPages =
-            (stockRes.meta as { pagination?: { totalPages?: number } } | undefined)?.pagination?.totalPages ||
-            stockRes.meta?.totalPages ||
-            1;
+          const stockTotalPages = stockRes.meta?.pagination?.totalPages ?? 1;
 
           if (stockTotalPages > 1 && branchId) {
             const stockPagePromises = [];

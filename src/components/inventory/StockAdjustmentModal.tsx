@@ -148,9 +148,9 @@ export function StockAdjustmentModal({
       onSuccess();
       onClose();
     } catch (err: unknown) {
-      const errorObj = err as { message?: string; details?: Array<{ issue: string }> };
+      const errorObj = err as { message?: string; details?: Array<{ message: string }> };
       const msg =
-        errorObj.details?.[0]?.issue ||
+        errorObj.details?.[0]?.message ||
         errorObj.message ||
         'เกิดข้อผิดพลาดในการปรับยอดสต็อก กรุณาลองใหม่อีกครั้ง';
       setErrorMessage(msg);

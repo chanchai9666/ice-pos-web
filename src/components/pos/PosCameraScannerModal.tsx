@@ -16,10 +16,30 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { BrowserMultiFormatReader, IScannerControls } from '@zxing/browser';
+import {
+  BarcodeFormat,
+  DecodeHintType,
+  NotFoundException,
+  ChecksumException,
+  FormatException,
+  ReaderException,
+} from '@zxing/library';
 import { Icons } from '@/components/ui/Icons';
 import { cleanBarcode } from '@/utils/barcode';
 import { playSuccessBeep, playErrorBuzzer } from '@/utils/audioFeedback';
 import { BarcodeScanResult, ScanFeedbackResult } from '@/types/scanner';
+import { formatSatangToBaht } from '@/utils/currency';
+
+// ป้องกัน ZXing พ่น non-ReaderException warning ใน console ทุกเฟรมอันเนื่องจาก prototype inheritance ของคลัง
+if (typeof window !== 'undefined') {
+  try {
+    Object.setPrototypeOf(NotFoundException.prototype, ReaderException.prototype);
+    Object.setPrototypeOf(ChecksumException.prototype, ReaderException.prototype);
+    Object.setPrototypeOf(FormatException.prototype, ReaderException.prototype);
+  } catch {
+    // ละเว้นในสภาพแวดล้อมที่ไม่รองรับ prototype manipulation
+  }
+}
 
 interface PosCameraScannerModalProps {
   isOpen: boolean;
@@ -39,6 +59,14 @@ export function PosCameraScannerModal({
   const zxingControlsRef = useRef<IScannerControls | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
+  // เก็บฟังก์ชัน onScan ล่าสุดไว้ใน Ref เพื่อป้องกันการ Re-run ของ Camera Lifecycle เมื่อ State หน้าหลักเปลี่ยนแปลง
+  const onScanRef = useRef(onScan);
+  useEffect(() => {
+    onScanRef.current = onScan;
+  }, [onScan]);
+
+  const isProcessingRef = useRef<boolean>(false);
+
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [hasPermissionError, setHasPermissionError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -50,6 +78,36 @@ export function PosCameraScannerModal({
   const [failedCount, setFailedCount] = useState<number>(0);
   const [lastScanFeedback, setLastScanFeedback] = useState<ScanFeedbackResult | null>(null);
   const [activeEngine, setActiveEngine] = useState<string>('กำลังเตรียมระบบ...');
+
+  // สถานะ visual feedback: แสงแฟลชรอบกรอบเล็งเมื่อตรวจพบบาร์โค้ด และจุดแตะเพื่อโฟกัส (Tap to focus)
+  const [scanFlash, setScanFlash] = useState<'SUCCESS' | 'NOT_FOUND' | null>(null);
+  const [focusPoint, setFocusPoint] = useState<{ x: number; y: number } | null>(null);
+
+  // จัดการแตะที่หน้าจอเพื่อโฟกัส (Tap to focus)
+  const handleVideoClick = useCallback(async (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setFocusPoint({ x, y });
+
+    const track = streamRef.current?.getVideoTracks()[0];
+    if (track) {
+      try {
+        const caps = (track.getCapabilities?.() || {}) as { focusMode?: string[] };
+        if (caps.focusMode && caps.focusMode.includes('continuous')) {
+          await track.applyConstraints({
+            advanced: [{ focusMode: 'continuous' }],
+          } as unknown as MediaTrackConstraints);
+        }
+      } catch {
+        // อุปกรณ์บางรุ่นอาจไม่อนุญาตให้ตั้งค่า constraints เพิ่มเติม
+      }
+    }
+
+    setTimeout(() => {
+      setFocusPoint(null);
+    }, 1200);
+  }, []);
 
   // หยุดการทำงานของกล้องและตัวถอดรหัส
   const stopCamera = useCallback(() => {
@@ -90,14 +148,19 @@ export function PosCameraScannerModal({
 
       // หน่วงเวลาไม่ให้สแกนรหัสเดิมซ้ำซ้อนภายใน 1.5 วินาที
       if (now - lastTime <= 1500) return;
+      if (isProcessingRef.current) return;
 
+      isProcessingRef.current = true;
       lastScannedTimeRef.current[cleaned] = now;
 
       try {
-        const result = await onScan(cleaned);
+        const scanFn = onScanRef.current;
+        const result = scanFn ? await scanFn(cleaned) : undefined;
         if (result && result.success) {
-          // กรณีพบสินค้าในระบบ: เพิ่มตัวนับสำเร็จ ส่งเสียง Beep และแสดงแถบสีเขียว
+          // กรณีพบสินค้าในระบบ: เพิ่มตัวนับสำเร็จ ส่งเสียง Beep แฟลชกรอบสีเขียว และแสดงแถบสีเขียว
           setSuccessCount((prev) => prev + 1);
+          setScanFlash('SUCCESS');
+          setTimeout(() => setScanFlash(null), 600);
           setLastScanFeedback({
             status: 'SUCCESS',
             barcode: cleaned,
@@ -107,8 +170,10 @@ export function PosCameraScannerModal({
           });
           playSuccessBeep();
         } else {
-          // กรณีไม่พบสินค้าในระบบ: เพิ่มตัวนับไม่สำเร็จ ส่งเสียง Buzzer และแสดงแถบสีแดง (สแกนต่อทันที)
+          // กรณีไม่พบสินค้าในระบบ: เพิ่มตัวนับไม่สำเร็จ ส่งเสียง Buzzer แฟลชกรอบสีแดง และแสดงแถบสีแดง (สแกนต่อทันที)
           setFailedCount((prev) => prev + 1);
+          setScanFlash('NOT_FOUND');
+          setTimeout(() => setScanFlash(null), 600);
           setLastScanFeedback({
             status: 'NOT_FOUND',
             barcode: cleaned,
@@ -119,15 +184,19 @@ export function PosCameraScannerModal({
       } catch (err) {
         console.warn('onScan processing error:', err);
         setFailedCount((prev) => prev + 1);
+        setScanFlash('NOT_FOUND');
+        setTimeout(() => setScanFlash(null), 600);
         setLastScanFeedback({
           status: 'NOT_FOUND',
           barcode: cleaned,
           timestamp: Date.now(),
         });
         playErrorBuzzer();
+      } finally {
+        isProcessingRef.current = false;
       }
     },
-    [onScan]
+    []
   );
 
   // เริ่มต้นเปิดกล้องวิดีโอ
@@ -159,6 +228,21 @@ export function PosCameraScannerModal({
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
       }
+
+      // บังคับเปิด Continuous Autofocus หากเซนเซอร์กล้องของอุปกรณ์รองรับ
+      const track = stream.getVideoTracks()[0];
+      if (track) {
+        try {
+          const caps = (track.getCapabilities?.() || {}) as { focusMode?: string[] };
+          if (caps.focusMode && caps.focusMode.includes('continuous')) {
+            await track.applyConstraints({
+              advanced: [{ focusMode: 'continuous' }],
+            } as unknown as MediaTrackConstraints);
+          }
+        } catch {
+          // ละเว้นหากอุปกรณ์ไม่เปิดให้ตั้งค่า constraint
+        }
+      }
     } catch (err: unknown) {
       console.warn('Camera access error:', err);
       setHasPermissionError(true);
@@ -173,18 +257,24 @@ export function PosCameraScannerModal({
     }
   }, [facingMode, stopCamera]);
 
-  // วงรอบเริ่มการสแกนและจัดการ Hybrid Decoder Engine
+  // จัดการรอบการเปิด/ปิด Modal: รีเซ็ตตัวนับและข้อมูลผลตอบรับเฉพาะเมื่อเปิด Modal รอบใหม่
+  useEffect(() => {
+    if (isOpen) {
+      setSuccessCount(0);
+      setFailedCount(0);
+      setLastScanFeedback(null);
+      lastScannedTimeRef.current = {};
+      isProcessingRef.current = false;
+    } else {
+      stopCamera();
+    }
+  }, [isOpen, stopCamera]);
+
+  // วงรอบเริ่มการสแกนและจัดการ Hybrid Decoder Engine (ทำงานเฉพาะเมื่อเปิด Modal หรือสลับกล้องหน้า/หลัง)
   useEffect(() => {
     if (!isOpen) {
-      stopCamera();
       return;
     }
-
-    // รีเซ็ตตัวนับเมื่อเปิด Modal รอบใหม่
-    setSuccessCount(0);
-    setFailedCount(0);
-    setLastScanFeedback(null);
-    lastScannedTimeRef.current = {};
 
     let isSubscribed = true;
 
@@ -242,7 +332,21 @@ export function PosCameraScannerModal({
         // 2. ถ้าไม่มี Native BarcodeDetector (เช่น Safari บน iOS/macOS, Firefox) ให้สลับไปใช้ ZXing Browser Decoder
         setActiveEngine('ZXing Engine (Cross-Browser)');
         try {
-          const zxingReader = new BrowserMultiFormatReader();
+          const hints = new Map<DecodeHintType, unknown>();
+          hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+            BarcodeFormat.EAN_13,
+            BarcodeFormat.EAN_8,
+            BarcodeFormat.CODE_128,
+            BarcodeFormat.CODE_39,
+            BarcodeFormat.UPC_A,
+            BarcodeFormat.UPC_E,
+            BarcodeFormat.QR_CODE,
+          ]);
+          hints.set(DecodeHintType.TRY_HARDER, true);
+          const zxingReader = new BrowserMultiFormatReader(hints, {
+            delayBetweenScanAttempts: 100,
+            delayBetweenScanSuccess: 200,
+          });
           const videoElement = videoRef.current;
           if (videoElement) {
             const controls = await zxingReader.decodeFromVideoElement(
@@ -273,7 +377,7 @@ export function PosCameraScannerModal({
       isSubscribed = false;
       stopCamera();
     };
-  }, [isOpen, startCamera, stopCamera, processBarcode]);
+  }, [isOpen, facingMode, startCamera, stopCamera, processBarcode]);
 
   if (!isOpen) return null;
 
@@ -372,8 +476,11 @@ export function PosCameraScannerModal({
           </div>
         </div>
 
-        {/* พื้นที่แสดงภาพสดจากกล้องและกรอบเล็ง */}
-        <div className="relative w-full aspect-[4/3] bg-black overflow-hidden flex items-center justify-center shrink">
+        {/* พื้นที่แสดงภาพสดจากกล้องและกรอบเล็ง (รองรับการแตะหน้าจอเพื่อโฟกัส Tap-to-Focus) */}
+        <div
+          onClick={handleVideoClick}
+          className="relative w-full aspect-[4/3] bg-black overflow-hidden flex items-center justify-center shrink cursor-crosshair select-none"
+        >
           {hasPermissionError || !isSupported ? (
             <div className="p-6 text-center space-y-3 max-w-xs">
               <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center mx-auto text-rose-400">
@@ -390,31 +497,115 @@ export function PosCameraScannerModal({
             </div>
           ) : (
             <>
+              <style>{`
+                @keyframes scanLaserSweep {
+                  0% { top: 8%; opacity: 0.45; }
+                  50% { top: 90%; opacity: 1; }
+                  100% { top: 8%; opacity: 0.45; }
+                }
+                .animate-laser-sweep {
+                  animation: scanLaserSweep 2s ease-in-out infinite;
+                }
+                @keyframes tapFocusPulse {
+                  0% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.9; }
+                  50% { transform: translate(-50%, -50%) scale(1.0); opacity: 1; }
+                  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.4; }
+                }
+                .animate-tap-focus {
+                  animation: tapFocusPulse 0.4s ease-out forwards;
+                }
+              `}</style>
+
               <video
                 ref={videoRef}
                 playsInline
                 muted
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover pointer-events-none"
               />
 
-              {/* กรอบเล็งสแกน (Aiming Viewfinder) */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <div className="relative w-64 h-36 sm:w-72 sm:h-40 rounded-2xl border-2 border-cyan-400/80 shadow-[0_0_0_9999px_rgba(0,0,0,0.55)]">
-                  {/* มุมทั้งสี่ของกรอบ */}
-                  <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-cyan-400 rounded-tl-lg" />
-                  <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-cyan-400 rounded-tr-lg" />
-                  <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-cyan-400 rounded-bl-lg" />
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-cyan-400 rounded-br-lg" />
+              {/* วงแหวนแตะเพื่อโฟกัส (Tap to focus ring) */}
+              {focusPoint && (
+                <div
+                  className="absolute pointer-events-none z-30 animate-tap-focus"
+                  style={{ left: `${focusPoint.x}px`, top: `${focusPoint.y}px` }}
+                >
+                  <div className="w-12 h-12 border-2 border-amber-300 rounded-lg shadow-[0_0_12px_rgba(251,191,36,0.7)] flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 rounded-full bg-amber-300" />
+                  </div>
+                </div>
+              )}
 
-                  {/* เส้นเลเซอร์สแกนจำลอง */}
-                  <div className="absolute inset-x-2 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_8px_#22d3ee] animate-pulse" />
+              {/* กรอบเล็งสแกน (Aiming Viewfinder) พร้อมแสงแฟลชเมื่อตรวจพบบาร์โค้ด */}
+              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <div
+                  className={`relative w-64 h-36 sm:w-72 sm:h-40 rounded-2xl border-2 transition-all duration-200 ${
+                    scanFlash === 'SUCCESS'
+                      ? 'border-emerald-400 ring-4 ring-emerald-400/60 shadow-[0_0_0_9999px_rgba(0,0,0,0.55)]'
+                      : scanFlash === 'NOT_FOUND'
+                      ? 'border-rose-400 ring-4 ring-rose-400/60 shadow-[0_0_0_9999px_rgba(0,0,0,0.55)]'
+                      : 'border-cyan-400/80 shadow-[0_0_0_9999px_rgba(0,0,0,0.55)]'
+                  }`}
+                >
+                  {/* มุมทั้งสี่ของกรอบ */}
+                  <div
+                    className={`absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 rounded-tl-lg transition-colors ${
+                      scanFlash === 'SUCCESS'
+                        ? 'border-emerald-400'
+                        : scanFlash === 'NOT_FOUND'
+                        ? 'border-rose-400'
+                        : 'border-cyan-400'
+                    }`}
+                  />
+                  <div
+                    className={`absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 rounded-tr-lg transition-colors ${
+                      scanFlash === 'SUCCESS'
+                        ? 'border-emerald-400'
+                        : scanFlash === 'NOT_FOUND'
+                        ? 'border-rose-400'
+                        : 'border-cyan-400'
+                    }`}
+                  />
+                  <div
+                    className={`absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 rounded-bl-lg transition-colors ${
+                      scanFlash === 'SUCCESS'
+                        ? 'border-emerald-400'
+                        : scanFlash === 'NOT_FOUND'
+                        ? 'border-rose-400'
+                        : 'border-cyan-400'
+                    }`}
+                  />
+                  <div
+                    className={`absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 rounded-br-lg transition-colors ${
+                      scanFlash === 'SUCCESS'
+                        ? 'border-emerald-400'
+                        : scanFlash === 'NOT_FOUND'
+                        ? 'border-rose-400'
+                        : 'border-cyan-400'
+                    }`}
+                  />
+
+                  {/* เส้นเลเซอร์สแกนกวาดขึ้น-ลง (Active Scanning Laser Sweep) */}
+                  <div className="absolute inset-x-2 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] animate-laser-sweep" />
                 </div>
               </div>
 
-              {/* ป้ายกำกับ Engine ปัจจุบันที่มุมบน */}
+              {/* ป้ายกำกับ Engine ปัจจุบันที่มุมบนซ้าย */}
               <div className="absolute top-2.5 left-3 pointer-events-none">
                 <span className="px-2 py-0.5 rounded-md bg-slate-950/70 backdrop-blur-sm text-[10px] font-mono text-slate-300 border border-slate-700/50">
                   {activeEngine}
+                </span>
+              </div>
+
+              {/* ป้ายสถานะกำลังตรวจจับที่มุมบนขวา */}
+              <div className="absolute top-2.5 right-3 pointer-events-none flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm border border-emerald-500/40 text-emerald-300 text-[11px] font-medium shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" />
+                <span>กำลังตรวจจับ...</span>
+              </div>
+
+              {/* ข้อความแนะนำจุดเล็งด้านล่างกรอบ */}
+              <div className="absolute bottom-2.5 inset-x-4 pointer-events-none text-center">
+                <span className="inline-block px-3 py-1 rounded-full bg-slate-950/85 backdrop-blur-sm text-[11px] sm:text-xs font-semibold text-slate-200 border border-slate-700/60 shadow-lg">
+                  จัดบาร์โค้ดแนวนอนให้อยู่ในกรอบเล็ง • แตะจอเพื่อโฟกัส
                 </span>
               </div>
             </>
@@ -456,10 +647,7 @@ export function PosCameraScannerModal({
                     </span>
                   </div>
                   <div className="shrink-0 px-2.5 py-0.5 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-bold font-mono text-xs sm:text-sm shadow-sm whitespace-nowrap">
-                    ฿{Number(lastScanFeedback.price ?? 0).toLocaleString('th-TH', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                    ฿{formatSatangToBaht(lastScanFeedback.price)}
                   </div>
                 </div>
               ) : (

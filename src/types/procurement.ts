@@ -35,29 +35,36 @@ export type PurchaseOrderStatus =
 
 export interface PurchaseOrderLine {
   id: string;
-  purchaseOrderId: string;
+  purchaseOrderId?: string;
   productId: string;
   product?: Product | null;
+  productName?: string;
+  productSku?: string;
   quantity: number;
   receivedQuantity: number;
   uomId?: string | null;
   uom?: Uom | null;
+  uomName?: string | null;
   unitCost: number; // หน่วย: สตางค์ (Satang)
+  lineTotal?: number; // หน่วย: สตางค์ (Satang)
   note?: string | null;
 }
 
 export interface PurchaseOrder {
   id: string;
-  poNumber: string;
+  poNo: string;
   branchId: string;
+  branchName?: string | null;
   supplierId?: string | null;
   supplier?: Supplier | null;
   status: PurchaseOrderStatus;
   orderDate?: string;
   expectedDeliveryDate?: string;
-  totalAmount: number; // หน่วย: สตางค์ (Satang)
+  subtotal: number; // หน่วย: สตางค์ (Satang)
   taxAmount: number; // หน่วย: สตางค์ (Satang)
+  grandTotal: number; // หน่วย: สตางค์ (Satang)
   note?: string | null;
+  createdBy?: string | null;
   lines: PurchaseOrderLine[];
   createdAt: string;
   updatedAt: string;
@@ -129,46 +136,58 @@ export type GoodsReceiptStatus = 'DRAFT' | 'COMPLETED' | 'CANCELLED';
 
 export interface GoodsReceiptLine {
   id: string;
-  goodsReceiptId: string;
+  goodsReceiptId?: string;
   productId: string;
   product?: Product | null;
+  productName?: string;
+  productSku?: string;
+  orderedQuantity?: number;
   receivedQuantity: number;
   rejectedQuantity: number;
   rejectReason?: string | null;
   unitCost: number; // หน่วย: สตางค์
+  lineTotal?: number; // หน่วย: สตางค์
   uomId?: string | null;
   uom?: Uom | null;
-  lotNumber?: string | null;
+  uomName?: string | null;
+  batchCode?: string | null;
   expiryDate?: string | null;
   purchaseOrderLineId?: string | null;
+  note?: string | null;
 }
 
 export interface GoodsReceipt {
   id: string;
-  receiptNumber: string;
+  receiptNo: string;
   branchId: string;
+  branchName?: string | null;
   purchaseOrderId?: string | null;
+  purchaseOrderNo?: string | null;
   supplierId?: string | null;
   supplier?: Supplier | null;
   supplierInvoiceNo?: string | null;
   receivedDate?: string;
+  receivedBy?: string | null;
   status: GoodsReceiptStatus;
+  grandTotal?: number; // หน่วย: สตางค์
   note?: string | null;
   lines: GoodsReceiptLine[];
   createdAt: string;
-  completedAt?: string | null;
+  updatedAt?: string | null;
 }
 
 export interface CreateGoodsReceiptLineRequest {
   productId: string;
-  receivedQuantity: number;
+  orderedQuantity?: number;
+  receivedQuantity?: number;
   rejectedQuantity?: number;
   rejectReason?: string | null;
   unitCost?: number;
   uomId?: string | null;
-  lotNumber?: string | null;
+  batchCode?: string | null;
   expiryDate?: string | null;
   purchaseOrderLineId?: string | null;
+  note?: string | null;
 }
 
 export interface CreateGoodsReceiptRequest {
