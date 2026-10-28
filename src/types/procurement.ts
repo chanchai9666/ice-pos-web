@@ -13,13 +13,38 @@ export interface Supplier {
   id: string;
   code: string;
   name: string;
+  contactName?: string | null;
   phone?: string | null;
   email?: string | null;
   address?: string | null;
   taxId?: string | null;
+  creditDays?: number | null;
   isActive: boolean;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface CreateSupplierRequest {
+  name: string;
+  code?: string;
+  contactName?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  taxId?: string;
+  creditDays?: number;
+  isActive?: boolean;
+}
+
+export interface UpdateSupplierRequest {
+  name: string;
+  contactName?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  taxId?: string;
+  creditDays?: number;
+  isActive?: boolean;
 }
 
 // ========================================================

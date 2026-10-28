@@ -8,6 +8,8 @@ import { ApiResponse } from '@/types/auth';
 import { formatToRFC3339 } from '@/utils/dateHelper';
 import {
   Supplier,
+  CreateSupplierRequest,
+  UpdateSupplierRequest,
   PurchaseOrder,
   CreatePurchaseOrderRequest,
   UpdatePurchaseOrderRequest,
@@ -48,6 +50,41 @@ export const procurementService = {
    */
   async getSupplierById(id: string): Promise<ApiResponse<Supplier>> {
     return api.get<Supplier>(`/api/v1/suppliers/${id}`);
+  },
+
+  /**
+   * สร้างข้อมูลผู้จัดจำหน่าย/คู่ค้าใหม่
+   * POST /api/v1/suppliers
+   */
+  async createSupplier(
+    data: CreateSupplierRequest
+  ): Promise<ApiResponse<Supplier>> {
+    return api.post<Supplier>('/api/v1/suppliers', data, {
+      loadingMessage: 'กำลังสร้างข้อมูลผู้จัดจำหน่าย...',
+    });
+  },
+
+  /**
+   * แก้ไขข้อมูลผู้จัดจำหน่าย
+   * PUT /api/v1/suppliers/{id}
+   */
+  async updateSupplier(
+    id: string,
+    data: UpdateSupplierRequest
+  ): Promise<ApiResponse<Supplier>> {
+    return api.put<Supplier>(`/api/v1/suppliers/${id}`, data, {
+      loadingMessage: 'กำลังบันทึกข้อมูลผู้จัดจำหน่าย...',
+    });
+  },
+
+  /**
+   * ลบ/ปิดการใช้งานผู้จัดจำหน่าย
+   * DELETE /api/v1/suppliers/{id}
+   */
+  async deleteSupplier(id: string): Promise<ApiResponse<void>> {
+    return api.delete<void>(`/api/v1/suppliers/${id}`, {
+      loadingMessage: 'กำลังลบข้อมูลผู้จัดจำหน่าย...',
+    });
   },
 
   // ========================================================

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Icons } from '@/components/ui/Icons';
 
-export type InventoryTabType = 'stocks' | 'orders' | 'receipts';
+export type InventoryTabType = 'stocks' | 'orders' | 'receipts' | 'suppliers';
 
 export interface InventoryTabsProps {
   activeTab: InventoryTabType;
@@ -40,11 +40,18 @@ export function InventoryTabs({
       icon: Icons.Barcode,
       badge: receiptsBadge,
     },
+    {
+      id: 'suppliers' as InventoryTabType,
+      label: 'ผู้จัดจำหน่าย (Suppliers)',
+      description: 'จัดการข้อมูลคู่ค้าและเครดิตเทอม',
+      icon: Icons.Building2,
+      badge: undefined,
+    },
   ];
 
   return (
     <div className="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl p-1.5 shadow-lg">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-1.5">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;

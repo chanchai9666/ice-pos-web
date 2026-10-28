@@ -30,6 +30,7 @@ import { GoodsReceiptToolbar } from '@/components/inventory/goods-receipts/Goods
 import { GoodsReceiptTable } from '@/components/inventory/goods-receipts/GoodsReceiptTable';
 import { CreateGoodsReceiptModal } from '@/components/inventory/goods-receipts/CreateGoodsReceiptModal';
 import { GoodsReceiptDetailModal } from '@/components/inventory/goods-receipts/GoodsReceiptDetailModal';
+import { SupplierTable } from '@/components/inventory/SupplierTable';
 import { Icons } from '@/components/ui/Icons';
 
 export default function InventoryPage() {
@@ -669,6 +670,15 @@ export default function InventoryPage() {
             totalItems={totalGRs}
             onPageChange={setGrPage}
           />
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* แท็บที่ 4: ผู้จัดจำหน่ายและคู่ค้า (Suppliers)             */}
+      {/* ======================================================== */}
+      {activeTab === 'suppliers' && (
+        <div className="space-y-6 animate-in fade-in duration-200">
+          <SupplierTable />
         </div>
       )}
 
