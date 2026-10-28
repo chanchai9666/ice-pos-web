@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Icons } from '@/components/ui/Icons';
 import { Badge } from '@/components/ui/Badge';
 import { triggerCameraScanner } from '@/utils/navigation';
+import { healthService } from '@/services/health.service';
+import { SyncModal } from '@/components/common/SyncModal';
 
 export interface AppHeaderProps {
   onToggleSidebar: () => void;
@@ -16,6 +18,29 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
   const { user, branch, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [isHealthy, setIsHealthy] = useState<boolean>(true);
+  const [isSyncOpen, setIsSyncOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const checkServerHealth = async () => {
+      try {
+        const res = await healthService.checkHealth();
+        if (isMounted) {
+          setIsHealthy(res.data !== undefined || !res.message?.includes('network'));
+        }
+      } catch {
+        if (isMounted) setIsHealthy(false);
+      }
+    };
+
+    checkServerHealth();
+    const interval = setInterval(checkServerHealth, 30000); // ตรวจสอบทุก 30 วินาที
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleLogout = async () => {
     if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
@@ -62,8 +87,15 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
 
         <div className="flex items-center gap-2">
           <span className="font-bold text-white text-base tracking-wide flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className={`w-2.5 h-2.5 rounded-full ${isHealthy ? 'bg-emerald-400' : 'bg-rose-500'} animate-pulse`} />
             ICE POS
+          </span>
+          <span className={`hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+            isHealthy
+              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+              : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+          }`}>
+            {isHealthy ? 'ออนไลน์ (เชื่อมต่อ)' : 'ออฟไลน์'}
           </span>
         </div>
       </div>
@@ -78,6 +110,17 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
             <span className="text-slate-500 font-mono">({branch.code})</span>
           </div>
         )}
+
+        {/* ปุ่มซิงค์ข้อมูลออฟไลน์ */}
+        <button
+          type="button"
+          onClick={() => setIsSyncOpen(true)}
+          title="ซิงค์ข้อมูลออฟไลน์"
+          className="flex items-center gap-1.5 px-3 py-2 min-h-[48px] rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 font-semibold text-xs transition-all cursor-pointer"
+        >
+          <Icons.Refresh className="w-4 h-4 text-cyan-400" />
+          <span className="hidden sm:inline">ซิงค์ข้อมูล</span>
+        </button>
 
         {/* ปุ่มสแกนสินค้าด้วยกล้องแบบ Primary Accent (เฉพาะหน้าจอ Desktop >= 1024px) */}
         <button
@@ -123,6 +166,12 @@ export function AppHeader({ onToggleSidebar, isSidebarCollapsed }: AppHeaderProp
           <span className="hidden sm:inline">ออกจากระบบ</span>
         </button>
       </div>
+
+      {/* หน้าต่างซิงค์ข้อมูลออฟไลน์ */}
+      <SyncModal
+        isOpen={isSyncOpen}
+        onClose={() => setIsSyncOpen(false)}
+      />
     </header>
   );
 }

@@ -174,3 +174,17 @@ export interface CategoryQueryParams {
   page?: number;
   pageSize?: number;
 }
+
+/**
+ * ข้อมูลผลลัพธ์การสแกนบาร์โค้ดสินค้า (Product Scan Response)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.ProductScanResponse
+ */
+export interface ProductScanResponse {
+  scannedBarcode?: string;
+  product?: Product;
+  isVariableWeight?: boolean;
+  embeddedWeight?: number;
+  embeddedPrice?: number;
+  computedQuantity?: number;
+  computedLineTotal?: number;
+}

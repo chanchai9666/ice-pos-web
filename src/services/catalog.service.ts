@@ -15,6 +15,7 @@ import {
   UpdateProductRequest,
   ProductQueryParams,
   FileUploadResponse,
+  ProductScanResponse,
 } from '@/types/catalog';
 
 export const catalogService = {
@@ -110,6 +111,40 @@ export const catalogService = {
    */
   async lookupProduct(code: string, options?: RequestOptions): Promise<ApiResponse<Product>> {
     return api.get<Product>(`/api/v1/products/lookup/${encodeURIComponent(code)}`, options);
+  },
+
+  /**
+   * สแกนหรือค้นหาสินค้าด้วย Barcode พร้อมข้อมูลน้ำหนัก/ราคาแฝง (Scan Product by Barcode)
+   * GET /api/v1/products/barcode/{barcode}
+   */
+  async getProductByBarcode(barcode: string, options?: RequestOptions): Promise<ApiResponse<ProductScanResponse>> {
+    return api.get<ProductScanResponse>(`/api/v1/products/barcode/${encodeURIComponent(barcode)}`, {
+      silent: true,
+      ...options,
+    });
+  },
+
+  /**
+   * ค้นหาสินค้าด้วยบาร์โค้ดแบบ Prefix Query Form
+   * GET /api/v1/products/lookup?code={code}
+   */
+  async lookupProducts(code: string, options?: RequestOptions): Promise<ApiResponse<Product[]>> {
+    return api.get<Product[]>('/api/v1/products/lookup', {
+      silent: true,
+      ...options,
+      params: { code: code.trim() },
+    });
+  },
+
+  /**
+   * ค้นหาสินค้าด้วย SKU แบบ Path Form
+   * GET /api/v1/products/sku/{sku}
+   */
+  async getProductsBySku(sku: string, options?: RequestOptions): Promise<ApiResponse<Product[]>> {
+    return api.get<Product[]>(`/api/v1/products/sku/${encodeURIComponent(sku)}`, {
+      silent: true,
+      ...options,
+    });
   },
 
   /**
