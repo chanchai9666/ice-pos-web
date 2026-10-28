@@ -15,7 +15,7 @@
         },
         "version": "1.2.0"
     },
-    "host": "127.0.0.1:8080",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
         "/auth/login": {
@@ -77,6 +77,38 @@
                         "description": "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์",
                         "schema": {
                             "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "ออกจากระบบและสั่งให้เบราว์เซอร์ทำลายคุกกี้ access_token และ refresh_token",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "01. ระบบยืนยันตัวตน (Authentication)"
+                ],
+                "summary": "ออกจากระบบและล้างคุกกี้ (Logout)",
+                "responses": {
+                    "200": {
+                        "description": "ออกจากระบบสำเร็จ",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.StandardResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -191,7 +223,7 @@
         },
         "/auth/refresh": {
             "post": {
-                "description": "รับ Access Token ชุดใหม่โดยใช้ Refresh Token ที่ยังไม่หมดอายุ",
+                "description": "รับ Access Token ชุดใหม่โดยใช้ Refresh Token ที่ยังไม่หมดอายุ (รองรับทั้ง Cookie refresh_token และ JSON Body)",
                 "consumes": [
                     "application/json"
                 ],
@@ -204,10 +236,9 @@
                 "summary": "ขอต่ออายุ Access Token (Refresh Token)",
                 "parameters": [
                     {
-                        "description": "Payload สำหรับต่ออายุ Token",
+                        "description": "Payload สำหรับต่ออายุ Token (ไม่จำเป็นหากส่งผ่าน Cookie)",
                         "name": "request",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.RefreshTokenRequest"
                         }
@@ -1843,28 +1874,27 @@
                 }
             }
         },
-        "/products/lookup/{code}": {
+        "/products/lookup": {
             "get": {
-                "description": "สแกนหรือค้นหาสินค้าด้วย SKU หรือ Barcode เพื่อดึงข้อมูลมาแสดงที่หน้าขาย POS ทันที",
+                "description": "ค้นหาสินค้าจากบาร์โค้ดหลักหรือบาร์โค้ดเสริมแบบขึ้นต้นด้วย (LIKE ...%) หากส่งค่าว่างจะแสดงรายการสินค้าทั้งหมด",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "02. จัดการสินค้าและหมวดหมู่ (Product Catalog)"
                 ],
-                "summary": "ค้นหาสินค้าด่วนด้วย SKU หรือบาร์โค้ด (Lookup Product by Code)",
+                "summary": "ค้นหาสินค้าด้วยบาร์โค้ดแบบ Prefix (Search Products by Barcode Prefix)",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "SKU หรือ บาร์โค้ด",
+                        "description": "บาร์โค้ด หรือ Prefix ที่ต้องการค้นหา (เว้นว่างเพื่อดูทั้งหมด)",
                         "name": "code",
-                        "in": "path",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "พบข้อมูลสินค้า",
+                        "description": "รายการสินค้าที่พบ",
                         "schema": {
                             "allOf": [
                                 {
@@ -1874,17 +1904,143 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ProductResponse"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ProductResponse"
+                                            }
                                         }
                                     }
                                 }
                             ]
                         }
-                    },
-                    "404": {
-                        "description": "ไม่พบสินค้าจากรหัสที่ระบุ",
+                    }
+                }
+            }
+        },
+        "/products/lookup/{code}": {
+            "get": {
+                "description": "ค้นหาสินค้าจากบาร์โค้ดหลักหรือบาร์โค้ดเสริมแบบขึ้นต้นด้วย (LIKE ...%) หากส่งค่าว่างจะแสดงรายการสินค้าทั้งหมด",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "02. จัดการสินค้าและหมวดหมู่ (Product Catalog)"
+                ],
+                "summary": "ค้นหาสินค้าด้วยบาร์โค้ดแบบ Prefix (Search Products by Barcode Prefix)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "บาร์โค้ด หรือ Prefix ที่ต้องการค้นหา (เว้นว่างเพื่อดูทั้งหมด)",
+                        "name": "code",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "รายการสินค้าที่พบ",
                         "schema": {
-                            "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ErrorResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.StandardResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ProductResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/products/sku": {
+            "get": {
+                "description": "ค้นหาสินค้าจากรหัส SKU แบบขึ้นต้นด้วย (LIKE ...%) หากส่งค่าว่างจะแสดงรายการสินค้าทั้งหมด",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "02. จัดการสินค้าและหมวดหมู่ (Product Catalog)"
+                ],
+                "summary": "ค้นหาสินค้าด้วย SKU แบบ Prefix (Search Products by SKU Prefix)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "รหัส SKU หรือ Prefix ที่ต้องการค้นหา (เว้นว่างเพื่อดูทั้งหมด)",
+                        "name": "sku",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "รายการสินค้าที่พบ",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.StandardResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ProductResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/products/sku/{sku}": {
+            "get": {
+                "description": "ค้นหาสินค้าจากรหัส SKU แบบขึ้นต้นด้วย (LIKE ...%) หากส่งค่าว่างจะแสดงรายการสินค้าทั้งหมด",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "02. จัดการสินค้าและหมวดหมู่ (Product Catalog)"
+                ],
+                "summary": "ค้นหาสินค้าด้วย SKU แบบ Prefix (Search Products by SKU Prefix)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "รหัส SKU หรือ Prefix ที่ต้องการค้นหา (เว้นว่างเพื่อดูทั้งหมด)",
+                        "name": "sku",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "รายการสินค้าที่พบ",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.StandardResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/ice-pos-api_internal_delivery_http_dto.ProductResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
