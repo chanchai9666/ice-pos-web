@@ -15,14 +15,14 @@
 ┌────────────────────────────────────────────────────────┐
 │              สถานะการพัฒนา API ทั้งหมด 81 ตัว             │
 ├─────────────────────────┬──────────┬───────────────────┤
-│ 🟢 เชื่อมต่อและใช้งานใน UI  │ 43 ตัว    │ 53.1%             │
+│ 🟢 เชื่อมต่อและใช้งานใน UI  │ 62 ตัว    │ 76.5%             │
 │ 🟡 มี Service แต่ยังไม่มี UI │ 10 ตัว    │ 12.3%             │
-│ 🔴 ยังไม่ได้ทำ (Remaining) │ 28 ตัว    │ 34.6%             │
+│ 🔴 ยังไม่ได้ทำ (Remaining) │ 9 ตัว     │ 11.1%             │
 └─────────────────────────┴──────────┴───────────────────┘
 ```
 
-* **มี Service รองรับแล้วทั้งสิ้น**: 53 / 81 Endpoints (65.4%)
-* **ส่วนที่เหลือต้องพัฒนาเพิ่ม**: 28 Endpoints (34.6%)
+* **มี Service รองรับแล้วทั้งสิ้น**: 72 / 81 Endpoints (88.9%)
+* **ส่วนที่เหลือต้องพัฒนาเพิ่ม**: 9 Endpoints (11.1%)
 
 ---
 
@@ -82,25 +82,25 @@
 ### 04. ลูกค้าและบัญชีเงินเชื่อ (Customers & Credit) — 7 Endpoints
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
-| `GET` | `/customers` | ค้นหารายการลูกค้าและยอดหนี้ | 🟢 | `customerService.searchCustomers` | `PosPaymentCredit.tsx` (ค้นหาลูกค้าสำหรับขายเชื่อ) |
-| `GET` | `/customers/{id}` | ดูข้อมูลลูกค้าตาม ID | 🟡 | `customerService.getCustomerById` | มี Service แต่ยังไม่มีหน้ารายละเอียดลูกค้า |
-| `POST` | `/customers` | ลงทะเบียนลูกค้าใหม่และเปิดบัญชีเงินเชื่อ | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/customers` |
-| `PUT` | `/customers/{id}` | แก้ไขข้อมูลลูกค้า | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/customers` |
-| `DELETE` | `/customers/{id}` | ลบข้อมูลลูกค้า | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/customers` |
-| `PUT` | `/customers/{id}/credit-limit` | ปรับวงเงินเครดิตลูกค้า | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/customers` |
-| `POST` | `/customers/{id}/pay-credit` | บันทึกการชำระหนี้/ตัดยอดเงินเชื่อ | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/customers` |
-| `GET` | `/customers/reports/ar-aging` | รายงานลูกหนี้ค้างชำระตามอายุหนี้ | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/customers` |
+| `GET` | `/customers` | ค้นหารายการลูกค้าและยอดหนี้ | 🟢 | `customerService.searchCustomers` | `PosPaymentCredit.tsx`, `customers/page.tsx` |
+| `GET` | `/customers/{id}` | ดูข้อมูลลูกค้าตาม ID | 🟡 | `customerService.getCustomerById` | มี Service รองรับใน `customer.service.ts` |
+| `POST` | `/customers` | ลงทะเบียนลูกค้าใหม่และเปิดบัญชีเงินเชื่อ | 🟢 | `customerService.createCustomer` | `customers/page.tsx`, `CustomerFormModal.tsx` |
+| `PUT` | `/customers/{id}` | แก้ไขข้อมูลลูกค้า | 🟢 | `customerService.updateCustomer` | `customers/page.tsx`, `CustomerFormModal.tsx` |
+| `DELETE` | `/customers/{id}` | ลบข้อมูลลูกค้า | 🟢 | `customerService.deleteCustomer` | `customers/page.tsx` |
+| `PUT` | `/customers/{id}/credit-limit` | ปรับวงเงินเครดิตลูกค้า | 🟢 | `customerService.updateCreditLimit` | `CreditLimitModal.tsx` |
+| `POST` | `/customers/{id}/pay-credit` | บันทึกการชำระหนี้/ตัดยอดเงินเชื่อ | 🟢 | `customerService.payCredit` | `PayCreditModal.tsx` |
+| `GET` | `/customers/reports/ar-aging` | รายงานลูกหนี้ค้างชำระตามอายุหนี้ | 🟢 | `customerService.getARAgingReport` | `ARAgingReportModal.tsx` |
 
 ---
 
 ### 04.1 ผู้จัดจำหน่าย (Suppliers) — 5 Endpoints
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
-| `GET` | `/suppliers` | รายการผู้จัดจำหน่ายทั้งหมด | 🟢 | `procurementService.getSuppliers` | `inventory/page.tsx`, Dropdown ในสร้าง PO/GR |
+| `GET` | `/suppliers` | รายการผู้จัดจำหน่ายทั้งหมด | 🟢 | `procurementService.getSuppliers` | `inventory/page.tsx`, `SupplierTable.tsx`, Dropdown ใน PO/GR |
 | `GET` | `/suppliers/{id}` | ดูข้อมูลผู้จัดจำหน่ายตาม ID | 🟡 | `procurementService.getSupplierById` | UI ดึงจาก List Dropdown |
-| `POST` | `/suppliers` | สร้างผู้จัดจำหน่ายใหม่ | 🔴 | *ยังไม่มี* | ยังไม่มีหน้าจัดการ Suppliers CRUD |
-| `PUT` | `/suppliers/{id}` | แก้ไขผู้จัดจำหน่าย | 🔴 | *ยังไม่มี* | ยังไม่มีหน้าจัดการ Suppliers CRUD |
-| `DELETE` | `/suppliers/{id}` | ลบ/ปิดการใช้งานผู้จัดจำหน่าย | 🔴 | *ยังไม่มี* | ยังไม่มีหน้าจัดการ Suppliers CRUD |
+| `POST` | `/suppliers` | สร้างผู้จัดจำหน่ายใหม่ | 🟢 | `procurementService.createSupplier` | `SupplierFormModal.tsx` |
+| `PUT` | `/suppliers/{id}` | แก้ไขผู้จัดจำหน่าย | 🟢 | `procurementService.updateSupplier` | `SupplierFormModal.tsx` |
+| `DELETE` | `/suppliers/{id}` | ลบ/ปิดการใช้งานผู้จัดจำหน่าย | 🟢 | `procurementService.deleteSupplier` | `SupplierTable.tsx` |
 
 ---
 
@@ -184,8 +184,8 @@
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
 | `GET` | `/reports/inventory-valuation` | รายงานมูลค่าสินค้าคงคลังรวม | 🟢 | `inventoryService.getInventoryValuation` | `InventorySummaryCards.tsx` |
-| `GET` | `/reports/best-sellers` | รายงานสินค้าขายดีตามช่วงเวลา | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/reports` |
-| `GET` | `/reports/sales-summary` | รายงานสรุปยอดขาย กำไรขั้นต้น และภาษี | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/reports` |
+| `GET` | `/reports/best-sellers` | รายงานสินค้าขายดีตามช่วงเวลา | 🟢 | `reportService.getBestSellers` | `reports/page.tsx` |
+| `GET` | `/reports/sales-summary` | รายงานสรุปยอดขาย กำไรขั้นต้น และภาษี | 🟢 | `reportService.getSalesSummary` | `reports/page.tsx` |
 
 ---
 
@@ -200,14 +200,14 @@
 ### 02. ระบบจัดการสมาชิกและผู้ใช้งาน (User Management) — 8 Endpoints
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
-| `GET` | `/users` | ดึงรายชื่อพนักงานทั้งหมด | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `POST` | `/users` | สร้างบัญชีผู้ใช้งานใหม่ | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `GET` | `/users/{id}` | ดึงข้อมูลพนักงานตาม ID | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `PUT` | `/users/{id}` | แก้ไขข้อมูลพนักงาน | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `DELETE` | `/users/{id}` | ระงับการใช้งานบัญชีพนักงาน (Soft Delete) | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `POST` | `/users/{id}/reset-password` | รีเซ็ตรหัสผ่านพนักงาน | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `POST` | `/users/{id}/reset-pin` | รีเซ็ต PIN แคชเชียร์ | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
-| `POST` | `/users/{id}/unlock` | ปลดล็อกบัญชีพนักงาน | 🔴 | *ยังไม่มี* | ยังไม่มีหน้า `/users` |
+| `GET` | `/users` | ดึงรายชื่อพนักงานทั้งหมด | 🟢 | `userService.getUsers` | `users/page.tsx` |
+| `POST` | `/users` | สร้างบัญชีผู้ใช้งานใหม่ | 🟢 | `userService.createUser` | `UserFormModal.tsx` |
+| `GET` | `/users/{id}` | ดึงข้อมูลพนักงานตาม ID | 🟢 | `userService.getUserById` | `users/page.tsx` |
+| `PUT` | `/users/{id}` | แก้ไขข้อมูลพนักงาน | 🟢 | `userService.updateUser` | `UserFormModal.tsx` |
+| `DELETE` | `/users/{id}` | ระงับการใช้งานบัญชีพนักงาน (Soft Delete) | 🟢 | `userService.deleteUser` | `users/page.tsx` |
+| `POST` | `/users/{id}/reset-password` | รีเซ็ตรหัสผ่านพนักงาน | 🟢 | `userService.resetPassword` | `ResetPasswordModal.tsx` |
+| `POST` | `/users/{id}/reset-pin` | รีเซ็ต PIN แคชเชียร์ | 🟢 | `userService.resetPin` | `ResetPinModal.tsx` |
+| `POST` | `/users/{id}/unlock` | ปลดล็อกบัญชีพนักงาน | 🟢 | `userService.unlockUser` | `users/page.tsx` |
 
 ---
 
@@ -272,7 +272,7 @@ flowchart TD
 
 ---
 
-### ระยะที่ 2: พัฒนาหน้าจอหลักตามเมนูนำทาง (Medium Priority)
+### ระยะที่ 2: พัฒนาหน้าจอหลักตามเมนูนำทาง (Medium Priority) — ✅ ดำเนินการเสร็จสมบูรณ์แล้ว
 มุ่งเน้นการสร้าง Page สำหรับเมนูใน Sidebar ที่ยังไม่มีหน้าจอรองรับ:
 
 1. **ระบบจัดการลูกค้าและบัญชีเงินเชื่อ (`src/app/(main)/customers/page.tsx`)**
