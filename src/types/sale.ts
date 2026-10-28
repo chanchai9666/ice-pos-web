@@ -107,3 +107,27 @@ export interface SaleResponse {
   payments: SalePaymentResponse[];  // รายการการชำระเงิน
   createdAt: string;                // วันเวลาที่สร้างบิล
 }
+
+/**
+ * ข้อมูลคำขอยกเลิกบิลขาย (Void Sale Request Body)
+ * อ้างอิงสเปก: ice-pos-api_internal_delivery_http_dto.VoidSaleRequest
+ */
+export interface VoidSaleRequest {
+  reason: string;                   // เหตุผลในการยกเลิก (3-500 ตัวอักษร)
+}
+
+/**
+ * ตัวกรองสำหรับการค้นหาประวัติการขาย (Sales Query Parameters)
+ * อ้างอิงพารามิเตอร์ Swagger: GET /sales
+ */
+export interface SalesQueryParams {
+  branchId?: string;                // กรองตามสาขา
+  cashierId?: string;               // กรองตามแคชเชียร์
+  customerId?: string;              // กรองตามลูกค้า
+  status?: string;                  // COMPLETED, VOID, CREDIT_PENDING
+  startDate?: string;               // วันที่เริ่มต้น ISO8601
+  endDate?: string;                 // วันที่สิ้นสุด ISO8601
+  page?: number;                    // หน้าเริ่มต้น 1
+  pageSize?: number;                // จำนวนรายการต่อหน้า (เริ่มต้น 20, สูงสุด 100)
+}
+
