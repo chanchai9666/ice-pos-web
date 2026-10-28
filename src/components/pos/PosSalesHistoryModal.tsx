@@ -11,6 +11,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { SaleResponse } from '@/types/sale';
 import { salesService } from '@/services/sales.service';
 import { PosVoidConfirmModal } from '@/components/pos/PosVoidConfirmModal';
+import { PosReturnModal } from '@/components/pos/PosReturnModal';
 import { Icons } from '@/components/ui/Icons';
 import { formatSatangToBaht } from '@/utils/currency';
 
@@ -35,6 +36,7 @@ export function PosSalesHistoryModal({
   const [searchSaleNo, setSearchSaleNo] = useState<string>('');
   const [selectedSale, setSelectedSale] = useState<SaleResponse | null>(null);
   const [voidingSale, setVoidingSale] = useState<SaleResponse | null>(null);
+  const [returningSale, setReturningSale] = useState<SaleResponse | null>(null);
   const [error, setError] = useState<string>('');
 
   const loadSales = useCallback(async () => {
@@ -297,14 +299,24 @@ export function PosSalesHistoryModal({
                     )}
 
                     {selectedSale.status !== 'VOID' && selectedSale.status !== 'VOIDED' && (
-                      <button
-                        type="button"
-                        onClick={() => setVoidingSale(selectedSale)}
-                        className="flex-1 min-h-[48px] rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-600/40 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
-                      >
-                        <Icons.Trash className="w-4 h-4 stroke-[2.5]" />
-                        <span>ยกเลิกบิล (Void)</span>
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setReturningSale(selectedSale)}
+                          className="flex-1 min-h-[48px] rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-600/40 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Icons.RotateCcw className="w-4 h-4 stroke-[2.5]" />
+                          <span>รับคืนสินค้า</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setVoidingSale(selectedSale)}
+                          className="flex-1 min-h-[48px] rounded-xl bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-600/40 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                        >
+                          <Icons.Trash className="w-4 h-4 stroke-[2.5]" />
+                          <span>ยกเลิกบิล (Void)</span>
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -326,6 +338,18 @@ export function PosSalesHistoryModal({
         sale={voidingSale}
         onClose={() => setVoidingSale(null)}
         onSuccess={handleVoidSuccess}
+      />
+
+      {/* Modal รับคืนสินค้าและคืนเงิน (Return & Refund) */}
+      <PosReturnModal
+        isOpen={!!returningSale}
+        sale={returningSale}
+        branchId={branchId}
+        onClose={() => setReturningSale(null)}
+        onSuccess={() => {
+          setReturningSale(null);
+          loadSales();
+        }}
       />
     </>
   );
