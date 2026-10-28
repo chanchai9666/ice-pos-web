@@ -28,6 +28,7 @@ interface PosCheckoutModalProps {
   branchId?: string;
   cashierName?: string;
   onSaleSuccess?: (soldItems: CartItem[], sale: SaleResponse) => void;
+  onPrintReceipt?: (saleNo: string) => void;
 }
 
 export function PosCheckoutModal({
@@ -36,6 +37,7 @@ export function PosCheckoutModal({
   branchId,
   cashierName,
   onSaleSuccess,
+  onPrintReceipt,
 }: PosCheckoutModalProps) {
   const { items, summary, clearCart, addToast } = usePosCart();
 
@@ -335,6 +337,7 @@ export function PosCheckoutModal({
               sale={completedSale}
               cashierName={cashierName}
               onNewSale={handleNewSale}
+              onPrintReceipt={onPrintReceipt}
             />
           </div>
         ) : (

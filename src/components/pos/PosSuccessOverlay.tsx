@@ -15,12 +15,14 @@ interface PosSuccessOverlayProps {
   sale: SaleResponse;
   cashierName?: string;
   onNewSale: () => void;
+  onPrintReceipt?: (saleNo: string) => void;
 }
 
 export function PosSuccessOverlay({
   sale,
   cashierName,
   onNewSale,
+  onPrintReceipt,
 }: PosSuccessOverlayProps) {
   const primaryPayment = sale.payments?.[0];
   const isCash = primaryPayment?.method === 'CASH';
@@ -81,12 +83,23 @@ export function PosSuccessOverlay({
         </div>
       </div>
 
-      {/* ส่วนปุ่มดำเนินการ: เริ่มบิลใหม่ (Elderly-Friendly Button >= 48px) */}
+      {/* ส่วนปุ่มดำเนินการ: เริ่มบิลใหม่ และพิมพ์ใบเสร็จ (Elderly-Friendly Button >= 48px) */}
       <div className="w-full max-w-md space-y-3">
+        {onPrintReceipt && (
+          <button
+            type="button"
+            onClick={() => onPrintReceipt(sale.saleNo || sale.id)}
+            className="w-full h-12 min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 font-bold text-base border border-slate-700 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
+          >
+            <Icons.Receipt className="w-5 h-5 text-cyan-400" />
+            <span>ดูและสั่งพิมพ์ใบเสร็จรับเงิน</span>
+          </button>
+        )}
+
         <button
           type="button"
           onClick={onNewSale}
-          className="w-full h-14 min-h-[56px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-lg sm:text-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-3 transition-all active:scale-[0.98] border border-emerald-400/40"
+          className="w-full h-14 min-h-[56px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-lg sm:text-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-3 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer"
         >
           <Icons.Check className="w-6 h-6 stroke-[2.5]" />
           <span>เริ่มบิลใหม่ (รับลูกค้ารายถัดไป)</span>

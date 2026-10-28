@@ -30,6 +30,7 @@ import { PosOpenShiftModal } from '@/components/pos/PosOpenShiftModal';
 import { PosCloseShiftModal } from '@/components/pos/PosCloseShiftModal';
 import { PosCheckoutModal } from '@/components/pos/PosCheckoutModal';
 import { PosSalesHistoryModal } from '@/components/pos/PosSalesHistoryModal';
+import { PosReceiptModal } from '@/components/pos/PosReceiptModal';
 import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
@@ -521,6 +522,14 @@ function PosTerminalInner() {
         branchId={effectiveBranchId}
         cashierName={user?.name || user?.username}
         onSaleSuccess={handleSaleSuccess}
+        onPrintReceipt={(saleNo) => setReprintReceiptNo(saleNo)}
+      />
+
+      {/* หน้าต่างพิมพ์และพิมพ์ซ้ำใบเสร็จรับเงิน */}
+      <PosReceiptModal
+        isOpen={!!reprintReceiptNo}
+        receiptNo={reprintReceiptNo}
+        onClose={() => setReprintReceiptNo(null)}
       />
     </div>
   );
