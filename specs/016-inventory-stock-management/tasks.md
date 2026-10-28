@@ -17,7 +17,7 @@
 
 **Purpose**: เตรียมโครงสร้างไฟล์และคอมโพเนนต์สำหรับโมดูลคลังสินค้า
 
-- [ ] T001 สร้างโฟลเดอร์ `src/components/inventory/` สำหรับบรรจุคอมโพเนนต์เฉพาะของระบบคลังสินค้า
+- [X] T001 สร้างโฟลเดอร์ `src/components/inventory/` สำหรับบรรจุคอมโพเนนต์เฉพาะของระบบคลังสินค้า
 
 ---
 
@@ -27,8 +27,8 @@
 
 **⚠️ CRITICAL**: ต้องเสร็จสิ้นก่อนเริ่มทำ User Story
 
-- [ ] T002 [P] เพิ่มประเภทข้อมูล `StockAdjustmentType`, `AdjustStockRequest`, และ `InventoryValuationResponse` ใน `src/types/inventory.ts` ตาม `specs/016-inventory-stock-management/data-model.md`
-- [ ] T003 เพิ่มฟังก์ชัน `adjustStock(branchId: string, request: AdjustStockRequest)` และ `getInventoryValuation(branchId?: string)` ใน `src/services/inventory.service.ts` ตาม `specs/016-inventory-stock-management/contracts/inventory-api.contract.md`
+- [X] T002 [P] เพิ่มประเภทข้อมูล `StockAdjustmentType`, `AdjustStockRequest`, และ `InventoryValuationResponse` ใน `src/types/inventory.ts` ตาม `specs/016-inventory-stock-management/data-model.md`
+- [X] T003 เพิ่มฟังก์ชัน `adjustStock(branchId: string, request: AdjustStockRequest)` และ `getInventoryValuation(branchId?: string)` ใน `src/services/inventory.service.ts` ตาม `specs/016-inventory-stock-management/contracts/inventory-api.contract.md`
 
 **Checkpoint**: Foundation ready - Type definitions และ Service methods พร้อมสำหรับการพัฒนา UI ใน User Story
 
@@ -42,10 +42,10 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] สร้างคอมโพเนนต์การ์ดสรุปตัวเลขสถิติภาพรวมสต็อก `InventorySummaryCards.tsx` ใน `src/components/inventory/InventorySummaryCards.tsx` (สินค้าทั้งหมด, สต็อกต่ำ, สินค้าหมด, มูลค่าสต็อกรวม)
-- [ ] T005 [P] [US1] สร้างคอมโพเนนต์แถบเครื่องมือค้นหาและตัวกรอง `InventoryToolbar.tsx` ใน `src/components/inventory/InventoryToolbar.tsx` รองรับช่องค้นหา, ปุ่มเปิดสแกนบาร์โค้ดด้วยกล้อง, สวิตช์กรองสต็อกต่ำ, Dropdown สลับสาขาสำหรับ ADMIN, และปุ่มรีเฟรช (Touch target >= 48px)
-- [ ] T006 [P] [US1] สร้างคอมโพเนนต์ตารางแสดงรายการสต็อกสินค้า `InventoryStockTable.tsx` ใน `src/components/inventory/InventoryStockTable.tsx` แสดงข้อมูลสินค้า, บาร์โค้ด, หน่วยนับ, สต็อกคงเหลือ, สถานะสี Badge (เขียว: ปกติ, เหลือง: สต็อกต่ำ, แดง: สินค้าหมด), และปุ่ม "ปรับยอดสต็อก"
-- [ ] T007 [US1] สร้างหน้าจอหลัก `src/app/(main)/inventory/page.tsx` ควบคุมการตรวจสอบสิทธิ์ ADMIN/MANAGER, ดึงข้อมูลจาก `inventoryService.getStockLevels`, จัดการ State การค้นหาและสลับสาขา, เชื่อมโยง `BarcodeCaptureModal` เข้ากับปุ่มสแกนใน Toolbar และรองรับ Pagination
+- [X] T004 [P] [US1] สร้างคอมโพเนนต์การ์ดสรุปตัวเลขสถิติภาพรวมสต็อก `InventorySummaryCards.tsx` ใน `src/components/inventory/InventorySummaryCards.tsx` (สินค้าทั้งหมด, สต็อกต่ำ, สินค้าหมด, มูลค่าสต็อกรวม)
+- [X] T005 [P] [US1] สร้างคอมโพเนนต์แถบเครื่องมือค้นหาและตัวกรอง `InventoryToolbar.tsx` ใน `src/components/inventory/InventoryToolbar.tsx` รองรับช่องค้นหา, ปุ่มเปิดสแกนบาร์โค้ดด้วยกล้อง, สวิตช์กรองสต็อกต่ำ, Dropdown สลับสาขาสำหรับ ADMIN, และปุ่มรีเฟรช (Touch target >= 48px)
+- [X] T006 [P] [US1] สร้างคอมโพเนนต์ตารางแสดงรายการสต็อกสินค้า `InventoryStockTable.tsx` ใน `src/components/inventory/InventoryStockTable.tsx` แสดงข้อมูลสินค้า, บาร์โค้ด, หน่วยนับ, สต็อกคงเหลือ, สถานะสี Badge (เขียว: ปกติ, เหลือง: สต็อกต่ำ, แดง: สินค้าหมด), และปุ่ม "ปรับยอดสต็อก"
+- [X] T007 [US1] สร้างหน้าจอหลัก `src/app/(main)/inventory/page.tsx` ควบคุมการตรวจสอบสิทธิ์ ADMIN/MANAGER, ดึงข้อมูลจาก `inventoryService.getStockLevels`, จัดการ State การค้นหาและสลับสาขา, เชื่อมโยง `BarcodeCaptureModal` เข้ากับปุ่มสแกนใน Toolbar และรองรับ Pagination
 
 **Checkpoint**: User Story 1 (MVP) ใช้งานได้สมบูรณ์ สามารถดูสต็อก กรอง ค้นหา และสแกนบาร์โค้ดได้
 
@@ -59,8 +59,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T008 [US2] สร้างคอมโพเนนต์ Modal ปรับยอดสต็อก `StockAdjustmentModal.tsx` ใน `src/components/inventory/StockAdjustmentModal.tsx` ตาม `specs/016-inventory-stock-management/contracts/ui-contracts.md` (รองรับประเภท IN, OUT, AUDIT, DAMAGE, EXPIRED; โหมด AUDIT รับค่ายอดนับจริงและคำนวณ Delta ให้อัตโนมัติ; มีช่องระบุเหตุผลบังคับ; ป้องกันสต็อกติดลบ; สร้าง Idempotency Key ด้วย UUID)
-- [ ] T009 [US2] เชื่อมต่อ `StockAdjustmentModal` เข้ากับ `src/app/(main)/inventory/page.tsx` โดยส่งต่อ `adjustingStock`, `selectedBranchId`, เรียกใช้ `inventoryService.adjustStock` พร้อมแสดง Loading Overlay ระหว่างทำรายการ และรีเฟรชตารางสต็อกเมื่อสำเร็จ
+- [X] T008 [US2] สร้างคอมโพเนนต์ Modal ปรับยอดสต็อก `StockAdjustmentModal.tsx` ใน `src/components/inventory/StockAdjustmentModal.tsx` ตาม `specs/016-inventory-stock-management/contracts/ui-contracts.md` (รองรับประเภท IN, OUT, AUDIT, DAMAGE, EXPIRED; โหมด AUDIT รับค่ายอดนับจริงและคำนวณ Delta ให้อัตโนมัติ; มีช่องระบุเหตุผลบังคับ; ป้องกันสต็อกติดลบ; สร้าง Idempotency Key ด้วย UUID)
+- [X] T009 [US2] เชื่อมต่อ `StockAdjustmentModal` เข้ากับ `src/app/(main)/inventory/page.tsx` โดยส่งต่อ `adjustingStock`, `selectedBranchId`, เรียกใช้ `inventoryService.adjustStock` พร้อมแสดง Loading Overlay ระหว่างทำรายการ และรีเฟรชตารางสต็อกเมื่อสำเร็จ
 
 **Checkpoint**: User Story 1 และ User Story 2 ใช้งานร่วมกันได้อย่างสมบูรณ์
 
@@ -74,7 +74,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T010 [US3] ใน `src/app/(main)/inventory/page.tsx` และ `src/components/inventory/InventorySummaryCards.tsx` เชื่อมต่อการดึงข้อมูลมูลค่าต้นทุนสินค้าคงคลังรวม (จาก `inventoryService.getInventoryValuation` หรือคำนวณจาก `costPerBaseUnit * quantity`) และแสดงผลในรูปแบบสกุลเงินบาทพร้อมคลาสสีที่อ่านง่าย คอนทราสต์สูง
+- [X] T010 [US3] ใน `src/app/(main)/inventory/page.tsx` และ `src/components/inventory/InventorySummaryCards.tsx` เชื่อมต่อการดึงข้อมูลมูลค่าต้นทุนสินค้าคงคลังรวม (จาก `inventoryService.getInventoryValuation` หรือคำนวณจาก `costPerBaseUnit * quantity`) และแสดงผลในรูปแบบสกุลเงินบาทพร้อมคลาสสีที่อ่านง่าย คอนทราสต์สูง
 
 **Checkpoint**: User Story 1, 2, และ 3 ใช้งานได้ครบถ้วนตามข้อกำหนด
 
@@ -84,10 +84,10 @@
 
 **Purpose**: ตรวจสอบคุณภาพและความสมบูรณ์ของระบบให้เป็นไปตามมาตรฐานธรรมนูญ
 
-- [ ] T011 [P] รันการตรวจสอบ Static Typing ด้วย `npx tsc --noEmit` และแก้ไข Type Error ที่เกี่ยวข้อง
-- [ ] T012 [P] รันการตรวจสอบโค้ดด้วย `npm run lint` และแก้ไขประเด็น Linting ทั้งหมด
-- [ ] T013 ทดสอบการสร้าง Production Bundle ด้วย `npm run build`
-- [ ] T014 ตรวจสอบความถูกต้องตามสถานการณ์ใน `specs/016-inventory-stock-management/quickstart.md` (S1 ถึง S4)
+- [X] T011 [P] รันการตรวจสอบ Static Typing ด้วย `npx tsc --noEmit` และแก้ไข Type Error ที่เกี่ยวข้อง
+- [X] T012 [P] รันการตรวจสอบโค้ดด้วย `npm run lint` และแก้ไขประเด็น Linting ทั้งหมด
+- [X] T013 ทดสอบการสร้าง Production Bundle ด้วย `npm run build`
+- [X] T014 ตรวจสอบความถูกต้องตามสถานการณ์ใน `specs/016-inventory-stock-management/quickstart.md` (S1 ถึง S4)
 
 ---
 

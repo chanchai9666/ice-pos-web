@@ -25,12 +25,13 @@ export const catalogService = {
    * ดึงรายการหมวดหมู่สินค้าทั้งหมด
    */
   async getCategories(params?: CategoryQueryParams, options?: RequestOptions): Promise<ApiResponse<Category[]>> {
+    const pageSize = params?.pageSize ? Math.min(Math.max(params.pageSize, 1), 100) : undefined;
     return api.get<Category[]>('/api/v1/categories', {
       loadingMessage: 'กำลังโหลดหมวดหมู่สินค้า...',
       ...options,
       params: {
         page: params?.page,
-        pageSize: params?.pageSize,
+        pageSize,
       },
     });
   },
@@ -80,6 +81,8 @@ export const catalogService = {
    * ค้นหาและดูรายการสินค้า
    */
   async getProducts(params?: ProductQueryParams, options?: RequestOptions): Promise<ApiResponse<Product[]>> {
+    const rawPageSize = params?.pageSize ?? 20;
+    const pageSize = Math.min(Math.max(rawPageSize, 1), 100);
     return api.get<Product[]>('/api/v1/products', {
       loadingMessage: options?.loadingMessage || 'กำลังโหลดรายการสินค้า...',
       ...options,
@@ -89,7 +92,7 @@ export const catalogService = {
         barcode: params?.barcode,
         isActive: params?.isActive !== undefined ? params.isActive : params?.is_active,
         page: params?.page || 1,
-        pageSize: params?.pageSize || 20,
+        pageSize,
       },
     });
   },

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Icons } from '@/components/ui/Icons';
-import { formatCurrency } from '@/utils/currency';
+import { formatSatangToBaht } from '@/utils/currency';
 
 export interface InventorySummaryCardsProps {
   totalSkus: number;
@@ -95,7 +95,7 @@ export function InventorySummaryCards({
           ) : (
             <div className="flex items-baseline gap-1">
               <span className="text-2xl sm:text-3xl font-black text-emerald-300 font-mono">
-                {formatCurrency(totalValuationBaht)}
+                ฿{formatSatangToBaht(totalValuationBaht)}
               </span>
             </div>
           )}

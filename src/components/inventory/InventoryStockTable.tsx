@@ -27,7 +27,15 @@ export function InventoryStockTable({
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
   // ฟังก์ชันคำนวณสถานะสต็อกและ Badge สี
-  const getStockBadge = (quantity: number, minStock?: number) => {
+  const getStockBadge = (quantity: number, minStock?: number, isWeightBased?: boolean) => {
+    if (isWeightBased) {
+      return (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+          <Icons.Scale className="w-3.5 h-3.5 text-amber-400" />
+          ชั่งขาย
+        </span>
+      );
+    }
     const threshold = minStock ?? 5;
     if (quantity <= 0) {
       return (
@@ -101,10 +109,11 @@ export function InventoryStockTable({
               <tbody className="divide-y divide-slate-800/80">
                 {items.map((stock) => {
                   const product = stock.product;
-                  const unitName = product?.baseUom?.name || 'ชิ้น';
+                  const isWeightBased = product?.productType === 'BY_WEIGHT';
+                  const unitName = product?.baseUom?.name || (isWeightBased ? 'กก.' : 'ชิ้น');
                   const minStock = product?.minStock ?? 5;
-                  const isOutOfStock = stock.quantity <= 0;
-                  const isLowStock = !isOutOfStock && stock.quantity <= minStock;
+                  const isOutOfStock = !isWeightBased && stock.quantity <= 0;
+                  const isLowStock = !isWeightBased && !isOutOfStock && stock.quantity <= minStock;
 
                   return (
                     <tr
@@ -114,9 +123,17 @@ export function InventoryStockTable({
                       {/* ข้อมูลสินค้า */}
                       <td className="py-4 px-4 sm:px-6">
                         <div className="flex flex-col">
-                          <span className="font-bold text-slate-100 text-base">
-                            {product?.name || `รหัสสินค้า: ${stock.productId}`}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-slate-100 text-base">
+                              {product?.name || `รหัสสินค้า: ${stock.productId}`}
+                            </span>
+                            {isWeightBased && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 text-xs font-black shadow-sm">
+                                <Icons.Scale className="w-3.5 h-3.5" />
+                                ชั่งขาย
+                              </span>
+                            )}
+                          </div>
                           <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400 font-mono">
                             {product?.sku && <span>SKU: {product.sku}</span>}
                             {product?.barcode && (
@@ -145,29 +162,35 @@ export function InventoryStockTable({
 
                       {/* จำนวนคงเหลือ */}
                       <td className="py-4 px-4 text-right">
-                        <span
-                          className={`text-lg font-black font-mono ${
-                            isOutOfStock
-                              ? 'text-rose-400'
-                              : isLowStock
-                              ? 'text-amber-400'
-                              : 'text-emerald-400'
-                          }`}
-                        >
-                          {stock.quantity.toLocaleString()}
-                        </span>
+                        {isWeightBased ? (
+                          <span className="text-lg font-bold font-mono text-slate-500">
+                            -
+                          </span>
+                        ) : (
+                          <span
+                            className={`text-lg font-black font-mono ${
+                              isOutOfStock
+                                ? 'text-rose-400'
+                                : isLowStock
+                                ? 'text-amber-400'
+                                : 'text-emerald-400'
+                            }`}
+                          >
+                            {stock.quantity.toLocaleString()}
+                          </span>
+                        )}
                       </td>
 
                       {/* เกณฑ์เตือน */}
                       <td className="py-4 px-4 text-center">
                         <span className="text-sm font-mono text-slate-400">
-                          {minStock}
+                          {isWeightBased ? '-' : minStock}
                         </span>
                       </td>
 
                       {/* สถานะ Badge */}
                       <td className="py-4 px-4 text-center">
-                        {getStockBadge(stock.quantity, product?.minStock)}
+                        {getStockBadge(stock.quantity, product?.minStock, isWeightBased)}
                       </td>
 
                       {/* ปุ่มปรับยอด */}
@@ -175,10 +198,16 @@ export function InventoryStockTable({
                         <button
                           type="button"
                           onClick={() => onAdjustStock(stock)}
-                          className="min-h-[48px] px-4 py-2 bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white rounded-xl border-2 border-slate-700 hover:border-cyan-500 font-bold text-sm transition-all active:scale-95 cursor-pointer inline-flex items-center gap-2 shadow-sm"
+                          disabled={isWeightBased}
+                          className={`min-h-[48px] px-4 py-2 rounded-xl border-2 font-bold text-sm transition-all inline-flex items-center gap-2 shadow-sm ${
+                            isWeightBased
+                              ? 'bg-slate-850/80 border-slate-800 text-slate-500 cursor-not-allowed opacity-40'
+                              : 'bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white border-slate-700 hover:border-cyan-500 active:scale-95 cursor-pointer'
+                          }`}
+                          title={isWeightBased ? 'สินค้าประเภทชั่งขายไม่จำเป็นต้องปรับสต็อก' : `ปรับยอดสต็อก ${product?.name || ''}`}
                           aria-label={`ปรับยอดสต็อก ${product?.name || ''}`}
                         >
-                          <Icons.Boxes className="w-4 h-4 text-cyan-400 group-hover:text-white" />
+                          <Icons.Boxes className={`w-4 h-4 ${isWeightBased ? 'text-slate-500' : 'text-cyan-400 group-hover:text-white'}`} />
                           <span>ปรับสต็อก</span>
                         </button>
                       </td>
@@ -193,10 +222,11 @@ export function InventoryStockTable({
           <div className="md:hidden divide-y divide-slate-800">
             {items.map((stock) => {
               const product = stock.product;
-              const unitName = product?.baseUom?.name || 'ชิ้น';
+              const isWeightBased = product?.productType === 'BY_WEIGHT';
+              const unitName = product?.baseUom?.name || (isWeightBased ? 'กก.' : 'ชิ้น');
               const minStock = product?.minStock ?? 5;
-              const isOutOfStock = stock.quantity <= 0;
-              const isLowStock = !isOutOfStock && stock.quantity <= minStock;
+              const isOutOfStock = !isWeightBased && stock.quantity <= 0;
+              const isLowStock = !isWeightBased && !isOutOfStock && stock.quantity <= minStock;
 
               return (
                 <div
@@ -205,9 +235,17 @@ export function InventoryStockTable({
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h4 className="font-bold text-slate-100 text-base leading-tight">
-                        {product?.name || `รหัส: ${stock.productId}`}
-                      </h4>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h4 className="font-bold text-slate-100 text-base leading-tight">
+                          {product?.name || `รหัส: ${stock.productId}`}
+                        </h4>
+                        {isWeightBased && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 text-xs font-black shadow-sm">
+                            <Icons.Scale className="w-3.5 h-3.5" />
+                            ชั่งขาย
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-slate-400 font-mono mt-1">
                         {product?.barcode
                           ? `บาร์โค้ด: ${product.barcode}`
@@ -216,38 +254,52 @@ export function InventoryStockTable({
                           : ''}
                       </p>
                     </div>
-                    <div>{getStockBadge(stock.quantity, product?.minStock)}</div>
+                    <div>{getStockBadge(stock.quantity, product?.minStock, isWeightBased)}</div>
                   </div>
 
                   <div className="flex items-center justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800">
                     <div className="text-xs text-slate-400">
                       <span>หมวด: {product?.category?.name || '-'}</span>
                       <span className="mx-1.5">•</span>
-                      <span>เตือนที่: {minStock} {unitName}</span>
+                      <span>
+                        {isWeightBased ? 'ไม่กำหนดเกณฑ์เตือน' : `เตือนที่: ${minStock} ${unitName}`}
+                      </span>
                     </div>
                     <div className="text-right">
                       <span className="text-xs text-slate-400 block">คงเหลือ</span>
-                      <span
-                        className={`text-xl font-black font-mono ${
-                          isOutOfStock
-                            ? 'text-rose-400'
-                            : isLowStock
-                            ? 'text-amber-400'
-                            : 'text-emerald-400'
-                        }`}
-                      >
-                        {stock.quantity.toLocaleString()} {unitName}
-                      </span>
+                      {isWeightBased ? (
+                        <span className="text-base font-bold font-mono text-slate-400">
+                          ชั่งขาย (ไม่นับสต็อก)
+                        </span>
+                      ) : (
+                        <span
+                          className={`text-xl font-black font-mono ${
+                            isOutOfStock
+                              ? 'text-rose-400'
+                              : isLowStock
+                              ? 'text-amber-400'
+                              : 'text-emerald-400'
+                          }`}
+                        >
+                          {stock.quantity.toLocaleString()} {unitName}
+                        </span>
+                      )}
                     </div>
                   </div>
 
                   <button
                     type="button"
                     onClick={() => onAdjustStock(stock)}
-                    className="w-full min-h-[48px] py-2.5 px-4 bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white rounded-xl border-2 border-slate-700 hover:border-cyan-500 font-bold text-sm transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                    disabled={isWeightBased}
+                    className={`w-full min-h-[48px] py-2.5 px-4 rounded-xl border-2 font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm ${
+                      isWeightBased
+                        ? 'bg-slate-850/80 border-slate-800 text-slate-500 cursor-not-allowed opacity-40'
+                        : 'bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white border-slate-700 hover:border-cyan-500 active:scale-95 cursor-pointer'
+                    }`}
+                    title={isWeightBased ? 'สินค้าประเภทชั่งขายไม่จำเป็นต้องปรับสต็อก' : 'ปรับยอดสต็อก'}
                   >
-                    <Icons.Boxes className="w-4 h-4 text-cyan-400" />
-                    <span>ปรับยอดสต็อก</span>
+                    <Icons.Boxes className={`w-4 h-4 ${isWeightBased ? 'text-slate-500' : 'text-cyan-400'}`} />
+                    <span>{isWeightBased ? 'สินค้าชั่งขาย (ไม่นับสต็อก)' : 'ปรับยอดสต็อก'}</span>
                   </button>
                 </div>
               );

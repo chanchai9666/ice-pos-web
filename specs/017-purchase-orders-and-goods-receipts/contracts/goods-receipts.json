@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GoodsReceiptsAPI",
+  "description": "API Contracts for Goods Receipts in ice-pos-web",
+  "endpoints": {
+    "listGoodsReceipts": {
+      "method": "GET",
+      "path": "/api/v1/goods-receipts",
+      "queryParams": {
+        "branchId": { "type": "string", "format": "uuid" },
+        "purchaseOrderId": { "type": "string", "format": "uuid" },
+        "supplierId": { "type": "string", "format": "uuid" },
+        "status": { "type": "string", "enum": ["DRAFT", "COMPLETED", "CANCELLED"] },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "search": { "type": "string" },
+        "page": { "type": "integer", "default": 1 },
+        "limit": { "type": "integer", "default": 20 }
+      }
+    },
+    "createGoodsReceipt": {
+      "method": "POST",
+      "path": "/api/v1/goods-receipts",
+      "requestBody": {
+        "branchId": { "type": "string", "format": "uuid", "required": true },
+        "purchaseOrderId": { "type": "string", "format": "uuid" },
+        "supplierId": { "type": "string", "format": "uuid" },
+        "supplierInvoiceNo": { "type": "string", "maxLength": 100 },
+        "receivedDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["DRAFT", "COMPLETED"], "default": "COMPLETED" },
+        "note": { "type": "string", "maxLength": 500 },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "productId": { "type": "string", "format": "uuid", "required": true },
+            "receivedQuantity": { "type": "number", "minimum": 0, "required": true },
+            "rejectedQuantity": { "type": "number", "minimum": 0, "default": 0 },
+            "rejectReason": { "type": "string", "maxLength": 255 },
+            "unitCost": { "type": "integer", "minimum": 0 },
+            "uomId": { "type": "string", "format": "uuid" },
+            "lotNumber": { "type": "string" },
+            "expiryDate": { "type": "string" },
+            "purchaseOrderLineId": { "type": "string", "format": "uuid" }
+          }
+        }
+      }
+    },
+    "completeGoodsReceipt": {
+      "method": "POST",
+      "path": "/api/v1/goods-receipts/{id}/complete",
+      "responseStatus": 200
+    },
+    "cancelGoodsReceipt": {
+      "method": "POST",
+      "path": "/api/v1/goods-receipts/{id}/cancel",
+      "responseStatus": 200
+    }
+  }
+}

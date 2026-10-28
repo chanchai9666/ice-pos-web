@@ -1,0 +1,195 @@
+/**
+ * ประเภทข้อมูลสำหรับการจัดซื้อและตรวจรับสินค้าเข้าคลัง (Procurement & Goods Receipts)
+ * โครงการ ice-pos-web
+ */
+
+import { Product, Uom } from './catalog';
+
+// ========================================================
+// 1. ผู้จัดจำหน่าย (Suppliers)
+// ========================================================
+
+export interface Supplier {
+  id: string;
+  code: string;
+  name: string;
+  phone?: string | null;
+  email?: string | null;
+  address?: string | null;
+  taxId?: string | null;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// ========================================================
+// 2. ใบสั่งซื้อสินค้า (Purchase Orders)
+// ========================================================
+
+export type PurchaseOrderStatus =
+  | 'DRAFT'
+  | 'ORDERED'
+  | 'PARTIALLY_RECEIVED'
+  | 'COMPLETED'
+  | 'CANCELLED';
+
+export interface PurchaseOrderLine {
+  id: string;
+  purchaseOrderId: string;
+  productId: string;
+  product?: Product | null;
+  quantity: number;
+  receivedQuantity: number;
+  uomId?: string | null;
+  uom?: Uom | null;
+  unitCost: number; // หน่วย: สตางค์ (Satang)
+  note?: string | null;
+}
+
+export interface PurchaseOrder {
+  id: string;
+  poNumber: string;
+  branchId: string;
+  supplierId?: string | null;
+  supplier?: Supplier | null;
+  status: PurchaseOrderStatus;
+  orderDate?: string;
+  expectedDeliveryDate?: string;
+  totalAmount: number; // หน่วย: สตางค์ (Satang)
+  taxAmount: number; // หน่วย: สตางค์ (Satang)
+  note?: string | null;
+  lines: PurchaseOrderLine[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreatePurchaseOrderLineRequest {
+  productId: string;
+  quantity: number;
+  uomId?: string | null;
+  unitCost?: number; // หน่วย: สตางค์ (Satang)
+  note?: string | null;
+}
+
+export interface CreatePurchaseOrderRequest {
+  branchId: string;
+  supplierId?: string | null;
+  orderDate?: string;
+  expectedDeliveryDate?: string;
+  note?: string | null;
+  status?: 'DRAFT' | 'ORDERED';
+  taxAmount?: number;
+  lines: CreatePurchaseOrderLineRequest[];
+}
+
+export interface UpdatePurchaseOrderRequest {
+  branchId?: string;
+  supplierId?: string | null;
+  orderDate?: string;
+  expectedDeliveryDate?: string;
+  note?: string | null;
+  taxAmount?: number;
+  lines?: CreatePurchaseOrderLineRequest[];
+}
+
+export interface PurchaseOrderQueryParams {
+  branchId?: string;
+  supplierId?: string;
+  status?: PurchaseOrderStatus | '';
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}
+
+// ========================================================
+// 3. รายการสินค้าค้างรับในใบสั่งซื้อ (Receipt Preview)
+// ========================================================
+
+export interface ReceiptPreviewItem {
+  purchaseOrderLineId: string;
+  productId: string;
+  productName: string;
+  sku: string;
+  barcode?: string;
+  orderedQuantity: number;
+  receivedQuantity: number;
+  remainingQuantity: number;
+  unitCost: number; // หน่วย: สตางค์
+  uomId?: string | null;
+  uomName?: string | null;
+}
+
+// ========================================================
+// 4. ตรวจรับสินค้าเข้าคลัง (Goods Receipts)
+// ========================================================
+
+export type GoodsReceiptStatus = 'DRAFT' | 'COMPLETED' | 'CANCELLED';
+
+export interface GoodsReceiptLine {
+  id: string;
+  goodsReceiptId: string;
+  productId: string;
+  product?: Product | null;
+  receivedQuantity: number;
+  rejectedQuantity: number;
+  rejectReason?: string | null;
+  unitCost: number; // หน่วย: สตางค์
+  uomId?: string | null;
+  uom?: Uom | null;
+  lotNumber?: string | null;
+  expiryDate?: string | null;
+  purchaseOrderLineId?: string | null;
+}
+
+export interface GoodsReceipt {
+  id: string;
+  receiptNumber: string;
+  branchId: string;
+  purchaseOrderId?: string | null;
+  supplierId?: string | null;
+  supplier?: Supplier | null;
+  supplierInvoiceNo?: string | null;
+  receivedDate?: string;
+  status: GoodsReceiptStatus;
+  note?: string | null;
+  lines: GoodsReceiptLine[];
+  createdAt: string;
+  completedAt?: string | null;
+}
+
+export interface CreateGoodsReceiptLineRequest {
+  productId: string;
+  receivedQuantity: number;
+  rejectedQuantity?: number;
+  rejectReason?: string | null;
+  unitCost?: number;
+  uomId?: string | null;
+  lotNumber?: string | null;
+  expiryDate?: string | null;
+  purchaseOrderLineId?: string | null;
+}
+
+export interface CreateGoodsReceiptRequest {
+  branchId: string;
+  purchaseOrderId?: string | null;
+  supplierId?: string | null;
+  supplierInvoiceNo?: string | null;
+  receivedDate?: string;
+  status?: 'DRAFT' | 'COMPLETED';
+  note?: string | null;
+  lines: CreateGoodsReceiptLineRequest[];
+}
+
+export interface GoodsReceiptQueryParams {
+  branchId?: string;
+  purchaseOrderId?: string;
+  supplierId?: string;
+  status?: GoodsReceiptStatus | '';
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}
