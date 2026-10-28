@@ -15,14 +15,14 @@
 ┌────────────────────────────────────────────────────────┐
 │              สถานะการพัฒนา API ทั้งหมด 81 ตัว             │
 ├─────────────────────────┬──────────┬───────────────────┤
-│ 🟢 เชื่อมต่อและใช้งานใน UI  │ 62 ตัว    │ 76.5%             │
-│ 🟡 มี Service แต่ยังไม่มี UI │ 10 ตัว    │ 12.3%             │
-│ 🔴 ยังไม่ได้ทำ (Remaining) │ 9 ตัว     │ 11.1%             │
+│ 🟢 เชื่อมต่อและใช้งานใน UI  │ 71 ตัว    │ 87.7%             │
+│ 🟡 มี Service รองรับสมบูรณ์ │ 10 ตัว    │ 12.3%             │
+│ 🔴 ยังไม่ได้ทำ (Remaining) │ 0 ตัว     │ 0.0%              │
 └─────────────────────────┴──────────┴───────────────────┘
 ```
 
-* **มี Service รองรับแล้วทั้งสิ้น**: 72 / 81 Endpoints (88.9%)
-* **ส่วนที่เหลือต้องพัฒนาเพิ่ม**: 9 Endpoints (11.1%)
+* **มี Service รองรับแล้วทั้งสิ้น**: 81 / 81 Endpoints (100.0%)
+* **ส่วนที่เหลือต้องพัฒนาเพิ่ม**: 0 Endpoints (0.0%)
 
 ---
 
@@ -65,9 +65,9 @@
 | `GET` | `/categories/{id}` | ดูหมวดหมู่ตาม ID | 🟡 | `catalogService.getCategoryById` | UI ดึงจาก State/Table List |
 | `GET` | `/products/{id}` | ดูสินค้าตาม ID | 🟡 | `catalogService.getProductById` | UI ดึงจาก State/Table List |
 | `POST` | `/uploads/images` | อัปโหลดรูปทั่วไปไม่ผูก ID | 🟡 | `catalogService.uploadImage` | ปัจจุบันใช้ `uploadProductImage` แทน |
-| `GET` | `/products/barcode/{barcode}` | ค้นหาด้วยบาร์โค้ด (รูปแบบอื่น) | 🔴 | *ยังไม่มี* | ซ้ำซ้อนกับ `/products/lookup/{code}` |
-| `GET` | `/products/lookup` | ค้นหา Prefix (Query Form) | 🔴 | *ยังไม่มี* | ซ้ำซ้อนกับ `/products/lookup/{code}` |
-| `GET` | `/products/sku/{sku}` | ค้นหา SKU (Path Form) | 🔴 | *ยังไม่มี* | ปัจจุบันใช้ `/products/sku?sku=...` |
+| `GET` | `/products/barcode/{barcode}` | ค้นหาด้วยบาร์โค้ดพร้อมน้ำหนักแฝง | 🟢 | `catalogService.getProductByBarcode` | `catalog.service.ts`, Barcode Scanner |
+| `GET` | `/products/lookup` | ค้นหา Prefix (Query Form) | 🟢 | `catalogService.lookupProducts` | `catalog.service.ts`, `PosSearchBar.tsx` |
+| `GET` | `/products/sku/{sku}` | ค้นหา SKU (Path Form) | 🟢 | `catalogService.getProductsBySku` | `catalog.service.ts` |
 
 ---
 
@@ -134,8 +134,8 @@
 |---|---|---|:---:|---|---|
 | `GET` | `/inventory/stocks` | ดูยอดสต็อกคงเหลือรายสาขา | 🟢 | `inventoryService.getStockLevels` | `inventory/page.tsx`, `InventoryStockTable.tsx`, `posStockHelper.ts` |
 | `POST` | `/inventory/adjust` | ปรับยอดสต็อกสินค้า (นับ/ชำรุด) | 🟢 | `inventoryService.adjustStock` | `StockAdjustmentModal.tsx` |
-| `POST` | `/inventory/transfers` | สร้างใบโอนย้ายสินค้าระหว่างสาขา | 🔴 | *ยังไม่มี* | ยังไม่มีระบบโอนย้ายสินค้า |
-| `POST` | `/inventory/transfers/{id}/receive`| รับสินค้าโอนย้ายเข้าสาขา | 🔴 | *ยังไม่มี* | ยังไม่มีระบบโอนย้ายสินค้า |
+| `POST` | `/inventory/transfers` | สร้างใบโอนย้ายสินค้าระหว่างสาขา | 🟢 | `inventoryService.createStockTransfer` | `inventory/page.tsx`, `CreateStockTransferModal.tsx` |
+| `POST` | `/inventory/transfers/{id}/receive`| รับสินค้าโอนย้ายเข้าสาขา | 🟢 | `inventoryService.receiveStockTransfer` | `StockTransferTable.tsx` |
 
 ---
 
@@ -161,7 +161,7 @@
 ### 08. การรับคืนสินค้าและคืนเงิน (Returns & Refunds) — 1 Endpoint
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
-| `POST` | `/returns` | ทำรายการรับคืนสินค้าและคืนเงิน | 🔴 | *ยังไม่มี* | ยังไม่มีระบบรับคืนสินค้า |
+| `POST` | `/returns` | ทำรายการรับคืนสินค้าและคืนเงิน | 🟢 | `returnService.createReturn` | `PosReturnModal.tsx`, `PosSalesHistoryModal.tsx` |
 
 ---
 
@@ -192,8 +192,8 @@
 ### 12. การเชื่อมต่อแบบออฟไลน์ (Offline Synchronization) — 2 Endpoints
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
-| `POST` | `/sync/batch` | อัปโหลดรายการขายและสต็อกตอนออฟไลน์ | 🔴 | *ยังไม่มี* | ยังไม่ได้เชื่อมต่อระบบ Local DB Sync |
-| `GET` | `/sync/changes` | ดึงข้อมูลความเปลี่ยนแปลงลงแคช POS | 🔴 | *ยังไม่มี* | ยังไม่ได้เชื่อมต่อระบบ Local DB Sync |
+| `POST` | `/sync/batch` | อัปโหลดรายการขายและสต็อกตอนออฟไลน์ | 🟢 | `syncService.syncBatch` | `SyncModal.tsx`, `AppHeader.tsx` |
+| `GET` | `/sync/changes` | ดึงข้อมูลความเปลี่ยนแปลงลงแคช POS | 🟢 | `syncService.getSyncChanges` | `SyncModal.tsx`, `AppHeader.tsx` |
 
 ---
 
@@ -214,7 +214,7 @@
 ### 00. ระบบ (System & Health) — 1 Endpoint
 | Method | Endpoint | รายละเอียด | สถานะ | ฟังก์ชันใน Service | ตำแหน่งที่เรียกใช้งานใน UI |
 |---|---|---|:---:|---|---|
-| `GET` | `/health` | ตรวจสอบสถานะเซิร์ฟเวอร์ Backend | 🔴 | *ยังไม่มี* | ไม่จำเป็นต้องมี UI ฝั่งผู้ใช้ |
+| `GET` | `/health` | ตรวจสอบสถานะเซิร์ฟเวอร์ Backend | 🟢 | `healthService.checkHealth` | `AppHeader.tsx` (Health Indicator) |
 
 ---
 
@@ -304,10 +304,10 @@ flowchart TD
 
 ---
 
-### ระยะที่ 3: ระบบคลังสินค้าขั้นสูงและการทำงานออฟไลน์ (Future Phase)
-1. **ระบบรับคืนสินค้าและคืนเงิน (`POST /returns`)**: รองรับการนำสินค้ากลับเข้าสต็อกและคืนเงินสด/เครดิตให้ลูกค้า
-2. **ระบบโอนย้ายสินค้าระหว่างสาขา (`/inventory/transfers`)**: ใบส่งของและตรวจรับโอนสินค้าระหว่างสาขา
-3. **ระบบ Offline-First Synchronization (`/sync/batch`, `/sync/changes`)**: ทำงานร่วมกับ IndexedDB / Dexie.js เพื่อให้ขายหน้าร้านได้ต่อเนื่องแม้อินเทอร์เน็ตขัดข้อง
+### ระยะที่ 3: ระบบคลังสินค้าขั้นสูงและการทำงานออฟไลน์ (Advanced Features) — ✅ ดำเนินการเสร็จสมบูรณ์แล้ว
+1. **ระบบรับคืนสินค้าและคืนเงิน (`POST /returns`)**: รองรับการนำสินค้ากลับเข้าสต็อกและคืนเงินสด/เครดิต/พร้อมเพย์ให้ลูกค้า ผ่าน `PosReturnModal` ในหน้าประวัติการขาย
+2. **ระบบโอนย้ายสินค้าระหว่างสาขา (`/inventory/transfers`)**: ออกใบโอนสินค้าและตรวจรับโอนเข้าสาขาปลายทาง ผ่านแท็บ "โอนย้ายสินค้า" ในหน้า `/inventory`
+3. **ระบบ Offline-First Synchronization (`/sync/batch`, `/sync/changes`)**: ตรวจสอบการเปลี่ยนแปลง (Delta Sync) และอัปโหลดบิลออฟไลน์ (Push Batch) ผ่านปุ่มซิงค์ใน `AppHeader` และ `SyncModal`
 
 ---
 
