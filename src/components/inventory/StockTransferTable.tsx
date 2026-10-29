@@ -134,7 +134,7 @@ export function StockTransferTable({ currentBranchId }: StockTransferTableProps)
                     <Icons.Boxes className="w-10 h-10 mx-auto mb-2 text-slate-600 stroke-[1.5]" />
                     <p className="text-base font-medium">ยังไม่มีรายการโอนย้ายสินค้าในเซสชันนี้</p>
                     <p className="text-xs text-slate-500 mt-1">
-                      กดปุ่ม "สร้างใบโอนสินค้า" เพื่อส่งสินค้าไปยังสาขาอื่น หรือระบุรหัสใบโอนด้านบนเพื่อตรวจรับ
+                      กดปุ่ม &quot;สร้างใบโอนสินค้า&quot; เพื่อส่งสินค้าไปยังสาขาอื่น หรือระบุรหัสใบโอนด้านบนเพื่อตรวจรับ
                     </p>
                   </td>
                 </tr>

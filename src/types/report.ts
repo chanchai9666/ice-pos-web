@@ -41,3 +41,4 @@ export interface ReportQueryParams {
   endDate?: string;          // ISO8601
   limit?: number;
 }
+

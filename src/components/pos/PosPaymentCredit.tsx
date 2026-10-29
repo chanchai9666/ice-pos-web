@@ -39,7 +39,7 @@ export function PosPaymentCredit({
     async (q: string) => {
       setIsLoading(true);
       try {
-        const res = await customerService.searchCustomers(q, branchId);
+        const res = await customerService.searchCustomers(q.trim(), branchId);
         if (res && res.data) {
           setCustomers(Array.isArray(res.data) ? res.data : []);
         }
@@ -52,9 +52,22 @@ export function PosPaymentCredit({
     [branchId]
   );
 
+  // โหลดรายชื่อลูกค้าเริ่มต้นเมื่อ mount
   useEffect(() => {
+    search('');
+  }, [search]);
+
+  // ค้นหาเมื่อผู้ใช้กดค้นหา หรือกด Enter
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     search(searchQuery);
-  }, [search, searchQuery]);
+  };
+
+  // ล้างคำค้นหาและดึงรายการทั้งหมดกลับมา
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    search('');
+  };
 
   // ตรวจสอบวงเงินคงเหลือ
   const availableCredit = getAvailableCredit(selectedCustomer ?? { creditLimit: 0, outstandingBalance: 0 } as CustomerSummary);
@@ -65,30 +78,53 @@ export function PosPaymentCredit({
     <div className="grid grid-cols-1 md:grid-cols-12 gap-6 p-4 sm:p-6 bg-slate-900 text-slate-100">
       {/* ฝั่งซ้าย: ค้นหาและเลือกลูกค้า (7 คอลัมน์) */}
       <div className="md:col-span-7 flex flex-col space-y-4">
-        <div>
-          <span className="text-xs sm:text-sm text-slate-400 font-medium block mb-2">
+        <form onSubmit={handleSearchSubmit} className="space-y-2">
+          <label htmlFor="customer-search-input" className="text-xs sm:text-sm text-slate-400 font-medium block">
             ค้นหาบัญชีลูกค้าเงินเชื่อ:
-          </span>
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="พิมพ์ชื่อ, รหัสลูกค้า หรือเบอร์โทรศัพท์..."
-              className="w-full h-13 min-h-[50px] pl-11 pr-4 rounded-xl bg-slate-800 border-2 border-slate-700 text-white placeholder-slate-500 font-medium text-base focus:border-purple-500 focus:outline-none transition-colors"
-            />
-            <Icons.Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-4" />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-3.5 w-7 h-7 rounded-lg bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center"
-              >
-                <Icons.Close className="w-4 h-4" />
-              </button>
-            )}
+          </label>
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <input
+                id="customer-search-input"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearchSubmit();
+                  }
+                }}
+                placeholder="พิมพ์ชื่อ, รหัสลูกค้า หรือเบอร์โทรศัพท์..."
+                className="w-full h-13 min-h-[50px] pl-11 pr-10 rounded-xl bg-slate-800 border-2 border-slate-700 text-white placeholder-slate-500 font-medium text-base focus:border-purple-500 focus:outline-none transition-colors"
+              />
+              <Icons.Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-4" />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute right-3 top-3.5 w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 active:bg-slate-500 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+                  title="ล้างคำค้นหา"
+                >
+                  <Icons.Close className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="h-13 min-h-[50px] px-4 sm:px-5 rounded-xl bg-purple-600 hover:bg-purple-500 active:bg-purple-700 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold text-base flex items-center justify-center gap-2 border border-purple-400/40 shadow-md shadow-purple-900/30 shrink-0 transition-all cursor-pointer disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <Icons.Refresh className="w-5 h-5 animate-spin" />
+              ) : (
+                <Icons.Search className="w-5 h-5" />
+              )}
+              <span>ค้นหา</span>
+            </button>
           </div>
-        </div>
+        </form>
 
         {/* รายการผลการค้นหาลูกค้า */}
         <div className="flex-1 overflow-y-auto max-h-[340px] pr-1 space-y-2.5 scrollbar-thin scrollbar-thumb-slate-700">

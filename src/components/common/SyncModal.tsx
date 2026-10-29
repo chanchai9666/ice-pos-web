@@ -197,3 +197,4 @@ export function SyncModal({ isOpen, onClose }: SyncModalProps) {
     </div>
   );
 }
+

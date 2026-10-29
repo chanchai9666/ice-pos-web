@@ -80,3 +80,4 @@ export interface UserQueryParams {
   isActive?: boolean;
   search?: string;
 }
+

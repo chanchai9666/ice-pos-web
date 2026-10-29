@@ -14,7 +14,6 @@ import { CartItem } from '@/types/pos';
 import { PaymentMethodType, CreateSaleRequest, SaleResponse } from '@/types/sale';
 import { CustomerSummary, getAvailableCredit } from '@/types/customer';
 import { PosPaymentCash } from '@/components/pos/PosPaymentCash';
-import { PosPaymentQR } from '@/components/pos/PosPaymentQR';
 import { PosPaymentCredit } from '@/components/pos/PosPaymentCredit';
 import { PosSuccessOverlay } from '@/components/pos/PosSuccessOverlay';
 import { salesService } from '@/services/sales.service';
@@ -71,6 +70,17 @@ export function PosCheckoutModal({
       setIsSubmitting(false);
     }
   }, [isOpen]);
+
+  // ปิด Modal ด้วยปุ่ม Escape เมื่อไม่ได้กำลังส่งข้อมูล
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen && !isSubmitting && !completedSale) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, isSubmitting, completedSale, onClose]);
 
   // จัดการเมื่อเริ่มบิลใหม่
   const handleNewSale = useCallback(() => {
@@ -163,65 +173,6 @@ export function PosCheckoutModal({
       setErrorMessage(errorMsg);
       playErrorBuzzer();
       console.error('Sale submission failed:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // การส่งคำขอบันทึกการขายเมื่อชำระเงินผ่าน QR พร้อมเพย์สำเร็จ
-  const handleQRSuccess = async (qrRef: string) => {
-    if (!branchId || items.length === 0) return;
-
-    // ตรวจสอบความถูกต้องของ uomId ในสินค้าทุกชิ้น (FR-012)
-    const invalidItem = items.find((item) => !item.uomId);
-    if (invalidItem) {
-      setErrorMessage(`สินค้า "${invalidItem.name}" ขาดข้อมูลหน่วยนับ (uomId) กรุณาลบและเพิ่มใหม่`);
-      playErrorBuzzer();
-      return;
-    }
-
-    setIsSubmitting(true);
-    setErrorMessage(null);
-
-    const saleRequest: CreateSaleRequest = {
-      branchId,
-      idempotencyKey,
-      billDiscount: 0,
-      lines: items.map((item) => ({
-        productId: item.productId,
-        uomId: item.uomId,
-        qty: item.quantity,
-        unitPrice: item.price,
-        lineDiscount: 0,
-      })),
-      payments: [
-        {
-          method: 'QR_PROMPTPAY',
-          amount: grandTotalSatang,
-          ref: qrRef,
-        },
-      ],
-    };
-
-    try {
-      const response = await salesService.createSale(saleRequest, idempotencyKey);
-      if (response && response.data) {
-        setCompletedSale(response.data);
-        playCheckoutSuccessChime();
-        addToast({
-          type: 'SUCCESS',
-          title: 'ชำระเงินผ่าน QR สำเร็จ',
-          message: `ออกบิลขาย ${response.data.saleNo || ''} สำเร็จ`,
-        });
-      } else {
-        throw new Error(response.message || 'บันทึกการขายไม่สำเร็จ');
-      }
-    } catch (err: unknown) {
-      const errorMsg =
-        err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
-      setErrorMessage(errorMsg);
-      playErrorBuzzer();
-      console.error('QR Sale submission failed:', err);
     } finally {
       setIsSubmitting(false);
     }
@@ -352,7 +303,7 @@ export function PosCheckoutModal({
 
             {/* แถบเลือกวิธีชำระเงิน (Tabs) */}
             <div className="px-6 pt-4 pb-2 border-b border-slate-800">
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('CASH')}
@@ -364,19 +315,6 @@ export function PosCheckoutModal({
                 >
                   <Icons.Receipt className="w-5 h-5" />
                   <span>เงินสด (Cash)</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setPaymentMethod('QR_PROMPTPAY')}
-                  className={`h-13 min-h-[50px] rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 border transition-all active:scale-[0.98] ${
-                    paymentMethod === 'QR_PROMPTPAY'
-                      ? 'bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-600/30'
-                      : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800'
-                  }`}
-                >
-                  <Icons.QrCode className="w-5 h-5" />
-                  <span>QR พร้อมเพย์</span>
                 </button>
 
                 <button
@@ -403,17 +341,6 @@ export function PosCheckoutModal({
                   onTenderedChange={setTenderedString}
                   onSubmit={handleCashSubmit}
                   isSubmitting={isSubmitting}
-                />
-              )}
-
-              {paymentMethod === 'QR_PROMPTPAY' && (
-                <PosPaymentQR
-                  grandTotalSatang={grandTotalSatang}
-                  onSuccess={handleQRSuccess}
-                  onError={(msg) => {
-                    setErrorMessage(msg);
-                    playErrorBuzzer();
-                  }}
                 />
               )}
 

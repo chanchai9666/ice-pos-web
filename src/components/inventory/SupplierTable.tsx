@@ -204,3 +204,4 @@ export function SupplierTable() {
     </div>
   );
 }
+
