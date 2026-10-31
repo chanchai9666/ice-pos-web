@@ -6,16 +6,24 @@
 import { request } from '@/services/api';
 import { ApiResponse } from '@/types/auth';
 import { GenerateQRRequest, QRPaymentResponse, QRStatusResponse } from '@/types/payment';
+import { generateIdempotencyKey } from '@/utils/idempotency';
 
 export const paymentsService = {
   /**
    * สร้าง Dynamic QR PromptPay ตามยอดเงินที่ต้องชำระ (หน่วยสตางค์)
    * @param amount ยอดเงินในหน่วยสตางค์
+   * @param idempotencyKey รหัสป้องกันการทำรายการซ้ำ (Idempotency Key)
    */
-  generatePromptPayQR: async (amount: number): Promise<ApiResponse<QRPaymentResponse>> => {
+  generatePromptPayQR: async (
+    amount: number,
+    idempotencyKey?: string
+  ): Promise<ApiResponse<QRPaymentResponse>> => {
     const payload: GenerateQRRequest = { amount };
     return request<QRPaymentResponse>('/api/v1/payments/qr', {
       method: 'POST',
+      headers: {
+        'Idempotency-Key': idempotencyKey || generateIdempotencyKey(),
+      },
       body: JSON.stringify(payload),
     });
   },
@@ -23,10 +31,15 @@ export const paymentsService = {
   /**
    * ตรวจสอบสถานะการชำระเงินผ่าน QR พร้อมเพย์
    * @param ref รหัสอ้างอิง QR
+   * @param options ตัวเลือกเพิ่มเติม เช่น silent สำหรับ background polling (ค่าเริ่มต้น: true)
    */
-  checkPaymentStatus: async (ref: string): Promise<ApiResponse<QRStatusResponse>> => {
+  checkPaymentStatus: async (
+    ref: string,
+    options?: { silent?: boolean }
+  ): Promise<ApiResponse<QRStatusResponse>> => {
     return request<QRStatusResponse>(`/api/v1/payments/${encodeURIComponent(ref)}/status`, {
       method: 'GET',
+      silent: options?.silent ?? true,
     });
   },
 };

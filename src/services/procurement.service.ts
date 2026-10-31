@@ -6,6 +6,7 @@
 import { api } from '@/services/api';
 import { ApiResponse } from '@/types/auth';
 import { formatToRFC3339 } from '@/utils/dateHelper';
+import { generateIdempotencyKey } from '@/utils/idempotency';
 import {
   Supplier,
   CreateSupplierRequest,
@@ -129,9 +130,12 @@ export const procurementService = {
   /**
    * สร้างใบสั่งซื้อสินค้าใหม่
    * POST /api/v1/purchase-orders
+   * @param data ข้อมูลใบสั่งซื้อ
+   * @param idempotencyKey รหัสป้องกันการทำรายการซ้ำ (Idempotency Key)
    */
   async createPurchaseOrder(
-    data: CreatePurchaseOrderRequest
+    data: CreatePurchaseOrderRequest,
+    idempotencyKey?: string
   ): Promise<ApiResponse<PurchaseOrder>> {
     const payload: CreatePurchaseOrderRequest = {
       ...data,
@@ -139,6 +143,9 @@ export const procurementService = {
       expectedDeliveryDate: formatToRFC3339(data.expectedDeliveryDate),
     };
     return api.post<PurchaseOrder>('/api/v1/purchase-orders', payload, {
+      headers: {
+        'Idempotency-Key': idempotencyKey || generateIdempotencyKey(),
+      },
       loadingMessage: 'กำลังบันทึกใบสั่งซื้อสินค้า...',
     });
   },
@@ -256,9 +263,12 @@ export const procurementService = {
   /**
    * สร้างใบตรวจรับสินค้าเข้าคลัง
    * POST /api/v1/goods-receipts
+   * @param data ข้อมูลคำขอตรวจรับสินค้า
+   * @param idempotencyKey รหัสป้องกันการทำรายการซ้ำ (Idempotency Key)
    */
   async createGoodsReceipt(
-    data: CreateGoodsReceiptRequest
+    data: CreateGoodsReceiptRequest,
+    idempotencyKey?: string
   ): Promise<ApiResponse<GoodsReceipt>> {
     const payload: CreateGoodsReceiptRequest = {
       ...data,
@@ -269,6 +279,9 @@ export const procurementService = {
       })),
     };
     return api.post<GoodsReceipt>('/api/v1/goods-receipts', payload, {
+      headers: {
+        'Idempotency-Key': idempotencyKey || generateIdempotencyKey(),
+      },
       loadingMessage: 'กำลังสร้างใบตรวจรับสินค้า...',
     });
   },
@@ -276,12 +289,22 @@ export const procurementService = {
   /**
    * ยืนยันการตรวจรับสินค้าเข้าคลัง (นำยอดเข้าสต็อกสาขาจริง)
    * POST /api/v1/goods-receipts/{id}/complete
+   * @param id รหัสใบตรวจรับสินค้า
+   * @param idempotencyKey รหัสป้องกันการทำรายการซ้ำ (Idempotency Key)
    */
-  async completeGoodsReceipt(id: string): Promise<ApiResponse<GoodsReceipt>> {
+  async completeGoodsReceipt(
+    id: string,
+    idempotencyKey?: string
+  ): Promise<ApiResponse<GoodsReceipt>> {
     return api.post<GoodsReceipt>(
       `/api/v1/goods-receipts/${id}/complete`,
       {},
-      { loadingMessage: 'กำลังยืนยันตรวจรับสินค้าเข้าคลัง...' }
+      {
+        headers: {
+          'Idempotency-Key': idempotencyKey || generateIdempotencyKey(),
+        },
+        loadingMessage: 'กำลังยืนยันตรวจรับสินค้าเข้าคลัง...',
+      }
     );
   },
 

@@ -9,7 +9,7 @@
  */
 export function toSatang(baht: number | string | null | undefined): number {
   if (baht === null || baht === undefined || baht === '') return 0;
-  const numBaht = typeof baht === 'string' ? parseFloat(baht) : baht;
+  const numBaht = typeof baht === 'string' ? parseFloat(baht.replace(/,/g, '')) : baht;
   if (isNaN(numBaht)) return 0;
   return Math.round(numBaht * 100);
 }
@@ -19,7 +19,7 @@ export function toSatang(baht: number | string | null | undefined): number {
  * เช่น 1050 สตางค์ -> 10.50 บาท
  */
 export function toBaht(satang: number | null | undefined): number {
-  if (satang === null || satang === undefined) return 0;
+  if (satang === null || satang === undefined || isNaN(satang)) return 0;
   return satang / 100;
 }
 
@@ -47,7 +47,7 @@ export function formatBaht(
   options?: { showUnit?: boolean; minimumFractionDigits?: number }
 ): string {
   if (baht === null || baht === undefined || baht === '') return '0.00';
-  const numBaht = typeof baht === 'string' ? parseFloat(baht) : baht;
+  const numBaht = typeof baht === 'string' ? parseFloat(baht.replace(/,/g, '')) : baht;
   if (isNaN(numBaht)) return '0.00';
   const formatted = numBaht.toLocaleString('th-TH', {
     minimumFractionDigits: options?.minimumFractionDigits ?? 2,
@@ -55,3 +55,11 @@ export function formatBaht(
   });
   return options?.showUnit ? `${formatted} ฿` : formatted;
 }
+
+/**
+ * ฟังก์ชัน Alias เพื่อความเข้ากันได้ย้อนหลัง (Backward Compatibility)
+ * แนะนำให้ใช้ `toSatang` และ `toBaht` เป็นหลัก
+ */
+export const bahtToSatang = toSatang;
+export const satangToBahtNumber = toBaht;
+

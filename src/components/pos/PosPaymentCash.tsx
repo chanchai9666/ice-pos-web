@@ -15,7 +15,7 @@
 import React, { useMemo, useEffect, useCallback } from 'react';
 import { Icons } from '@/components/ui/Icons';
 import { VirtualNumericKeypad } from '@/components/ui/VirtualNumericKeypad';
-import { bahtToSatang, formatSatangToBaht } from '@/utils/currency';
+import { toSatang, toBaht, formatSatangToBaht } from '@/utils/currencyHelper';
 import { getSmartCashSuggestions, THAI_ADDITIVE_BANKNOTES } from '@/utils/cashSuggestions';
 
 interface PosPaymentCashProps {
@@ -37,13 +37,13 @@ export function PosPaymentCash({
   const tenderedSatang = useMemo(() => {
     const num = parseFloat(tenderedString);
     if (isNaN(num) || num <= 0) return 0;
-    return bahtToSatang(num);
+    return toSatang(num);
   }, [tenderedString]);
 
   // คำนวณเงินทอน
   const changeSatang = tenderedSatang - grandTotalSatang;
   const isEnough = tenderedSatang >= grandTotalSatang;
-  const grandTotalBaht = grandTotalSatang / 100;
+  const grandTotalBaht = toBaht(grandTotalSatang);
 
   // คำนวณยอดเงินแนะนำอัจฉริยะตามยอดรวมสุทธิ
   const smartSuggestions = useMemo(() => {

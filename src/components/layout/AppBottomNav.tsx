@@ -31,6 +31,8 @@ export function AppBottomNav({ onToggleMenu }: AppBottomNavProps) {
 
   const renderIcon = (iconName: string, className = 'w-5 h-5') => {
     switch (iconName) {
+      case 'LayoutDashboard':
+        return <Icons.LayoutDashboard className={className} />;
       case 'ShoppingCart':
         return <Icons.ShoppingCart className={className} />;
       case 'Package':

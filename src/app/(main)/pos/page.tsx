@@ -35,7 +35,7 @@ import { playErrorBuzzer } from '@/utils/audio';
 import { useBarcodeScanner } from '@/hooks/useBarcodeScanner';
 import { Icons } from '@/components/ui/Icons';
 import { BarcodeScanResult } from '@/types/scanner';
-import { formatSatangToBaht } from '@/utils/currency';
+import { formatSatangToBaht, toBaht } from '@/utils/currencyHelper';
 
 function PosTerminalInner() {
   const { user, branch } = useAuth();
@@ -477,7 +477,7 @@ function PosTerminalInner() {
           addToast({
             type: 'SUCCESS',
             title: 'เปิดกะการขายสำเร็จ',
-            message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${(newShift.openingCash / 100).toLocaleString()}`,
+            message: `เปิดกะขายเรียบร้อย เงินทอนเริ่มต้น ฿${toBaht(newShift.openingCash).toLocaleString()}`,
           });
         }}
       />
@@ -492,7 +492,7 @@ function PosTerminalInner() {
           addToast({
             type: 'SUCCESS',
             title: 'ปิดกะการขายสำเร็จ',
-            message: `ปิดกะขายเรียบร้อย เงินสดที่นับได้ ฿${((closedShift.countedCash ?? 0) / 100).toLocaleString()}`,
+            message: `ปิดกะขายเรียบร้อย เงินสดที่นับได้ ฿${toBaht(closedShift.countedCash).toLocaleString()}`,
           });
         }}
       />

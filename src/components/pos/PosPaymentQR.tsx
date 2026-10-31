@@ -60,7 +60,7 @@ export function PosPaymentQR({
       }
 
       try {
-        const res = await paymentsService.checkPaymentStatus(refCode);
+        const res = await paymentsService.checkPaymentStatus(refCode, { silent: !isManual });
         if (res && res.data && (res.data.status === 'SUCCESS' || res.data.status === ('PAID' as unknown))) {
           isDoneRef.current = true;
           stopTimers();
