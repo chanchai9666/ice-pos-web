@@ -31,10 +31,15 @@ export const paymentsService = {
   /**
    * ตรวจสอบสถานะการชำระเงินผ่าน QR พร้อมเพย์
    * @param ref รหัสอ้างอิง QR
+   * @param options ตัวเลือกเพิ่มเติม เช่น silent สำหรับ background polling (ค่าเริ่มต้น: true)
    */
-  checkPaymentStatus: async (ref: string): Promise<ApiResponse<QRStatusResponse>> => {
+  checkPaymentStatus: async (
+    ref: string,
+    options?: { silent?: boolean }
+  ): Promise<ApiResponse<QRStatusResponse>> => {
     return request<QRStatusResponse>(`/api/v1/payments/${encodeURIComponent(ref)}/status`, {
       method: 'GET',
+      silent: options?.silent ?? true,
     });
   },
 };
