@@ -289,13 +289,78 @@ export function PosPaymentCash({
         </div>
       </div>
 
-      {/* แถบยืนยันการขายแบบ Sticky Bottom Action Bar สำหรับ Mobile & iPad Portrait */}
-      <div className="md:hidden sticky bottom-0 z-20 bg-slate-900/95 backdrop-blur-md p-3 border-t border-slate-800 shadow-2xl">
+      {/* แถบสรุปยอดและยืนยันการขายแบบ Sticky Bottom Action Bar สำหรับ Mobile & iPad Portrait */}
+      <div className="md:hidden sticky bottom-0 z-20 bg-slate-900/95 backdrop-blur-md p-3 border-t border-slate-800 shadow-2xl space-y-2.5">
+        {/* ส่วนสรุป 3 ยอดเงิน: ยอดที่ต้องชำระ, เงินสดที่รับ, สถานะยอดเงินรับ/เงินทอนที่ต้องคืน */}
+        <div className="grid grid-cols-3 gap-2">
+          {/* 1. ยอดที่ต้องชำระ */}
+          <div className="bg-slate-800/90 border border-slate-700/80 rounded-xl p-2 sm:p-2.5 text-center flex flex-col justify-center">
+            <span className="text-[11px] sm:text-xs text-slate-400 font-medium block leading-tight truncate">
+              ยอดที่ต้องชำระ
+            </span>
+            <div className="text-sm sm:text-base font-black text-white mt-0.5 truncate">
+              {formatSatangToBaht(grandTotalSatang)}
+            </div>
+          </div>
+
+          {/* 2. เงินสดที่รับ พร้อมปุ่มล้างค่า */}
+          <div className="bg-slate-800 border-2 border-cyan-500/70 rounded-xl p-2 sm:p-2.5 text-center flex flex-col justify-center shadow-sm relative">
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-[11px] sm:text-xs text-cyan-300 font-semibold block leading-tight truncate">
+                เงินสดที่รับ
+              </span>
+              {tenderedString && (
+                <button
+                  type="button"
+                  onClick={() => onTenderedChange('')}
+                  className="text-[10px] text-slate-300 hover:text-white px-1.5 py-0.2 rounded bg-slate-700/80 active:scale-95 transition-all cursor-pointer font-medium"
+                  title="ล้างค่า"
+                >
+                  ล้าง
+                </button>
+              )}
+            </div>
+            <div className="text-sm sm:text-base font-black text-cyan-300 mt-0.5 truncate">
+              {tenderedString
+                ? `${parseFloat(tenderedString).toLocaleString('th-TH', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2,
+                  })}`
+                : '0.00'}
+            </div>
+          </div>
+
+          {/* 3. สถานะยอดเงินรับ / เงินทอนที่ต้องคืน */}
+          <div
+            className={`rounded-xl p-2 sm:p-2.5 text-center border flex flex-col justify-center transition-colors ${
+              isEnough
+                ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-300'
+                : 'bg-rose-950/30 border-rose-500/40 text-rose-300'
+            }`}
+          >
+            <span className="text-[11px] sm:text-xs font-semibold block leading-tight truncate">
+              {isEnough ? 'เงินทอนที่ต้องคืน' : 'สถานะยอดเงินรับ'}
+            </span>
+            <div className="text-sm sm:text-base font-black mt-0.5 truncate">
+              {isEnough ? (
+                <span className="text-emerald-400">
+                  {formatSatangToBaht(changeSatang)}
+                </span>
+              ) : (
+                <span className="text-rose-400">
+                  ขาด {formatSatangToBaht(grandTotalSatang - tenderedSatang)}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ปุ่มยืนยันการขาย */}
         <button
           type="button"
           onClick={onSubmit}
           disabled={!isEnough || isSubmitting}
-          className="w-full min-h-[52px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:border-slate-800 text-white font-bold text-base sm:text-lg shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer disabled:cursor-not-allowed"
+          className="w-full min-h-[50px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:border-slate-800 text-white font-bold text-base sm:text-lg shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <>

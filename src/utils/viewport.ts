@@ -4,6 +4,8 @@
  */
 
 import { useState, useEffect } from 'react';
+export { useDevice } from '@/hooks/useDevice';
+export type { DeviceInfo, DeviceProfile, Orientation } from '@/hooks/useDevice';
 
 export const BREAKPOINTS = {
   SM: 640,

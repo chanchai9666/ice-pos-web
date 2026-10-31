@@ -356,7 +356,7 @@ function PosTerminalInner() {
   }, [products, selectedCategoryId, searchQuery]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-5rem)] max-w-[1920px] mx-auto gap-4">
+    <div className="flex flex-col h-[calc(100dvh-5.5rem)] max-w-[1920px] mx-auto gap-3 sm:gap-4 pb-safe">
       {/* ส่วนหัวหน้าจอ POS */}
       <div className="flex items-center justify-between pb-2 border-b border-slate-800">
         <div>

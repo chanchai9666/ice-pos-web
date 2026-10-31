@@ -40,3 +40,29 @@ button, input, select {
   }
 }
 
+/* Safe Area Insets สำหรับอุปกรณ์พกพาที่มีรอยบาก (Notch / Home Indicator) */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Dynamic Viewport Height สำหรับป้องกันปัญหา Address Bar เบราว์เซอร์ */
+.h-dvh {
+  height: 100dvh;
+}
+.min-h-dvh {
+  min-height: 100dvh;
+}
+.max-h-dvh {
+  max-height: 100dvh;
+}
+
+

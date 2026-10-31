@@ -5,14 +5,16 @@ import { RouteGuard } from '@/components/layout/RouteGuard';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { AppBottomNav } from '@/components/layout/AppBottomNav';
+import { useDevice } from '@/hooks/useDevice';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { isMobile } = useDevice();
 
   const handleToggleSidebar = () => {
-    // บนหน้าจอเล็กให้สลับ Drawer Mobile
-    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+    // บนหน้าจอพกพา (< 1024px) ให้สลับ Drawer Mobile
+    if (isMobile) {
       setIsMobileOpen((prev) => !prev);
     } else {
       setIsSidebarCollapsed((prev) => !prev);
@@ -21,7 +23,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <RouteGuard>
-      <div className="min-h-screen bg-slate-950 flex flex-col antialiased text-slate-100">
+      <div className="min-h-dvh bg-slate-950 flex flex-col antialiased text-slate-100">
         <AppHeader
           onToggleSidebar={handleToggleSidebar}
           isSidebarCollapsed={isSidebarCollapsed}
@@ -34,7 +36,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             onCloseMobile={() => setIsMobileOpen(false)}
           />
 
-          <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-950/50 pb-20 lg:pb-6">
+          <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 bg-slate-950/50 pb-24 lg:pb-6 pb-safe">
             {children}
           </main>
         </div>

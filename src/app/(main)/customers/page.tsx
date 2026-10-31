@@ -18,6 +18,7 @@ import { PayCreditModal } from '@/components/customer/PayCreditModal';
 import { ARAgingReportModal } from '@/components/customer/ARAgingReportModal';
 import { Icons } from '@/components/ui/Icons';
 import { formatSatangToBaht } from '@/utils/currency';
+import { ResponsiveDataView } from '@/components/ui/ResponsiveDataView';
 
 export default function CustomersPage() {
   const { user, branch } = useAuth();
@@ -183,130 +184,242 @@ export default function CustomersPage() {
         </div>
       </div>
 
-      {/* Customer Table */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-16 gap-3 text-slate-400">
-            <Icons.Loader className="w-8 h-8 animate-spin text-cyan-400" />
-            <span className="text-sm">กำลังโหลดข้อมูลลูกค้า...</span>
-          </div>
-        ) : error ? (
-          <div className="p-8 text-center text-rose-400 text-sm">{error}</div>
-        ) : customers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-slate-500 space-y-2">
-            <Icons.Users className="w-12 h-12 stroke-[1.5]" />
-            <p className="text-base font-semibold">ไม่พบข้อมูลลูกค้า</p>
-            <p className="text-xs">คลิกที่ปุ่ม &quot;ลงทะเบียนลูกค้าใหม่&quot; เพื่อเริ่มต้นสร้างโปรไฟล์ลูกค้า</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-800/80 text-slate-300 font-semibold border-b border-slate-700">
-                <tr>
-                  <th className="py-3.5 px-4">ชื่อลูกค้า / ร้านค้า</th>
-                  <th className="py-3.5 px-4">เบอร์โทรศัพท์</th>
-                  <th className="py-3.5 px-4 text-right">วงเงินเครดิต</th>
-                  <th className="py-3.5 px-4 text-right">ยอดหนี้ค้างชำระ</th>
-                  <th className="py-3.5 px-4 text-right">วงเงินคงเหลือ</th>
-                  <th className="py-3.5 px-4 text-center">สถานะ</th>
-                  <th className="py-3.5 px-4 text-center">จัดการ</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800">
-                {customers.map((c) => {
-                  const availableCredit = getAvailableCredit(c);
-                  return (
-                    <tr key={c.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-3.5 px-4 font-semibold text-white">
-                        <div>{c.name}</div>
-                        {c.email && <div className="text-xs text-slate-500">{c.email}</div>}
-                      </td>
-                      <td className="py-3.5 px-4 text-slate-300 font-mono">
-                        {c.phone || '-'}
-                      </td>
-                      <td className="py-3.5 px-4 text-right font-medium text-white">
-                        ฿{formatSatangToBaht(c.creditLimit)}
-                      </td>
-                      <td className="py-3.5 px-4 text-right font-bold text-rose-400">
-                        ฿{formatSatangToBaht(c.outstandingBalance)}
-                      </td>
-                      <td className="py-3.5 px-4 text-right font-semibold text-cyan-400">
-                        ฿{formatSatangToBaht(availableCredit)}
-                      </td>
-                      <td className="py-3.5 px-4 text-center">
-                        <span
-                          className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
-                            c.isActive !== false
-                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                              : 'bg-slate-700/50 text-slate-400 border-slate-600'
-                          }`}
-                        >
-                          {c.isActive !== false ? 'เปิดใช้งาน' : 'ระงับ'}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-center">
-                        <div className="flex items-center justify-center gap-1.5">
-                          {/* ปุ่มรับชำระหนี้ */}
-                          {c.outstandingBalance > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setPayCustomer(c);
-                                setIsPayModalOpen(true);
-                              }}
-                              className="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                              title="บันทึกรับชำระเงินตัดหนี้"
-                            >
-                              <Icons.Receipt className="w-3.5 h-3.5" />
-                              <span>รับชำระ</span>
-                            </button>
-                          )}
+      {/* Customer Responsive Data View */}
+      {error ? (
+        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 text-center text-rose-400 text-sm">
+          {error}
+        </div>
+      ) : (
+        <ResponsiveDataView<CustomerSummary>
+          data={customers}
+          keyExtractor={(c) => c.id}
+          isLoading={isLoading}
+          loadingMessage="กำลังโหลดข้อมูลลูกค้า..."
+          tableBreakpoint="lg"
+          emptyState={
+            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl flex flex-col items-center justify-center py-16 text-slate-500 space-y-2">
+              <Icons.Users className="w-12 h-12 stroke-[1.5]" />
+              <p className="text-base font-semibold">ไม่พบข้อมูลลูกค้า</p>
+              <p className="text-xs">คลิกที่ปุ่ม &quot;ลงทะเบียนลูกค้าใหม่&quot; เพื่อเริ่มต้นสร้างโปรไฟล์ลูกค้า</p>
+            </div>
+          }
+          tableHeader={
+            <thead className="bg-slate-800/80 text-slate-300 font-semibold border-b border-slate-700">
+              <tr>
+                <th className="py-3.5 px-4">ชื่อลูกค้า / ร้านค้า</th>
+                <th className="py-3.5 px-4">เบอร์โทรศัพท์</th>
+                <th className="py-3.5 px-4 text-right">วงเงินเครดิต</th>
+                <th className="py-3.5 px-4 text-right">ยอดหนี้ค้างชำระ</th>
+                <th className="py-3.5 px-4 text-right">วงเงินคงเหลือ</th>
+                <th className="py-3.5 px-4 text-center">สถานะ</th>
+                <th className="py-3.5 px-4 text-center">จัดการ</th>
+              </tr>
+            </thead>
+          }
+          renderRow={(c) => {
+            const availableCredit = getAvailableCredit(c);
+            return (
+              <tr key={c.id} className="hover:bg-slate-800/40 transition-colors">
+                <td className="py-3.5 px-4 font-semibold text-white">
+                  <div>{c.name}</div>
+                  {c.email && <div className="text-xs text-slate-500">{c.email}</div>}
+                </td>
+                <td className="py-3.5 px-4 text-slate-300 font-mono">
+                  {c.phone || '-'}
+                </td>
+                <td className="py-3.5 px-4 text-right font-medium text-white">
+                  ฿{formatSatangToBaht(c.creditLimit)}
+                </td>
+                <td className="py-3.5 px-4 text-right font-bold text-rose-400">
+                  ฿{formatSatangToBaht(c.outstandingBalance)}
+                </td>
+                <td className="py-3.5 px-4 text-right font-semibold text-cyan-400">
+                  ฿{formatSatangToBaht(availableCredit)}
+                </td>
+                <td className="py-3.5 px-4 text-center">
+                  <span
+                    className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
+                      c.isActive !== false
+                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                        : 'bg-slate-700/50 text-slate-400 border-slate-600'
+                    }`}
+                  >
+                    {c.isActive !== false ? 'เปิดใช้งาน' : 'ระงับ'}
+                  </span>
+                </td>
+                <td className="py-3.5 px-4 text-center">
+                  <div className="flex items-center justify-center gap-1.5">
+                    {/* ปุ่มรับชำระหนี้ */}
+                    {c.outstandingBalance > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPayCustomer(c);
+                          setIsPayModalOpen(true);
+                        }}
+                        className="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px]"
+                        title="บันทึกรับชำระเงินตัดหนี้"
+                      >
+                        <Icons.Receipt className="w-3.5 h-3.5" />
+                        <span>รับชำระ</span>
+                      </button>
+                    )}
 
-                          {/* ปุ่มปรับวงเงิน */}
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setCreditCustomer(c);
-                              setIsCreditModalOpen(true);
-                            }}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition-colors cursor-pointer"
-                            title="ปรับเปลี่ยนวงเงินเครดิต"
-                          >
-                            <Icons.CreditCard className="w-4 h-4" />
-                          </button>
+                    {/* ปุ่มปรับวงเงิน */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCreditCustomer(c);
+                        setIsCreditModalOpen(true);
+                      }}
+                      className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      title="ปรับเปลี่ยนวงเงินเครดิต"
+                      aria-label="ปรับเปลี่ยนวงเงินเครดิต"
+                    >
+                      <Icons.CreditCard className="w-4 h-4" />
+                    </button>
 
-                          {/* ปุ่มแก้ไข */}
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setEditingCustomer(c);
-                              setIsFormModalOpen(true);
-                            }}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer"
-                            title="แก้ไขข้อมูลลูกค้า"
-                          >
-                            <Icons.Edit className="w-4 h-4" />
-                          </button>
+                    {/* ปุ่มแก้ไข */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingCustomer(c);
+                        setIsFormModalOpen(true);
+                      }}
+                      className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      title="แก้ไขข้อมูลลูกค้า"
+                      aria-label="แก้ไขข้อมูลลูกค้า"
+                    >
+                      <Icons.Edit className="w-4 h-4" />
+                    </button>
 
-                          {/* ปุ่มลบ */}
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(c)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 transition-colors cursor-pointer"
-                            title="ลบข้อมูลลูกค้า"
-                          >
-                            <Icons.Trash className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                    {/* ปุ่มลบ */}
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(c)}
+                      className="p-2 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      title="ลบข้อมูลลูกค้า"
+                      aria-label="ลบข้อมูลลูกค้า"
+                    >
+                      <Icons.Trash className="w-4 h-4" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          }}
+          renderCard={(c) => {
+            const availableCredit = getAvailableCredit(c);
+            return (
+              <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
+                {/* แถวบน: ชื่อลูกค้า และสถานะ */}
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-base text-white truncate">{c.name}</h4>
+                    <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400 font-mono">
+                      {c.phone && <span>โทร: {c.phone}</span>}
+                      {c.email && (
+                        <>
+                          <span>•</span>
+                          <span className="truncate">{c.email}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <span
+                    className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-bold border ${
+                      c.isActive !== false
+                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                        : 'bg-slate-700/50 text-slate-400 border-slate-600'
+                    }`}
+                  >
+                    {c.isActive !== false ? 'เปิดใช้งาน' : 'ระงับ'}
+                  </span>
+                </div>
+
+                {/* แถวกลาง: ข้อมูลการเงิน 3 ช่อง */}
+                <div className="grid grid-cols-3 gap-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-center">
+                  <div>
+                    <span className="text-[11px] text-slate-400 block">วงเงินเครดิต</span>
+                    <span className="text-sm font-bold text-white font-mono">
+                      ฿{formatSatangToBaht(c.creditLimit)}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-slate-400 block">หนี้ค้างชำระ</span>
+                    <span className="text-sm font-bold text-rose-400 font-mono">
+                      ฿{formatSatangToBaht(c.outstandingBalance)}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-slate-400 block">วงเงินคงเหลือ</span>
+                    <span className="text-sm font-bold text-cyan-400 font-mono">
+                      ฿{formatSatangToBaht(availableCredit)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* แถวล่าง: ปุ่มจัดการ Touch Target >= 44-48px */}
+                <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 gap-2">
+                  {c.outstandingBalance > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPayCustomer(c);
+                        setIsPayModalOpen(true);
+                      }}
+                      className="min-h-[44px] px-3.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                    >
+                      <Icons.Receipt className="w-4 h-4" />
+                      <span>รับชำระหนี้</span>
+                    </button>
+                  ) : (
+                    <span className="text-xs text-slate-500 font-medium">ไม่มีหนี้ค้าง</span>
+                  )}
+
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCreditCustomer(c);
+                        setIsCreditModalOpen(true);
+                      }}
+                      className="min-h-[44px] px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 text-xs font-bold flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                      title="ปรับวงเงิน"
+                    >
+                      <Icons.CreditCard className="w-4 h-4" />
+                      <span>วงเงิน</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingCustomer(c);
+                        setIsFormModalOpen(true);
+                      }}
+                      className="min-h-[44px] w-11 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+                      title="แก้ไขข้อมูลลูกค้า"
+                      aria-label="แก้ไขข้อมูลลูกค้า"
+                    >
+                      <Icons.Edit className="w-4 h-4" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(c)}
+                      className="min-h-[44px] w-11 rounded-xl bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+                      title="ลบข้อมูลลูกค้า"
+                      aria-label="ลบข้อมูลลูกค้า"
+                    >
+                      <Icons.Trash className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          }}
+        />
+      )}
 
       {/* Modals */}
       <CustomerFormModal
