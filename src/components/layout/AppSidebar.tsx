@@ -21,6 +21,8 @@ export function AppSidebar({ isCollapsed, isMobileOpen, onCloseMobile }: AppSide
 
   const renderIcon = (iconName: string, className = 'w-5 h-5') => {
     switch (iconName) {
+      case 'LayoutDashboard':
+        return <Icons.LayoutDashboard className={className} />;
       case 'ShoppingCart':
         return <Icons.ShoppingCart className={className} />;
       case 'Package':

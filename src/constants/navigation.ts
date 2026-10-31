@@ -14,6 +14,13 @@ export interface NavItem {
 
 export const MAIN_NAV_ITEMS: NavItem[] = [
   {
+    id: 'dashboard',
+    label: 'แดชบอร์ดภาพรวม',
+    path: '/dashboard',
+    iconName: 'LayoutDashboard',
+    allowedRoles: ['ADMIN', 'MANAGER'],
+  },
+  {
     id: 'pos',
     label: 'ขายหน้าร้าน (POS)',
     path: '/pos',
@@ -73,10 +80,26 @@ export function getNavItemsForRole(role?: string | null): NavItem[] {
  */
 export function isRouteAllowedForRole(path: string, role?: string | null): boolean {
   if (!role) return false;
+
+  // ตัด Query String หรือ Hash หากมีส่งเข้ามา
+  const cleanPath = path.split('?')[0].split('#')[0];
+
+  // เส้นทาง Root Path '/' อนุญาตให้ผ่านเสมอ เพื่อให้ตัวนำทาง (Redirect) ใน page.tsx ทำงานต่อไปยังปลายทางที่ถูกต้อง
+  if (cleanPath === '/' || cleanPath === '') return true;
+
   const normalizedRole = role.toUpperCase();
+
+  // ตรวจสอบกับรายการเมนูหลักที่ลงทะเบียนไว้
   const matchedItem = MAIN_NAV_ITEMS.find(
-    (item) => path === item.path || path.startsWith(item.path + '/')
+    (item) => cleanPath === item.path || cleanPath.startsWith(item.path + '/')
   );
-  if (!matchedItem) return true; // ถ้าไม่ใช่ Path ใน Nav List หลัก ให้ผ่านได้ (เช่น default page)
-  return matchedItem.allowedRoles.includes(normalizedRole);
+
+  if (matchedItem) {
+    return matchedItem.allowedRoles.includes(normalizedRole);
+  }
+
+  // สำหรับเส้นทางภายในที่ไม่ได้ลงทะเบียนใน MAIN_NAV_ITEMS:
+  // แคชเชียร์ (CASHIER) อนุญาตเฉพาะเส้นทางขายหน้าร้าน (/pos) เท่านั้น หากเข้าหน้าอื่นที่ไม่ได้ลงทะเบียนให้ปฏิเสธ
+  // อนุญาตเฉพาะผู้ดูแลระบบและผู้จัดการ (ADMIN, MANAGER) ให้เข้าถึงหน้าภายในที่ไม่ได้ลงทะเบียนได้
+  return normalizedRole === 'ADMIN' || normalizedRole === 'MANAGER';
 }
