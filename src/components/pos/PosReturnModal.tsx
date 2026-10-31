@@ -236,18 +236,18 @@ export function PosReturnModal({
                           type="button"
                           onClick={() => handleQtyChange(idx, item.returnQty - 1)}
                           disabled={item.returnQty <= 1}
-                          className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-white flex items-center justify-center font-bold text-sm cursor-pointer"
+                          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-white flex items-center justify-center font-bold text-base cursor-pointer"
                         >
                           -
                         </button>
-                        <span className="w-8 text-center text-sm font-bold text-amber-400">
+                        <span className="w-10 text-center text-base font-bold text-amber-400">
                           {item.returnQty}
                         </span>
                         <button
                           type="button"
                           onClick={() => handleQtyChange(idx, item.returnQty + 1)}
                           disabled={item.returnQty >= item.maxQty}
-                          className="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-white flex items-center justify-center font-bold text-sm cursor-pointer"
+                          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-white flex items-center justify-center font-bold text-base cursor-pointer"
                         >
                           +
                         </button>
@@ -306,13 +306,13 @@ export function PosReturnModal({
               <label className="text-sm font-semibold text-slate-200 block mb-1.5">
                 เหตุผลในการรับคืนสินค้า <span className="text-rose-400">*</span>
               </label>
-              <div className="flex flex-wrap gap-1.5 mb-2">
+              <div className="flex flex-wrap gap-2 mb-2">
                 {PRESET_REASONS.map((preset) => (
                   <button
                     key={preset}
                     type="button"
                     onClick={() => setReason(preset)}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                    className="text-sm font-medium px-4 py-2.5 min-h-[44px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer flex items-center justify-center"
                   >
                     {preset}
                   </button>
