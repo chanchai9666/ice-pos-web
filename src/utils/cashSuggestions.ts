@@ -4,6 +4,8 @@
  * โครงการ ice-pos-web
  */
 
+import { toBaht } from '@/utils/currencyHelper';
+
 /**
  * รายการธนบัตรหลักของไทยสำหรับปุ่มบวกเงินสดสะสม (+Banknotes)
  */
@@ -28,7 +30,7 @@ export function getSmartCashSuggestions(grandTotalSatang: number): number[] {
     return [100, 500, 1000];
   }
 
-  const totalBaht = grandTotalSatang / 100;
+  const totalBaht = toBaht(grandTotalSatang);
   const suggestionsSet = new Set<number>();
 
   // 1. ปัดเศษขึ้นตามหน่วย 10 หรือ 20 (สำหรับยอดเงินย่อย)

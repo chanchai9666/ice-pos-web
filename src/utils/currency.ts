@@ -1,46 +1,46 @@
 /**
  * เครื่องมือจัดการหน่วยเงิน (Currency Utilities)
- * สำหรับแปลงหน่วยเงินระหว่าง สตางค์ (Backend Integer) และ บาท (UI Decimal)
  * โครงการ ice-pos-web
+ *
+ * @deprecated ไฟล์นี้คงไว้เพื่อความเข้ากันได้ย้อนหลัง (Backward Compatibility) เท่านั้น
+ * แนะนำให้เปลี่ยนไปใช้ `@/utils/currencyHelper` (`toSatang`, `toBaht`, `formatSatangToBaht`, `formatBaht`) แทน
  */
 
-/**
- * แปลงจำนวนเงินหน่วยสตางค์ (satang) เป็นข้อความบาทพร้อมทศนิยม 2 ตำแหน่ง
- * ตัวอย่าง: 4500 -> "45.00", 2550 -> "25.50"
- */
-export function formatSatangToBaht(satang?: number | null): string {
-  if (satang === undefined || satang === null || isNaN(satang)) {
-    return '0.00';
-  }
-  const baht = satang / 100;
-  return baht.toLocaleString('th-TH', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}
+import {
+  toSatang as helperToSatang,
+  toBaht as helperToBaht,
+  formatSatangToBaht as helperFormatSatangToBaht,
+  formatBaht as helperFormatBaht,
+  bahtToSatang as helperBahtToSatang,
+  satangToBahtNumber as helperSatangToBahtNumber,
+} from './currencyHelper';
 
 /**
- * แปลงจำนวนเงินหน่วยสตางค์ (satang) เป็นตัวเลขบาท (number)
+ * @deprecated แนะนำให้ใช้ `formatSatangToBaht` จาก `@/utils/currencyHelper` แทน
  */
-export function satangToBahtNumber(satang?: number | null): number {
-  if (satang === undefined || satang === null || isNaN(satang)) {
-    return 0;
-  }
-  return Math.round(satang) / 100;
-}
+export const formatSatangToBaht = helperFormatSatangToBaht;
 
 /**
- * แปลงจำนวนเงินบาท (string หรือ number) เป็นสตางค์ (integer) สำหรับส่งให้ API
- * ป้องกันปัญหา Floating-point precision เช่น 19.99 * 100 = 1998.9999999999998
- * ตัวอย่าง: "45.00" -> 4500, 45 -> 4500, "12.5" -> 1250
+ * @deprecated แนะนำให้ใช้ `toBaht` หรือ `satangToBahtNumber` จาก `@/utils/currencyHelper` แทน
  */
-export function bahtToSatang(baht?: string | number | null): number {
-  if (baht === undefined || baht === null || baht === '') {
-    return 0;
-  }
-  const numBaht = typeof baht === 'string' ? parseFloat(baht.replace(/,/g, '')) : baht;
-  if (isNaN(numBaht) || numBaht < 0) {
-    return 0;
-  }
-  return Math.round(numBaht * 100);
-}
+export const satangToBahtNumber = helperSatangToBahtNumber;
+
+/**
+ * @deprecated แนะนำให้ใช้ `toSatang` หรือ `bahtToSatang` จาก `@/utils/currencyHelper` แทน
+ */
+export const bahtToSatang = helperBahtToSatang;
+
+/**
+ * @deprecated แนะนำให้ใช้ `toSatang` จาก `@/utils/currencyHelper` แทน
+ */
+export const toSatang = helperToSatang;
+
+/**
+ * @deprecated แนะนำให้ใช้ `toBaht` จาก `@/utils/currencyHelper` แทน
+ */
+export const toBaht = helperToBaht;
+
+/**
+ * @deprecated แนะนำให้ใช้ `formatBaht` จาก `@/utils/currencyHelper` แทน
+ */
+export const formatBaht = helperFormatBaht;
