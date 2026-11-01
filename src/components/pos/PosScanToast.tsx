@@ -25,8 +25,8 @@ export function PosScanToast() {
             key={toast.id}
             className={`pointer-events-auto rounded-2xl p-4 border-2 shadow-2xl flex items-start gap-3.5 transition-all transform animate-slide-in-right ${
               isError
-                ? 'bg-rose-950/95 border-rose-500 text-rose-100 shadow-rose-950/50'
-                : 'bg-emerald-950/95 border-emerald-500 text-emerald-100 shadow-emerald-950/50'
+                ? 'bg-rose-50 dark:bg-rose-950/95 border-rose-400 dark:border-rose-500 text-rose-900 dark:text-rose-100 shadow-slate-900/10 dark:shadow-rose-950/50'
+                : 'bg-emerald-50 dark:bg-emerald-950/95 border-emerald-400 dark:border-emerald-500 text-emerald-900 dark:text-emerald-100 shadow-slate-900/10 dark:shadow-emerald-950/50'
             }`}
           >
             {/* ไอคอนสถานะ */}

@@ -186,19 +186,19 @@ export function CreatePurchaseOrderModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+        <div className="px-6 py-4.5 bg-slate-50/90 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+            <span className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
               <Icons.Package className="w-6 h-6" />
             </span>
             <div>
-              <h2 className="text-xl font-black text-white tracking-tight">
+              <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
                 สร้างใบสั่งซื้อสินค้าใหม่ (New Purchase Order)
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 ออกเอกสารสั่งซื้อสินค้าไปยังผู้จัดจำหน่ายเพื่อเติมสต็อกเข้าคลัง
               </p>
             </div>
@@ -206,7 +206,7 @@ export function CreatePurchaseOrderModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <Icons.Close className="w-5 h-5" />
           </button>
@@ -215,7 +215,7 @@ export function CreatePurchaseOrderModal({
         {/* Form Body */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1">
           {errorMessage && (
-            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-center gap-2.5">
+            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-300 text-sm flex items-center gap-2.5">
               <Icons.AlertCircle className="w-5 h-5 shrink-0" />
               <span>{errorMessage}</span>
             </div>
@@ -225,13 +225,13 @@ export function CreatePurchaseOrderModal({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* ผู้จัดจำหน่าย */}
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 ผู้จัดจำหน่าย (Supplier) *
               </label>
               <select
                 value={supplierId}
                 onChange={(e) => setSupplierId(e.target.value)}
-                className="w-full h-[48px] min-h-[48px] px-3.5 py-0 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full h-[48px] min-h-[48px] px-3.5 py-0 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
                 <option value="">-- เลือกผู้จัดจำหน่าย --</option>
                 {suppliers.map((s) => (
@@ -244,34 +244,34 @@ export function CreatePurchaseOrderModal({
 
             {/* วันที่สั่งซื้อ */}
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 วันที่สั่งซื้อ (Order Date)
               </label>
               <input
                 type="date"
                 value={orderDate}
                 onChange={(e) => setOrderDate(e.target.value)}
-                className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
 
             {/* กำหนดส่งมอบ */}
             <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 กำหนดส่งมอบ (Expected Date)
               </label>
               <input
                 type="date"
                 value={expectedDeliveryDate}
                 onChange={(e) => setExpectedDeliveryDate(e.target.value)}
-                className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
           </div>
 
           {/* หมายเหตุ */}
           <div>
-            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
               หมายเหตุประกอบการสั่งซื้อ (Note)
             </label>
             <textarea
@@ -279,18 +279,18 @@ export function CreatePurchaseOrderModal({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="ระบุเงื่อนไขการส่งมอบ เช่น ส่งก่อนเที่ยง, นัดชำระเงินเมื่อส่งครบ..."
-              className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
             />
           </div>
 
           {/* ส่วนเลือกสินค้าเพิ่มเข้าใบสั่งซื้อ */}
-          <div className="pt-2 border-t border-slate-800">
+          <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
               <div>
-                <h3 className="text-sm font-bold text-slate-200">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
                   รายการสินค้าที่สั่งซื้อ ({lines.length} รายการ)
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   เลือกสินค้าและระบุจำนวน/ราคาต้นทุนต่อหน่วย
                 </p>
               </div>
@@ -300,7 +300,7 @@ export function CreatePurchaseOrderModal({
                 <button
                   type="button"
                   onClick={() => setIsProductModalOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm shadow-md shadow-cyan-950/40 flex items-center gap-2 min-h-[44px] cursor-pointer transition-colors"
+                  className="px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm shadow-md shadow-cyan-950/20 flex items-center gap-2 min-h-[44px] cursor-pointer transition-colors"
                 >
                   <Icons.Plus className="w-4 h-4" />
                   <span>+ เลือกสินค้าจากคลัง...</span>
@@ -310,16 +310,16 @@ export function CreatePurchaseOrderModal({
 
             {/* ตารางรายการสินค้า */}
             {lines.length === 0 ? (
-              <div className="py-8 text-center border-2 border-dashed border-slate-800 rounded-2xl bg-slate-950/30">
-                <p className="text-sm text-slate-400 font-medium">
+              <div className="py-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-950/30">
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
                   ยังไม่มีรายการสินค้าในใบสั่งซื้อ กรุณากด &quot;+ เลือกสินค้าจากคลัง&quot; ด้านบน
                 </p>
               </div>
             ) : (
-              <div className="overflow-x-auto border border-slate-800 rounded-2xl">
+              <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
                 <table className="w-full text-left text-sm border-collapse">
                   <thead>
-                    <tr className="bg-slate-950 text-slate-400 text-xs font-bold uppercase border-b border-slate-800">
+                    <tr className="bg-slate-50 dark:bg-slate-950 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase border-b border-slate-200 dark:border-slate-800">
                       <th className="py-3 px-3">สินค้า</th>
                       <th className="py-3 px-3 text-center w-28">จำนวนที่สั่ง</th>
                       <th className="py-3 px-3 text-right w-36">ต้นทุน/หน่วย (บาท)</th>
@@ -327,19 +327,19 @@ export function CreatePurchaseOrderModal({
                       <th className="py-3 px-2 text-center w-12"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/80 bg-slate-900/40">
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 bg-white dark:bg-slate-900/40">
                     {lines.map((line, idx) => {
                       const cost = parseFloat(line.unitCostBaht) || 0;
                       const lineTotalBaht = line.quantity * cost;
 
                       return (
-                        <tr key={line.productId} className="hover:bg-slate-800/30">
+                        <tr key={line.productId} className="hover:bg-slate-50 dark:hover:bg-slate-800/30">
                           {/* สินค้า */}
                           <td className="py-3 px-3">
-                            <div className="font-bold text-white leading-tight">
+                            <div className="font-bold text-slate-900 dark:text-white leading-tight">
                               {line.productName}
                             </div>
-                            <div className="text-xs text-slate-400 font-mono mt-0.5">
+                            <div className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                               SKU: {line.sku || '-'} | บาร์โค้ด: {line.barcode || '-'}
                             </div>
                           </td>
@@ -358,10 +358,10 @@ export function CreatePurchaseOrderModal({
                                   parseFloat(e.target.value) || 0
                                 )
                               }
-                              className="w-full px-2 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
+                              className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
                             />
                             {line.uomName && (
-                              <div className="text-[11px] text-center text-slate-400 mt-1">
+                              <div className="text-[11px] text-center text-slate-500 dark:text-slate-400 mt-1">
                                 {line.uomName}
                               </div>
                             )}
@@ -377,12 +377,12 @@ export function CreatePurchaseOrderModal({
                               onChange={(e) =>
                                 handleUpdateLine(idx, 'unitCostBaht', e.target.value)
                               }
-                              className="w-full px-2 py-2 bg-slate-950 border border-slate-700 rounded-lg text-emerald-400 font-mono font-bold text-right focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
+                              className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-emerald-600 dark:text-emerald-400 font-mono font-bold text-right focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
                             />
                           </td>
 
                           {/* รวมเงิน (บาท) */}
-                          <td className="py-3 px-3 text-right font-mono font-bold text-white text-base">
+                          <td className="py-3 px-3 text-right font-mono font-bold text-slate-900 dark:text-white text-base">
                             {formatBaht(lineTotalBaht, { showUnit: true })}
                           </td>
 
@@ -391,7 +391,7 @@ export function CreatePurchaseOrderModal({
                             <button
                               type="button"
                               onClick={() => handleRemoveLine(idx)}
-                              className="p-2 text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg cursor-pointer"
+                              className="p-2 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 rounded-lg cursor-pointer transition-colors"
                               title="ลบรายการ"
                             >
                               <Icons.Close className="w-4 h-4" />
@@ -408,10 +408,10 @@ export function CreatePurchaseOrderModal({
         </div>
 
         {/* Footer สรุปยอดและปุ่มส่ง */}
-        <div className="px-6 py-4 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div className="px-6 py-4 bg-slate-50/90 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="text-slate-400 text-sm">ยอดรวมทั้งสิ้น:</span>
-            <span className="text-2xl font-black text-emerald-400 font-mono">
+            <span className="text-slate-500 dark:text-slate-400 text-sm">ยอดรวมทั้งสิ้น:</span>
+            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
               {formatBaht(calculatedTotals.subtotalBaht, { showUnit: true })}
             </span>
           </div>
@@ -421,7 +421,7 @@ export function CreatePurchaseOrderModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm min-h-[48px] cursor-pointer"
+              className="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm min-h-[48px] cursor-pointer transition-colors"
             >
               ยกเลิก
             </button>

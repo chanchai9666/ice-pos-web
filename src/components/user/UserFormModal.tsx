@@ -134,18 +134,18 @@ export function UserFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col my-auto">
+      <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col my-auto">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white/95 dark:bg-slate-900/90">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <Icons.UserCog className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                 {isEdit ? 'แก้ไขข้อมูลพนักงาน' : 'สร้างบัญชีพนักงานใหม่'}
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isEdit ? `พนักงาน: ${user?.username}` : 'กำหนดสิทธิ์การใช้งาน สาขา และรหัสผ่าน'}
               </p>
             </div>
@@ -153,7 +153,7 @@ export function UserFormModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
             <Icons.X className="w-6 h-6" />
           </button>
@@ -162,8 +162,8 @@ export function UserFormModal({
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1">
-              ชื่อ-นามสกุล <span className="text-rose-400">*</span>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              ชื่อ-นามสกุล <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <input
               type="text"
@@ -171,15 +171,15 @@ export function UserFormModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="เช่น สมชาย ใจดี"
-              className="w-full h-11 px-4 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none"
+              className="w-full h-11 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none"
             />
           </div>
 
           {!isEdit && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-semibold text-slate-300 mb-1">
-                  ชื่อผู้ใช้ (Username) <span className="text-rose-400">*</span>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  ชื่อผู้ใช้ (Username) <span className="text-rose-500 dark:text-rose-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -187,13 +187,13 @@ export function UserFormModal({
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="เช่น cashier_somchai"
-                  className="w-full h-11 px-4 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none"
+                  className="w-full h-11 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-300 mb-1">
-                  รหัสผ่านเริ่มต้น <span className="text-rose-400">*</span>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  รหัสผ่านเริ่มต้น <span className="text-rose-500 dark:text-rose-400">*</span>
                 </label>
                 <input
                   type="password"
@@ -201,7 +201,7 @@ export function UserFormModal({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="ขั้นต่ำ 8 ตัวอักษร"
-                  className="w-full h-11 px-4 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none"
+                  className="w-full h-11 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none"
                 />
               </div>
             </div>
@@ -209,13 +209,13 @@ export function UserFormModal({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">
-                บทบาทสิทธิ์การใช้งาน <span className="text-rose-400">*</span>
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                บทบาทสิทธิ์การใช้งาน <span className="text-rose-500 dark:text-rose-400">*</span>
               </label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as UserRole)}
-                className="w-full h-11 px-3 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none cursor-pointer"
+                className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none cursor-pointer"
               >
                 <option value="CASHIER">แคชเชียร์ (CASHIER)</option>
                 <option value="MANAGER">ผู้จัดการร้าน (MANAGER)</option>
@@ -224,13 +224,13 @@ export function UserFormModal({
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 สาขาประจำ
               </label>
               <select
                 value={branchId}
                 onChange={(e) => setBranchId(e.target.value)}
-                className="w-full h-11 px-3 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none cursor-pointer"
+                className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none cursor-pointer"
               >
                 <option value="">ทุกสาขา / สำนักงานใหญ่</option>
                 {branches.map((b) => (
@@ -244,7 +244,7 @@ export function UserFormModal({
 
           {!isEdit && (
             <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-1">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
                 PIN ล็อกอินด่วนแคชเชียร์ (4-6 หลัก ถ้ามี)
               </label>
               <input
@@ -253,19 +253,19 @@ export function UserFormModal({
                 value={pin}
                 onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
                 placeholder="เช่น 1234"
-                className="w-full h-11 px-4 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none font-mono tracking-widest"
+                className="w-full h-11 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none font-mono tracking-widest"
               />
             </div>
           )}
 
           {isEdit && (
             <div className="pt-1">
-              <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-300">
+              <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-700 dark:text-slate-300">
                 <input
                   type="checkbox"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="w-5 h-5 rounded bg-slate-950 border-slate-700 text-emerald-500 focus:ring-0 cursor-pointer"
+                  className="w-5 h-5 rounded bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-700 text-emerald-500 focus:ring-0 cursor-pointer"
                 />
                 <span>สถานะเปิดใช้งานบัญชี (Active)</span>
               </label>
@@ -273,7 +273,7 @@ export function UserFormModal({
           )}
 
           {errorMessage && (
-            <div className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-xs text-rose-300">
+            <div className="p-3 bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 rounded-xl text-xs text-rose-600 dark:text-rose-300">
               {errorMessage}
             </div>
           )}
@@ -283,7 +283,7 @@ export function UserFormModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition-colors cursor-pointer"
+              className="flex-1 min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm transition-colors cursor-pointer"
             >
               ยกเลิก
             </button>

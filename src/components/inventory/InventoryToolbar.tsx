@@ -49,7 +49,7 @@ export function InventoryToolbar({
     branches.find((b) => b.id === selectedBranchId)?.name || 'สาขาปัจจุบัน';
 
   return (
-    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-slate-900/90 p-3.5 sm:p-4 rounded-2xl border-2 border-slate-800 shadow-md">
+    <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-white/90 dark:bg-slate-900/90 p-3.5 sm:p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
       {/* ส่วนซ้าย: ค้นหา + ปุ่มกล้องสแกนบาร์โค้ด */}
       <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 flex-1">
         {/* ช่องค้นหา */}
@@ -62,7 +62,7 @@ export function InventoryToolbar({
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             placeholder="ค้นหาชื่อสินค้า, SKU, บาร์โค้ด..."
-            className="w-full h-[50px] pl-11 pr-11 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all font-medium"
+            className="w-full h-[50px] pl-11 pr-11 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all font-medium"
           />
           {localSearch && (
             <button
@@ -71,7 +71,7 @@ export function InventoryToolbar({
                 setLocalSearch('');
                 onSearchChange('');
               }}
-              className="absolute inset-y-0 right-2 my-auto min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white rounded-lg active:scale-90 transition cursor-pointer"
+              className="absolute inset-y-0 right-2 my-auto min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg active:scale-90 transition cursor-pointer"
               title="ล้างข้อความค้นหา"
               aria-label="ล้างข้อความค้นหา"
             >
@@ -84,11 +84,11 @@ export function InventoryToolbar({
         <button
           type="button"
           onClick={onOpenBarcodeScan}
-          className="min-h-[50px] px-4 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-700 hover:border-cyan-500/50 rounded-xl text-cyan-400 font-semibold text-sm transition-all cursor-pointer shrink-0 shadow-sm"
+          className="min-h-[50px] px-4 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 border border-slate-200 dark:border-slate-700 hover:border-cyan-500/50 rounded-xl text-cyan-600 dark:text-cyan-400 font-semibold text-sm transition-all cursor-pointer shrink-0 shadow-sm"
           title="สแกนบาร์โค้ดด้วยกล้อง"
           aria-label="สแกนบาร์โค้ดด้วยกล้อง"
         >
-          <Icons.Camera className="w-5 h-5 text-cyan-400" />
+          <Icons.Camera className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
           <span className="hidden sm:inline">สแกนบาร์โค้ด</span>
         </button>
       </div>
@@ -101,7 +101,7 @@ export function InventoryToolbar({
             <select
               value={selectedBranchId}
               onChange={(e) => onBranchChange(e.target.value)}
-              className="w-full h-[50px] px-3.5 bg-slate-950 border-2 border-slate-700 rounded-xl text-sm font-semibold text-slate-100 focus:outline-none focus:border-cyan-400 cursor-pointer appearance-none pr-8"
+              className="w-full h-[50px] px-3.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-900 dark:text-slate-100 focus:outline-none focus:border-cyan-500 cursor-pointer appearance-none pr-8"
               aria-label="เลือกสาขา"
             >
               {branches.map((b) => (
@@ -115,8 +115,8 @@ export function InventoryToolbar({
             </div>
           </div>
         ) : (
-          <div className="h-[50px] px-4 bg-slate-800/80 border-2 border-slate-700 rounded-xl flex items-center gap-2 text-slate-300 text-sm font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+          <div className="h-[50px] px-4 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl flex items-center gap-2 text-slate-700 dark:text-slate-300 text-sm font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span>{selectedBranchName}</span>
           </div>
         )}
@@ -125,16 +125,16 @@ export function InventoryToolbar({
         <button
           type="button"
           onClick={() => onToggleLowStock(!lowStockOnly)}
-          className={`min-h-[50px] px-4 flex items-center justify-center gap-2 rounded-xl border-2 font-bold text-sm transition-all cursor-pointer shrink-0 active:scale-95 ${
+          className={`min-h-[50px] px-4 flex items-center justify-center gap-2 rounded-xl border font-bold text-sm transition-all cursor-pointer shrink-0 active:scale-95 ${
             lowStockOnly
-              ? 'bg-amber-500/20 border-amber-500 text-amber-300 shadow-md shadow-amber-500/10'
-              : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
+              ? 'bg-amber-500/20 border-amber-500 text-amber-600 dark:text-amber-300 shadow-sm'
+              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
           }`}
           title="กรองเฉพาะรายการที่สต็อกต่ำกว่าเกณฑ์"
           aria-pressed={lowStockOnly}
         >
           <Icons.AlertTriangle
-            className={`w-4 h-4 ${lowStockOnly ? 'text-amber-400' : 'text-slate-400'}`}
+            className={`w-4 h-4 ${lowStockOnly ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}`}
           />
           <span>สต็อกใกล้หมด</span>
         </button>
@@ -144,12 +144,12 @@ export function InventoryToolbar({
           type="button"
           onClick={onRefresh}
           disabled={isLoading}
-          className="min-h-[50px] min-w-[50px] px-3 flex items-center justify-center bg-slate-800 hover:bg-slate-700 active:scale-95 border-2 border-slate-700 hover:border-slate-600 rounded-xl text-slate-300 hover:text-white transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+          className="min-h-[50px] min-w-[50px] px-3 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
           title="รีเฟรชข้อมูลสต็อก"
           aria-label="รีเฟรชข้อมูลสต็อก"
         >
           <Icons.Refresh
-            className={`w-5 h-5 ${isLoading ? 'animate-spin text-cyan-400' : ''}`}
+            className={`w-5 h-5 ${isLoading ? 'animate-spin text-cyan-500' : ''}`}
           />
         </button>
       </div>

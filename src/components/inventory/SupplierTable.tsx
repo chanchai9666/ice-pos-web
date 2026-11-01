@@ -62,15 +62,15 @@ export function SupplierTable() {
   return (
     <div className="space-y-4">
       {/* Toolbar */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
         <div className="relative w-full sm:w-80">
-          <Icons.Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Icons.Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="ค้นหาชื่อคู่ค้า, รหัส หรือเบอร์โทร..."
-            className="w-full h-11 pl-10 pr-4 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none"
+            className="w-full h-11 pl-10 pr-4 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none"
           />
         </div>
 
@@ -79,7 +79,7 @@ export function SupplierTable() {
             type="button"
             onClick={loadSuppliers}
             disabled={isLoading}
-            className="h-11 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer"
+            className="h-11 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer border border-slate-200 dark:border-transparent"
           >
             <Icons.Refresh className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>รีเฟรช</span>
@@ -100,27 +100,27 @@ export function SupplierTable() {
       </div>
 
       {error && (
-        <div className="p-4 bg-rose-500/20 border border-rose-500/40 rounded-2xl text-rose-300 text-sm">
+        <div className="p-4 bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 rounded-2xl text-rose-600 dark:text-rose-300 text-sm">
           {error}
         </div>
       )}
 
       {/* Table */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3 text-slate-400">
-            <Icons.Loader className="w-8 h-8 animate-spin text-cyan-400" />
+            <Icons.Loader className="w-8 h-8 animate-spin text-cyan-600 dark:text-cyan-400" />
             <span className="text-sm">กำลังโหลดรายชื่อผู้จัดจำหน่าย...</span>
           </div>
         ) : suppliers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-slate-500 space-y-2">
+          <div className="flex flex-col items-center justify-center py-16 text-slate-400 dark:text-slate-500 space-y-2">
             <Icons.Building2 className="w-12 h-12 stroke-[1.5]" />
             <p className="text-base font-semibold">ไม่พบข้อมูลผู้จัดจำหน่าย</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-800/80 text-slate-300 font-semibold border-b border-slate-700">
+              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   <th className="py-3.5 px-4">ชื่อผู้จัดจำหน่าย</th>
                   <th className="py-3.5 px-4">รหัสคู่ค้า</th>
@@ -131,32 +131,32 @@ export function SupplierTable() {
                   <th className="py-3.5 px-4 text-center">จัดการ</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {suppliers.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-4 font-semibold text-white">
+                  <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
                       <div>{s.name}</div>
-                      {s.email && <div className="text-xs text-slate-500">{s.email}</div>}
+                      {s.email && <div className="text-xs text-slate-400 dark:text-slate-500">{s.email}</div>}
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-xs text-slate-300">
+                    <td className="py-3.5 px-4 font-mono text-xs text-slate-600 dark:text-slate-300">
                       {s.code || '-'}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300 text-xs">
-                      <div className="font-medium text-slate-200">{s.contactName || '-'}</div>
-                      <div className="text-slate-400 font-mono">{s.phone || '-'}</div>
+                    <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 text-xs">
+                      <div className="font-medium text-slate-800 dark:text-slate-200">{s.contactName || '-'}</div>
+                      <div className="text-slate-500 dark:text-slate-400 font-mono">{s.phone || '-'}</div>
                     </td>
-                    <td className="py-3.5 px-4 font-mono text-xs text-slate-400">
+                    <td className="py-3.5 px-4 font-mono text-xs text-slate-500 dark:text-slate-400">
                       {s.taxId || '-'}
                     </td>
-                    <td className="py-3.5 px-4 text-center text-xs font-semibold text-amber-400">
+                    <td className="py-3.5 px-4 text-center text-xs font-semibold text-amber-600 dark:text-amber-400">
                       {s.creditDays !== undefined && s.creditDays !== null ? `${s.creditDays} วัน` : '-'}
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       <span
                         className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
                           s.isActive
-                            ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                            : 'bg-slate-700/50 text-slate-400 border-slate-600'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border-emerald-500/30'
+                            : 'bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-600'
                         }`}
                       >
                         {s.isActive ? 'เปิดใช้งาน' : 'ระงับ'}
@@ -170,7 +170,7 @@ export function SupplierTable() {
                             setEditingSupplier(s);
                             setIsFormOpen(true);
                           }}
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
                           title="แก้ไขข้อมูลคู่ค้า"
                         >
                           <Icons.Edit className="w-4 h-4" />
@@ -179,7 +179,7 @@ export function SupplierTable() {
                         <button
                           type="button"
                           onClick={() => handleDelete(s)}
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-lg bg-slate-100 hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-rose-900/40 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
                           title="ลบข้อมูลคู่ค้า"
                         >
                           <Icons.Trash className="w-4 h-4" />

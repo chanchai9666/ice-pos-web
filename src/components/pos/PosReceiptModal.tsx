@@ -82,22 +82,22 @@ export function PosReceiptModal({
   return (
     <div className="fixed inset-0 z-70 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in overflow-y-auto print:p-0 print:bg-white print:static">
       {/* Container สำหรับหน้าจอปกติและสำหรับ Print */}
-      <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col my-auto print:border-none print:shadow-none print:w-full print:max-w-none print:rounded-none print:bg-white">
+      <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col my-auto print:border-none print:shadow-none print:w-full print:max-w-none print:rounded-none print:bg-white">
         {/* หัวหน้าต่าง (ซ่อนตอน Print) */}
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/90 print:hidden">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/90 print:hidden">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+            <div className="w-9 h-9 rounded-xl bg-cyan-50 dark:bg-cyan-500/20 border border-cyan-200 dark:border-cyan-500/40 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <Icons.Receipt className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">ใบเสร็จรับเงิน</h3>
-              <p className="text-xs text-slate-400 font-mono">{receiptNo}</p>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">ใบเสร็จรับเงิน</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">{receiptNo}</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <Icons.X className="w-5 h-5" />
           </button>
@@ -258,11 +258,11 @@ export function PosReceiptModal({
         </div>
 
         {/* ปุ่มสั่งพิมพ์และปิด (ซ่อนตอนพิมพ์) */}
-        <div className="p-4 border-t border-slate-800 bg-slate-900/90 flex gap-3 print:hidden shrink-0">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex gap-3 print:hidden shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition-colors cursor-pointer"
+            className="flex-1 min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm transition-colors cursor-pointer"
           >
             ปิด
           </button>

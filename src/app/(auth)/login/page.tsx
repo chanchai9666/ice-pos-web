@@ -3,6 +3,7 @@
 import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LoginForm } from '@/components/auth/LoginForm';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { AuthResponse } from '@/types/auth';
 
 function LoginContent() {
@@ -94,8 +95,13 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-blue-50/40 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <Suspense fallback={<div className="w-full max-w-md h-96 animate-pulse bg-slate-900/40 rounded-3xl" />}>
+    <main className="relative min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-blue-50/40 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      {/* ปุ่มสลับโหมด Dark/Light บนหน้าจอเข้าสู่ระบบ */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
+
+      <Suspense fallback={<div className="w-full max-w-md h-96 animate-pulse bg-slate-200 dark:bg-slate-900/40 rounded-3xl" />}>
         <LoginContent />
       </Suspense>
     </main>

@@ -339,21 +339,21 @@ export function CreateGoodsReceiptModal({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-        <div className="relative w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto flex flex-col max-h-[92vh]">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
+        <div className="relative w-full max-w-5xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto flex flex-col max-h-[92vh]">
           {/* Header */}
-          <div className="px-6 py-4.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+          <div className="px-6 py-4.5 bg-slate-50/90 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+              <span className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
                 <Icons.Barcode className="w-6 h-6" />
               </span>
               <div>
-                <h2 className="text-xl font-black text-white tracking-tight">
+                <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
                   {sourcePO
                     ? `ตรวจรับสินค้าตามใบสั่งซื้อ (${sourcePO.poNo})`
                     : 'สร้างใบตรวจรับสินค้าเข้าคลัง (Direct Goods Receipt)'}
                 </h2>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   ตรวจนับจำนวน คัดแยกของชำรุด บันทึก Lot/Expiry และนำสต็อกเข้าคลัง
                 </p>
               </div>
@@ -361,7 +361,7 @@ export function CreateGoodsReceiptModal({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <Icons.Close className="w-5 h-5" />
             </button>
@@ -370,8 +370,8 @@ export function CreateGoodsReceiptModal({
           {/* Form Body */}
           <div className="p-6 overflow-y-auto space-y-5 flex-1">
             {errorMessage && (
-              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-center gap-2.5">
-                <Icons.AlertCircle className="w-5 h-5 shrink-0" />
+              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2.5">
+                <Icons.AlertCircle className="w-5 h-5 shrink-0 text-rose-600 dark:text-rose-400" />
                 <span>{errorMessage}</span>
               </div>
             )}
@@ -380,7 +380,7 @@ export function CreateGoodsReceiptModal({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* เลขที่ใบส่งของ / ใบกำกับ */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                   เลขที่ใบส่งของ / Invoice ผู้ขาย
                 </label>
                 <input
@@ -388,37 +388,37 @@ export function CreateGoodsReceiptModal({
                   value={supplierInvoiceNo}
                   onChange={(e) => setSupplierInvoiceNo(e.target.value)}
                   placeholder="เช่น INV-998821"
-                  className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
 
               {/* วันที่ตรวจรับ */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                   วันที่รับของจริง
                 </label>
                 <input
                   type="date"
                   value={receivedDate}
                   onChange={(e) => setReceivedDate(e.target.value)}
-                  className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full h-[48px] min-h-[48px] px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
 
               {/* ผู้จัดจำหน่าย (ถ้าไม่มี PO) */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                   ผู้จัดจำหน่าย (Supplier)
                 </label>
                 {sourcePO ? (
-                  <div className="px-3.5 py-3 bg-slate-950/60 border border-slate-800 rounded-xl text-slate-200 text-sm font-semibold truncate min-h-[48px] flex items-center">
+                  <div className="px-3.5 py-3 bg-slate-100 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200 text-sm font-semibold truncate min-h-[48px] flex items-center">
                     {sourcePO.supplier?.name || '- ไม่ระบุ -'}
                   </div>
                 ) : (
                   <select
                     value={supplierId}
                     onChange={(e) => setSupplierId(e.target.value)}
-                    className="w-full h-[48px] min-h-[48px] px-3.5 py-0 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full h-[48px] min-h-[48px] px-3.5 py-0 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   >
                     <option value="">-- เลือกผู้จัดจำหน่าย --</option>
                     {suppliers.map((s) => (
@@ -432,9 +432,9 @@ export function CreateGoodsReceiptModal({
             </div>
 
             {/* แถบเครื่องมือช่วยนับและสแกน */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-800">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-200">
+                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">
                   รายการตรวจรับสินค้า ({lines.length} รายการ)
                 </h3>
               </div>
@@ -455,7 +455,7 @@ export function CreateGoodsReceiptModal({
                   <button
                     type="button"
                     onClick={() => setIsProductModalOpen(true)}
-                    className="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-white text-xs font-semibold flex items-center gap-1.5 min-h-[44px] cursor-pointer transition-colors"
+                    className="px-3 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-white text-xs font-semibold flex items-center gap-1.5 min-h-[44px] cursor-pointer transition-colors"
                   >
                     <Icons.Plus className="w-4 h-4" />
                     <span>+ เลือกสินค้าจากคลัง...</span>
@@ -466,19 +466,19 @@ export function CreateGoodsReceiptModal({
 
             {/* ตารางรายการตรวจรับ */}
             {isLoadingPreview ? (
-              <div className="py-12 text-center text-cyan-400 flex items-center justify-center gap-3">
+              <div className="py-12 text-center text-cyan-600 dark:text-cyan-400 flex items-center justify-center gap-3">
                 <Icons.RotateCw className="w-6 h-6 animate-spin" />
                 <span>กำลังดึงรายการสินค้าค้างรับจากใบสั่งซื้อ...</span>
               </div>
             ) : lines.length === 0 ? (
-              <div className="py-8 text-center border-2 border-dashed border-slate-800 rounded-2xl">
-                <p className="text-sm text-slate-400">ไม่มีรายการสินค้าที่ต้องตรวจรับ</p>
+              <div className="py-8 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50 dark:bg-slate-950/30">
+                <p className="text-sm text-slate-500 dark:text-slate-400">ไม่มีรายการสินค้าที่ต้องตรวจรับ</p>
               </div>
             ) : (
-              <div className="overflow-x-auto border border-slate-800 rounded-2xl">
+              <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
                 <table className="w-full text-left text-sm border-collapse">
                   <thead>
-                    <tr className="bg-slate-950 text-slate-400 text-xs font-bold uppercase border-b border-slate-800">
+                    <tr className="bg-slate-50 dark:bg-slate-950 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase border-b border-slate-200 dark:border-slate-800">
                       <th className="py-3 px-3">สินค้า</th>
                       {sourcePO && (
                         <th className="py-3 px-2 text-center w-24">ค้างรับ</th>
@@ -490,7 +490,7 @@ export function CreateGoodsReceiptModal({
                       <th className="py-3 px-3 w-32">วันหมดอายุ</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/80 bg-slate-900/40">
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800/80 bg-white dark:bg-slate-900/40">
                     {lines.map((line, idx) => {
                       const isHighlighted = scanHighlightProductId === line.productId;
                       const isOver =
@@ -504,15 +504,15 @@ export function CreateGoodsReceiptModal({
                           className={`transition-colors ${
                             isHighlighted
                               ? 'bg-cyan-500/20 ring-2 ring-cyan-400'
-                              : 'hover:bg-slate-800/30'
+                              : 'hover:bg-slate-50 dark:hover:bg-slate-800/30'
                           }`}
                         >
                           {/* สินค้า */}
                           <td className="py-3 px-3">
-                            <div className="font-bold text-white leading-tight">
+                            <div className="font-bold text-slate-900 dark:text-white leading-tight">
                               {line.productName}
                             </div>
-                            <div className="text-xs text-slate-400 font-mono mt-0.5">
+                            <div className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                               {line.sku && `SKU: ${line.sku} `}
                               {line.barcode && `| บาร์โค้ด: ${line.barcode}`}
                             </div>
@@ -520,7 +520,7 @@ export function CreateGoodsReceiptModal({
 
                           {/* ค้างรับตาม PO */}
                           {sourcePO && (
-                            <td className="py-3 px-2 text-center font-bold text-slate-300 font-mono">
+                            <td className="py-3 px-2 text-center font-bold text-slate-700 dark:text-slate-300 font-mono">
                               {line.remainingQuantity}
                             </td>
                           )}
@@ -538,14 +538,14 @@ export function CreateGoodsReceiptModal({
                                 updated[idx].receivedQuantity = val;
                                 setLines(updated);
                               }}
-                              className={`w-full px-2 py-2 bg-slate-950 border rounded-lg text-center font-mono font-bold text-base focus:outline-none focus:ring-2 min-h-[44px] ${
+                              className={`w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border rounded-lg text-center font-mono font-bold text-base focus:outline-none focus:ring-2 min-h-[44px] ${
                                 isOver
-                                  ? 'border-amber-500 text-amber-300 ring-1 ring-amber-500'
-                                  : 'border-slate-700 text-emerald-400 focus:ring-cyan-500'
+                                  ? 'border-amber-500 text-amber-700 dark:text-amber-300 ring-1 ring-amber-500'
+                                  : 'border-slate-300 dark:border-slate-700 text-emerald-600 dark:text-emerald-400 focus:ring-cyan-500'
                               }`}
                             />
                             {isOver && (
-                              <div className="text-[10px] text-amber-400 font-bold text-center mt-1">
+                              <div className="text-[10px] text-amber-600 dark:text-amber-400 font-bold text-center mt-1">
                                 เกิน PO +{line.receivedQuantity - line.remainingQuantity}
                               </div>
                             )}
@@ -564,7 +564,7 @@ export function CreateGoodsReceiptModal({
                                 updated[idx].rejectedQuantity = val;
                                 setLines(updated);
                               }}
-                              className="w-full px-2 py-2 bg-slate-950 border border-slate-700 rounded-lg text-rose-400 font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-rose-500 min-h-[44px]"
+                              className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-rose-600 dark:text-rose-400 font-mono font-bold text-center focus:outline-none focus:ring-2 focus:ring-rose-500 min-h-[44px]"
                             />
                           </td>
 
@@ -581,10 +581,10 @@ export function CreateGoodsReceiptModal({
                               placeholder={
                                 line.rejectedQuantity > 0 ? 'ระบุเหตุผลชำรุด*' : 'เหตุผล...'
                               }
-                              className={`w-full px-2.5 py-2 bg-slate-950 border rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none min-h-[44px] ${
+                              className={`w-full px-2.5 py-2 bg-slate-50 dark:bg-slate-950 border rounded-lg text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none min-h-[44px] ${
                                 line.rejectedQuantity > 0 && !line.rejectReason.trim()
                                   ? 'border-rose-500 ring-1 ring-rose-500'
-                                  : 'border-slate-700 focus:ring-cyan-500'
+                                  : 'border-slate-300 dark:border-slate-700 focus:ring-cyan-500'
                               }`}
                             />
                           </td>
@@ -600,7 +600,7 @@ export function CreateGoodsReceiptModal({
                                 setLines(updated);
                               }}
                               placeholder="LOT-..."
-                              className="w-full px-2 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
+                              className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-white font-mono focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
                             />
                           </td>
 
@@ -614,7 +614,7 @@ export function CreateGoodsReceiptModal({
                                 updated[idx].expiryDate = e.target.value;
                                 setLines(updated);
                               }}
-                              className="w-full px-2 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
+                              className="w-full px-2 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[44px]"
                             />
                           </td>
                         </tr>
@@ -627,8 +627,8 @@ export function CreateGoodsReceiptModal({
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-            <div className="text-xs text-slate-400">
+          <div className="px-6 py-4 bg-slate-50/90 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            <div className="text-xs text-slate-500 dark:text-slate-400">
               * การยืนยันตรวจรับเข้าคลังจะทำการปรับเพิ่มยอดสต็อกสินค้าในคลังสาขาจริงทันที
             </div>
 
@@ -637,7 +637,7 @@ export function CreateGoodsReceiptModal({
                 type="button"
                 onClick={onClose}
                 disabled={isSubmitting}
-                className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm min-h-[48px] cursor-pointer"
+                className="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm min-h-[48px] cursor-pointer transition-colors"
               >
                 ยกเลิก
               </button>

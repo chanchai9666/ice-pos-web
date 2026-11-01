@@ -59,8 +59,8 @@ export function GoodsReceiptTable({
 
   if (isLoading) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-md">
-        <div className="flex items-center justify-center py-16 gap-3 text-cyan-400">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+        <div className="flex items-center justify-center py-16 gap-3 text-cyan-600 dark:text-cyan-400">
           <Icons.RotateCw className="w-6 h-6 animate-spin" />
           <span className="text-base font-semibold">กำลังโหลดข้อมูลประวัติการตรวจรับสินค้า...</span>
         </div>
@@ -70,12 +70,12 @@ export function GoodsReceiptTable({
 
   if (items.length === 0) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center shadow-md">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-slate-400">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center shadow-sm">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center text-slate-400">
           <Icons.Barcode className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-bold text-white mb-1">ไม่พบรายการใบตรวจรับสินค้า</h3>
-        <p className="text-sm text-slate-400 max-w-md mx-auto">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">ไม่พบรายการใบตรวจรับสินค้า</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
           ยังไม่มีการตรวจรับสินค้าเข้าคลัง สามารถเริ่มตรวจรับได้จากแท็บ &quot;ใบสั่งซื้อสินค้า&quot; หรือกดปุ่ม &quot;ตรวจรับตรง&quot;
         </p>
       </div>
@@ -83,11 +83,11 @@ export function GoodsReceiptTable({
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-md">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-950/70 border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+            <tr className="bg-slate-50 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
               <th className="py-4 px-4 font-bold">เลขที่ใบตรวจรับ</th>
               <th className="py-4 px-4 font-bold">เอกสารอ้างอิง / Invoice</th>
               <th className="py-4 px-4 font-bold">ผู้จัดจำหน่าย</th>
@@ -97,7 +97,7 @@ export function GoodsReceiptTable({
               <th className="py-4 px-4 font-bold text-right">การกระทำ</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/80 text-sm">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-sm">
             {items.map((gr) => {
               const isDraft = gr.status === 'DRAFT';
 
@@ -110,11 +110,11 @@ export function GoodsReceiptTable({
               return (
                 <tr
                   key={gr.id}
-                  className="hover:bg-slate-800/40 transition-colors group"
+                  className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group"
                 >
                   {/* เลขที่ใบตรวจรับ */}
-                  <td className="py-3.5 px-4 font-semibold text-white">
-                    <span className="text-cyan-400 font-mono font-bold text-base">
+                  <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
+                    <span className="text-cyan-600 dark:text-cyan-400 font-mono font-bold text-base">
                       {gr.receiptNo || 'GR-DRAFT'}
                     </span>
                     {gr.note && (
@@ -125,40 +125,40 @@ export function GoodsReceiptTable({
                   </td>
 
                   {/* เอกสารอ้างอิง */}
-                  <td className="py-3.5 px-4 text-slate-300 text-xs">
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 text-xs">
                     {gr.supplierInvoiceNo ? (
                       <div>
                         <span className="text-slate-400">Invoice: </span>
-                        <span className="font-mono font-semibold text-white">
+                        <span className="font-mono font-semibold text-slate-900 dark:text-white">
                           {gr.supplierInvoiceNo}
                         </span>
                       </div>
                     ) : (
-                      <span className="text-slate-500 italic">- ไม่มี Invoice -</span>
+                      <span className="text-slate-400 dark:text-slate-500 italic">- ไม่มี Invoice -</span>
                     )}
                     {gr.purchaseOrderId && (
-                      <div className="text-cyan-300/80 font-mono text-[11px] mt-0.5">
+                      <div className="text-cyan-600 dark:text-cyan-300/80 font-mono text-[11px] mt-0.5">
                         PO Ref
                       </div>
                     )}
                   </td>
 
                   {/* ผู้จัดจำหน่าย */}
-                  <td className="py-3.5 px-4 text-slate-200 font-medium">
+                  <td className="py-3.5 px-4 text-slate-700 dark:text-slate-200 font-medium">
                     {gr.supplier ? (
                       <div>
-                        <div className="font-semibold text-slate-100">{gr.supplier.name}</div>
+                        <div className="font-semibold text-slate-900 dark:text-slate-100">{gr.supplier.name}</div>
                         {gr.supplier.phone && (
-                          <div className="text-xs text-slate-400">{gr.supplier.phone}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">{gr.supplier.phone}</div>
                         )}
                       </div>
                     ) : (
-                      <span className="text-slate-500 italic">- ไม่ระบุ -</span>
+                      <span className="text-slate-400 dark:text-slate-500 italic">- ไม่ระบุ -</span>
                     )}
                   </td>
 
                   {/* วันที่ตรวจรับ */}
-                  <td className="py-3.5 px-4 text-slate-300 text-xs">
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 text-xs">
                     {gr.receivedDate
                       ? new Date(gr.receivedDate).toLocaleDateString('th-TH')
                       : gr.createdAt
@@ -168,15 +168,15 @@ export function GoodsReceiptTable({
 
                   {/* ยอดรับจริง / คัดทิ้ง */}
                   <td className="py-3.5 px-4 text-center font-mono">
-                    <span className="font-bold text-emerald-400">
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
                       +{totalReceived}
                     </span>
                     {totalRejected > 0 && (
-                      <span className="ml-1.5 font-bold text-rose-400 text-xs">
+                      <span className="ml-1.5 font-bold text-rose-600 dark:text-rose-400 text-xs">
                         (ทิ้ง -{totalRejected})
                       </span>
                     )}
-                    <div className="text-[11px] text-slate-500">
+                    <div className="text-[11px] text-slate-400 dark:text-slate-500">
                       {gr.lines?.length || 0} รายการ
                     </div>
                   </td>
@@ -205,7 +205,7 @@ export function GoodsReceiptTable({
                       <button
                         type="button"
                         onClick={() => onViewDetails(gr)}
-                        className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs min-h-[44px] flex items-center gap-1 cursor-pointer"
+                        className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-semibold text-xs min-h-[44px] flex items-center gap-1 cursor-pointer transition-colors"
                         title="ดูรายละเอียดใบตรวจรับ"
                       >
                         <Icons.Search className="w-3.5 h-3.5" />
@@ -217,7 +217,7 @@ export function GoodsReceiptTable({
                         <button
                           type="button"
                           onClick={() => onCancelGR(gr)}
-                          className="p-2.5 rounded-xl text-rose-400 hover:bg-rose-500/10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                          className="p-2.5 rounded-xl text-rose-500 hover:bg-rose-500/10 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer transition-colors"
                           title="ยกเลิกใบตรวจรับ"
                         >
                           <Icons.Trash2 className="w-4 h-4" />
@@ -234,17 +234,17 @@ export function GoodsReceiptTable({
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-3 bg-slate-950/60 border-t border-slate-800 text-sm">
-          <div className="text-slate-400 text-xs">
-            หน้า <span className="font-bold text-white">{currentPage}</span> จาก{' '}
-            <span className="font-bold text-white">{totalPages}</span> (ทั้งหมด {totalItems} รายการ)
+        <div className="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950/60 border-t border-slate-200 dark:border-slate-800 text-sm">
+          <div className="text-slate-500 dark:text-slate-400 text-xs">
+            หน้า <span className="font-bold text-slate-800 dark:text-white">{currentPage}</span> จาก{' '}
+            <span className="font-bold text-slate-800 dark:text-white">{totalPages}</span> (ทั้งหมด {totalItems} รายการ)
           </div>
           <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage <= 1}
-              className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
               <Icons.ChevronLeft className="w-4 h-4" />
             </button>
@@ -252,7 +252,7 @@ export function GoodsReceiptTable({
               type="button"
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage >= totalPages}
-              className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
               <Icons.ChevronRight className="w-4 h-4" />
             </button>

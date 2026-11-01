@@ -33,31 +33,31 @@ export function getSmartCashSuggestions(grandTotalSatang: number): number[] {
   const totalBaht = toBaht(grandTotalSatang);
   const suggestionsSet = new Set<number>();
 
-  // 1. ปัดเศษขึ้นตามหน่วย 10 หรือ 20 (สำหรับยอดเงินย่อย)
-  if (totalBaht < 100) {
+  // 1. ปัดเศษขึ้นตามหน่วย 10 (สำหรับยอดเงินที่มีเศษเหรียญ เช่น 225 -> 230 เพื่อทอนเหรียญ 5)
+  if (totalBaht < 500) {
     const next10 = Math.ceil(totalBaht / 10) * 10;
     if (next10 > totalBaht) suggestionsSet.add(next10);
+  }
 
-    const next20 = Math.ceil(totalBaht / 20) * 20;
-    if (next20 > totalBaht) suggestionsSet.add(next20);
-  } else if (totalBaht < 500) {
+  // 2. ปัดเศษขึ้นตามหน่วย 20 (สำหรับธนบัตร 20 เช่น 225 -> 240)
+  if (totalBaht < 500) {
     const next20 = Math.ceil(totalBaht / 20) * 20;
     if (next20 > totalBaht) suggestionsSet.add(next20);
   }
 
-  // 2. ปัดเศษขึ้นตามหน่วย 50
+  // 3. ปัดเศษขึ้นตามหน่วย 50
   const next50 = Math.ceil(totalBaht / 50) * 50;
   if (next50 > totalBaht) {
     suggestionsSet.add(next50);
   }
 
-  // 3. ปัดเศษขึ้นตามหน่วย 100 (ธนบัตร 100 ใบถัดไป)
+  // 4. ปัดเศษขึ้นตามหน่วย 100 (ธนบัตร 100 ใบถัดไป)
   const next100 = Math.ceil(totalBaht / 100) * 100;
   if (next100 > totalBaht) {
     suggestionsSet.add(next100);
   }
 
-  // 4. แนะนำธนบัตร 500 หากยอดรวม < 500 หรือปัดเศษ 500 ถัดไป
+  // 5. แนะนำธนบัตร 500 หากยอดรวม < 500 หรือปัดเศษ 500 ถัดไป
   if (totalBaht < 500) {
     suggestionsSet.add(500);
   } else {
@@ -67,7 +67,7 @@ export function getSmartCashSuggestions(grandTotalSatang: number): number[] {
     }
   }
 
-  // 5. แนะนำธนบัตร 1,000 หากยอดรวม < 1000 หรือปัดเศษ 1,000 ถัดไป
+  // 6. แนะนำธนบัตร 1,000 หากยอดรวม < 1000 หรือปัดเศษ 1,000 ถัดไป
   if (totalBaht < 1000) {
     suggestionsSet.add(1000);
   } else {
@@ -77,8 +77,8 @@ export function getSmartCashSuggestions(grandTotalSatang: number): number[] {
     }
   }
 
-  // เรียงลำดับจากน้อยไปมาก และจำกัดจำนวนไม่เกิน 6 ปุ่มเพื่อไม่ให้รกหน้าจอ
+  // เรียงลำดับจากน้อยไปมาก และจำกัดจำนวนไม่เกิน 6 ปุ่มเพื่อไม่ให้รกหน้าจอ (จัด Grid 3 คอลัมน์ 2 แถวพอดี)
   const sorted = Array.from(suggestionsSet).sort((a, b) => a - b);
-  return sorted.slice(0, 5);
+  return sorted.slice(0, 6);
 }
 

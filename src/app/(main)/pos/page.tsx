@@ -358,14 +358,14 @@ function PosTerminalInner() {
   return (
     <div className="flex flex-col h-[calc(100dvh-5.5rem)] max-w-[1920px] mx-auto gap-3 sm:gap-4 pb-safe">
       {/* ส่วนหัวหน้าจอ POS */}
-      <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <Icons.ShoppingCart className="w-7 h-7 text-cyan-400" />
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
+            <Icons.ShoppingCart className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />
             จุดขายสินค้าหน้าร้าน (POS Terminal)
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            สาขา: <span className="text-slate-200 font-medium">{branch?.name || '-'}</span> • แคชเชียร์: <span className="text-slate-200 font-medium">{user?.name || user?.username}</span>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            สาขา: <span className="text-slate-700 dark:text-slate-200 font-medium">{branch?.name || '-'}</span> • แคชเชียร์: <span className="text-slate-700 dark:text-slate-200 font-medium">{user?.name || user?.username}</span>
           </p>
         </div>
       </div>
@@ -381,7 +381,7 @@ function PosTerminalInner() {
       {/* โครงสร้างเลย์เอาต์หลัก 2 คอลัมน์ (ซ้าย 60-65% แคตตาล็อก, ขวา 35-40% ตะกร้าและคิดเงิน บน Desktop; เต็มจอแคตตาล็อกบน Mobile/Tablet) */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 overflow-hidden">
         {/* คอลัมน์ซ้าย: แคตตาล็อกสินค้า (เต็มจอเมื่อ < 1024px, 60% เมื่อ >= 1024px) */}
-        <div className="col-span-1 lg:col-span-7 xl:col-span-8 flex flex-col h-full overflow-hidden bg-slate-900/50 border border-slate-800/80 rounded-2xl p-4 space-y-4">
+        <div className="col-span-1 lg:col-span-7 xl:col-span-8 flex flex-col h-full overflow-hidden bg-white/80 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-4 space-y-4">
           {/* ช่องค้นหาด่วน และปุ่มเปิดกล้องสแกนบาร์โค้ด */}
           <div className="flex items-center gap-3">
             <div className="flex-1">
@@ -394,20 +394,20 @@ function PosTerminalInner() {
             <button
               type="button"
               onClick={openCameraScanner}
-              className="h-12 px-4 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/40 flex items-center gap-2.5 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0 cursor-pointer"
+              className="h-12 px-4 rounded-xl bg-cyan-600/10 hover:bg-cyan-600/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 dark:border-cyan-500/40 flex items-center gap-2.5 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0 cursor-pointer"
               title="เปิดกล้องสแกนบาร์โค้ด"
             >
-              <Icons.Camera className="w-5 h-5 text-cyan-400" />
+              <Icons.Camera className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
               <span className="hidden sm:inline text-sm font-semibold">สแกนด้วยกล้อง</span>
             </button>
 
             <button
               type="button"
               onClick={() => setIsSalesHistoryModalOpen(true)}
-              className="h-12 px-3.5 sm:px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0 cursor-pointer"
+              className="h-12 px-3.5 sm:px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 flex items-center gap-2 font-medium transition-all active:scale-95 shadow-sm min-h-[48px] shrink-0 cursor-pointer"
               title="ดูประวัติการขายและบิลย้อนหลัง"
             >
-              <Icons.Receipt className="w-5 h-5 text-amber-400" />
+              <Icons.Receipt className="w-5 h-5 text-amber-500 dark:text-amber-400" />
               <span className="hidden md:inline text-sm font-semibold">ประวัติบิลขาย</span>
             </button>
           </div>
@@ -421,7 +421,7 @@ function PosTerminalInner() {
           />
 
           {/* ตารางการ์ดสินค้า */}
-          <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-700">
+          <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
             <PosProductGrid
               products={filteredProducts}
               onSelectProduct={handleSelectProduct}
@@ -432,7 +432,7 @@ function PosTerminalInner() {
         </div>
 
         {/* คอลัมน์ขวา: ตะกร้าขายสินค้า (แสดงเฉพาะบน Desktop >= 1024px) */}
-        <div id="pos-cart-container" className="hidden lg:flex lg:col-span-5 xl:col-span-4 flex-col h-full overflow-hidden bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl">
+        <div id="pos-cart-container" className="hidden lg:flex lg:col-span-5 xl:col-span-4 flex-col h-full overflow-hidden bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl">
           <PosCartPanel
             onCheckout={handleCheckout}
             isShiftActive={!!activeShift}

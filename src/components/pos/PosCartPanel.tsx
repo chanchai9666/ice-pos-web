@@ -43,18 +43,18 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-900 overflow-hidden select-none">
+    <div className="flex flex-col h-full bg-white dark:bg-slate-900 overflow-hidden select-none">
       {/* ส่วนหัวของตะกร้า */}
-      <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/95">
+      <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white/95 dark:bg-slate-900/95">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+          <div className="w-9 h-9 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-200 dark:border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
             <Icons.ShoppingCart className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               รายการขาย (บิลปัจจุบัน)
               {items.length > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-extrabold border border-cyan-500/30">
+                <span className="px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 text-xs font-extrabold border border-cyan-200 dark:border-cyan-500/30">
                   {summary.totalQuantity} ชิ้น
                 </span>
               )}
@@ -66,7 +66,7 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
           <button
             type="button"
             onClick={() => setShowClearConfirm(true)}
-            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 border border-rose-500/30 transition-colors cursor-pointer flex items-center gap-1"
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-500/10 border border-rose-200 dark:border-rose-500/30 transition-colors cursor-pointer flex items-center gap-1"
           >
             <Icons.Trash className="w-3.5 h-3.5" />
             ล้างบิล
@@ -75,14 +75,14 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
       </div>
 
       {/* รายการสินค้าในตะกร้า */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5 scrollbar-thin scrollbar-thumb-slate-700">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
         {items.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center text-slate-500 space-y-3 p-6 my-auto">
-            <div className="w-16 h-16 rounded-2xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-400">
+          <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 dark:text-slate-500 space-y-3 p-6 my-auto">
+            <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center text-slate-400">
               <Icons.ShoppingCart className="w-8 h-8" />
             </div>
-            <h4 className="text-base font-bold text-slate-300">ยังไม่มีสินค้าในตะกร้า</h4>
-            <p className="text-xs text-slate-400 max-w-xs leading-relaxed">
+            <h4 className="text-base font-bold text-slate-800 dark:text-slate-300">ยังไม่มีสินค้าในตะกร้า</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
               แตะเลือกสินค้าจากฝั่งซ้าย หรือยิงบาร์โค้ดสินค้าเพื่อเริ่มคิดเงิน
             </p>
           </div>
@@ -111,32 +111,32 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
       </div>
 
       {/* ส่วนสรุปยอดเงินและปุ่มชำระเงิน */}
-      <div className="p-4 bg-slate-950 border-t-2 border-slate-800 flex flex-col gap-3 shadow-2xl">
+      <div className="p-4 bg-slate-50 dark:bg-slate-950 border-t-2 border-slate-200 dark:border-slate-800 flex flex-col gap-3 shadow-xl">
         <div className="space-y-1.5 text-sm">
           {/* ยอดรวมสินค้าก่อนภาษี */}
-          <div className="flex justify-between text-slate-400">
+          <div className="flex justify-between text-slate-500 dark:text-slate-400">
             <span>ยอดรวมสินค้า ({summary.itemCount} รายการ)</span>
-            <span className="font-mono text-slate-200">
+            <span className="font-mono text-slate-800 dark:text-slate-200">
               {formatSatangToBaht(summary.subtotal - summary.taxAmount)}
             </span>
           </div>
 
           {/* ภาษีมูลค่าเพิ่ม (VAT 7%) */}
-          <div className="flex justify-between text-slate-400">
+          <div className="flex justify-between text-slate-500 dark:text-slate-400">
             <span>ภาษีมูลค่าเพิ่ม (VAT 7%)</span>
-            <span className="font-mono text-slate-200">
+            <span className="font-mono text-slate-800 dark:text-slate-200">
               {formatSatangToBaht(summary.taxAmount)}
             </span>
           </div>
 
           {/* เส้นคั่น */}
-          <div className="border-t border-slate-800 my-1" />
+          <div className="border-t border-slate-200 dark:border-slate-800 my-1" />
 
           {/* ยอดสุทธิทั้งบิล (ตัวเลขขนาดใหญ่พิเศษ) */}
           <div className="flex items-baseline justify-between pt-1">
-            <span className="text-base font-bold text-white">ยอดสุทธิ (Total)</span>
+            <span className="text-base font-bold text-slate-900 dark:text-white">ยอดสุทธิ (Total)</span>
             <div className="text-right">
-              <span className="text-2xl sm:text-3xl font-black text-cyan-400 tracking-tight">
+              <span className="text-2xl sm:text-3xl font-black text-cyan-700 dark:text-cyan-400 tracking-tight">
                 {formatSatangToBaht(summary.grandTotal)}
               </span>
             </div>
@@ -150,7 +150,7 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
           onClick={onCheckout}
           className={`w-full min-h-[56px] rounded-2xl font-black text-lg flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg ${
             items.length === 0
-              ? 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed opacity-60'
+              ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-300 dark:border-slate-700 cursor-not-allowed opacity-60'
               : !isShiftActive
               ? 'bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 shadow-amber-500/20 active:scale-[0.99]'
               : 'bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 shadow-emerald-500/20 active:scale-[0.99]'
@@ -181,19 +181,19 @@ export function PosCartPanel({ onCheckout, isShiftActive = true }: PosCartPanelP
       {/* Modal ยืนยันการล้างตะกร้าสินค้า */}
       {showClearConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-sm p-6 shadow-2xl text-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center mx-auto text-rose-400">
+          <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl w-full max-w-sm p-6 shadow-2xl text-center space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/30 flex items-center justify-center mx-auto text-rose-600 dark:text-rose-400">
               <Icons.Trash className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-white">ต้องการล้างตะกร้าหรือไม่?</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">ต้องการล้างตะกร้าหรือไม่?</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               สินค้าทั้งหมดในบิลปัจจุบัน ({summary.totalQuantity} ชิ้น) จะถูกล้างออกทั้งหมด
             </p>
             <div className="grid grid-cols-2 gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setShowClearConfirm(false)}
-                className="min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base transition-colors cursor-pointer"
+                className="min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-base transition-colors cursor-pointer"
               >
                 ยกเลิก
               </button>

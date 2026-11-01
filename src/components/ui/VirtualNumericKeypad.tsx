@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Icons } from '@/components/ui/Icons';
+import { useTheme } from '@/context/ThemeContext';
 
 interface VirtualNumericKeypadProps {
   value: string;
@@ -24,11 +25,12 @@ export function VirtualNumericKeypad({
   label = 'ระบุตัวเลข',
   allowDecimal = true,
   maxValue = 999999.99,
-  theme = 'light',
+  theme: themeProp,
   hideDisplay = false,
   hideHeader = false,
 }: VirtualNumericKeypadProps) {
-  const isDark = theme === 'dark';
+  const { resolvedTheme } = useTheme();
+  const isDark = (themeProp ?? resolvedTheme) === 'dark';
 
   const handleDigit = (digit: string) => {
     let next = value;

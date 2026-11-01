@@ -35,10 +35,10 @@ export function PosProductGrid({
         className="relative grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 pointer-events-none select-none min-h-[300px]"
       >
         {/* แถบ Overlay สถานะกำลังโหลดข้อมูลสินค้า */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-950/40 backdrop-blur-[2px] rounded-2xl">
-          <div className="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-slate-900 border-2 border-cyan-500/50 shadow-2xl">
-            <div className="w-6 h-6 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-            <span className="text-lg font-bold text-white tracking-wide">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/20 dark:bg-slate-950/40 backdrop-blur-[2px] rounded-2xl">
+          <div className="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-cyan-500/50 shadow-2xl">
+            <div className="w-6 h-6 border-3 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin" />
+            <span className="text-lg font-bold text-slate-900 dark:text-white tracking-wide">
               กำลังโหลดรายการสินค้า...
             </span>
           </div>
@@ -47,11 +47,11 @@ export function PosProductGrid({
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between min-h-[170px] animate-pulse"
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col justify-between min-h-[170px] animate-pulse"
           >
-            <div className="w-full h-24 bg-slate-800 rounded-xl mb-3" />
-            <div className="h-4 bg-slate-800 rounded w-3/4 mb-2" />
-            <div className="h-5 bg-slate-800 rounded w-1/2" />
+            <div className="w-full h-24 bg-slate-100 dark:bg-slate-800 rounded-xl mb-3" />
+            <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded w-3/4 mb-2" />
+            <div className="h-5 bg-slate-100 dark:bg-slate-800 rounded w-1/2" />
           </div>
         ))}
       </div>
@@ -60,12 +60,12 @@ export function PosProductGrid({
 
   if (products.length === 0) {
     return (
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center my-6 space-y-3">
-        <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto text-slate-500">
+      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center my-6 space-y-3 shadow-xs">
+        <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400 dark:text-slate-500">
           <Icons.Package className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-bold text-white">ไม่พบรายการสินค้าที่ค้นหา</h3>
-        <p className="text-sm text-slate-400 max-w-sm mx-auto">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">ไม่พบรายการสินค้าที่ค้นหา</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
           ลองเปลี่ยนคำค้นหา หรือเลือกดูหมวดหมู่อื่นเพื่อค้นหาสินค้าที่ต้องการ
         </p>
       </div>
@@ -82,13 +82,13 @@ export function PosProductGrid({
             key={product.id}
             type="button"
             onClick={() => onSelectProduct(product)}
-            className={`group relative bg-slate-900 hover:bg-slate-850 active:bg-cyan-950/40 ${stockInfo.cardBorderClass} rounded-2xl p-3 sm:p-4 flex flex-col justify-between text-left transition-all duration-150 ${stockInfo.cardShadowClass} cursor-pointer overflow-hidden min-h-[170px]`}
+            className={`group relative bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 active:bg-cyan-50 dark:active:bg-cyan-950/40 ${stockInfo.cardBorderClass} rounded-2xl p-3 sm:p-4 flex flex-col justify-between text-left transition-all duration-150 ${stockInfo.cardShadowClass} cursor-pointer overflow-hidden min-h-[170px] shadow-xs`}
           >
             {/* ส่วนรูปภาพสินค้า */}
-            <div className="relative w-full h-24 sm:h-28 rounded-xl bg-slate-800 flex items-center justify-center mb-3 overflow-hidden border border-slate-700/60 group-hover:border-slate-600">
+            <div className="relative w-full h-24 sm:h-28 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3 overflow-hidden border border-slate-200 dark:border-slate-700/60 group-hover:border-slate-300 dark:group-hover:border-slate-600">
               {/* ไอคอน Fallback ด้านหลังเสมอ */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500 pointer-events-none">
-                <Icons.Package className="w-8 h-8 text-slate-600" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 pointer-events-none">
+                <Icons.Package className="w-8 h-8 text-slate-400 dark:text-slate-600" />
               </div>
 
               {product.imageUrl && (
@@ -120,7 +120,7 @@ export function PosProductGrid({
 
               {/* ป้ายแสดงหน่วยนับ (มุมขวาล่าง) */}
               {product.baseUom?.name && (
-                <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm text-[11px] font-medium text-slate-300 border border-slate-700/60 z-10">
+                <span className="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-white/90 dark:bg-slate-950/80 backdrop-blur-sm text-[11px] font-medium text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/60 z-10 shadow-xs">
                   {product.baseUom.name}
                 </span>
               )}
@@ -129,20 +129,20 @@ export function PosProductGrid({
             {/* ส่วนข้อมูลชื่อและรหัสสินค้า */}
             <div className="flex-1 flex flex-col justify-between space-y-1">
               <div>
-                <h4 className="text-base sm:text-base font-bold text-white line-clamp-2 leading-snug group-hover:text-cyan-300 transition-colors">
+                <h4 className="text-base sm:text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors">
                   {product.name}
                 </h4>
-                <p className="text-xs text-slate-400 truncate mt-0.5 font-mono">
+                <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5 font-mono">
                   {product.barcode || product.sku}
                 </p>
               </div>
 
               {/* ส่วนราคาขาย */}
-              <div className="pt-2 flex items-baseline justify-between border-t border-slate-800/80">
-                <span className="text-lg sm:text-xl font-extrabold text-cyan-400">
+              <div className="pt-2 flex items-baseline justify-between border-t border-slate-100 dark:border-slate-800/80">
+                <span className="text-lg sm:text-xl font-extrabold text-cyan-700 dark:text-cyan-400">
                   {formatSatangToBaht(product.price ?? 0)}
                 </span>
-                <span className="text-xs text-slate-400 font-medium group-hover:text-cyan-400 transition-colors">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                   + เพิ่ม
                 </span>
               </div>

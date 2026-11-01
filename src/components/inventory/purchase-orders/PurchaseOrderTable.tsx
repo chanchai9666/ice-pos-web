@@ -81,8 +81,8 @@ export function PurchaseOrderTable({
 
   if (isLoading) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-md">
-        <div className="flex items-center justify-center py-16 gap-3 text-cyan-400">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+        <div className="flex items-center justify-center py-16 gap-3 text-cyan-600 dark:text-cyan-400">
           <Icons.RotateCw className="w-6 h-6 animate-spin" />
           <span className="text-base font-semibold">กำลังโหลดข้อมูลใบสั่งซื้อสินค้า...</span>
         </div>
@@ -92,12 +92,12 @@ export function PurchaseOrderTable({
 
   if (items.length === 0) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center shadow-md">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-slate-400">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center shadow-sm">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center text-slate-400">
           <Icons.Package className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-bold text-white mb-1">ไม่พบรายการใบสั่งซื้อสินค้า</h3>
-        <p className="text-sm text-slate-400 max-w-md mx-auto">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">ไม่พบรายการใบสั่งซื้อสินค้า</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
           ยังไม่มีการสั่งซื้อสินค้าตรงตามเงื่อนไข หรือสามารถเริ่มต้นสั่งซื้อด้วยการกดปุ่ม &quot;สร้างใบสั่งซื้อใหม่&quot;
         </p>
       </div>
@@ -105,11 +105,11 @@ export function PurchaseOrderTable({
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-md">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-950/70 border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+            <tr className="bg-slate-50 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">
               <th className="py-4 px-4 font-bold">เลขที่ใบสั่งซื้อ</th>
               <th className="py-4 px-4 font-bold">ผู้จัดจำหน่าย</th>
               <th className="py-4 px-4 font-bold">วันที่สั่งซื้อ / กำหนดส่ง</th>
@@ -119,7 +119,7 @@ export function PurchaseOrderTable({
               <th className="py-4 px-4 font-bold text-right">การกระทำ</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/80 text-sm">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-sm">
             {items.map((po) => {
               const canReceive =
                 po.status === 'ORDERED' || po.status === 'PARTIALLY_RECEIVED';
@@ -128,12 +128,12 @@ export function PurchaseOrderTable({
               return (
                 <tr
                   key={po.id}
-                  className="hover:bg-slate-800/40 transition-colors group"
+                  className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group"
                 >
                   {/* เลขที่ใบสั่งซื้อ */}
-                  <td className="py-3.5 px-4 font-semibold text-white">
+                  <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
                     <div className="flex items-center gap-2">
-                      <span className="text-cyan-400 font-mono font-bold text-base">
+                      <span className="text-cyan-600 dark:text-cyan-400 font-mono font-bold text-base">
                         {po.poNo || 'PO-DRAFT'}
                       </span>
                     </div>
@@ -145,42 +145,42 @@ export function PurchaseOrderTable({
                   </td>
 
                   {/* ผู้จัดจำหน่าย */}
-                  <td className="py-3.5 px-4 text-slate-200 font-medium">
+                  <td className="py-3.5 px-4 text-slate-700 dark:text-slate-200 font-medium">
                     {po.supplier ? (
                       <div>
-                        <div className="font-semibold text-slate-100">{po.supplier.name}</div>
+                        <div className="font-semibold text-slate-900 dark:text-slate-100">{po.supplier.name}</div>
                         {po.supplier.phone && (
-                          <div className="text-xs text-slate-400">{po.supplier.phone}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">{po.supplier.phone}</div>
                         )}
                       </div>
                     ) : (
-                      <span className="text-slate-500 italic">- ไม่ระบุ -</span>
+                      <span className="text-slate-400 dark:text-slate-500 italic">- ไม่ระบุ -</span>
                     )}
                   </td>
 
                   {/* วันที่สั่งซื้อ / กำหนดส่ง */}
-                  <td className="py-3.5 px-4 text-slate-300 text-xs">
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 text-xs">
                     <div>
-                      <span className="text-slate-400">สั่ง: </span>
+                      <span className="text-slate-400 dark:text-slate-400">สั่ง: </span>
                       {po.orderDate ? new Date(po.orderDate).toLocaleDateString('th-TH') : '-'}
                     </div>
                     {po.expectedDeliveryDate && (
-                      <div className="text-cyan-300 mt-0.5">
-                        <span className="text-slate-400">ส่ง: </span>
+                      <div className="text-cyan-600 dark:text-cyan-300 mt-0.5">
+                        <span className="text-slate-400 dark:text-slate-400">ส่ง: </span>
                         {new Date(po.expectedDeliveryDate).toLocaleDateString('th-TH')}
                       </div>
                     )}
                   </td>
 
                   {/* จำนวนรายการ */}
-                  <td className="py-3.5 px-4 text-center font-bold text-slate-200">
-                    <span className="px-2 py-1 rounded-lg bg-slate-800 text-slate-200">
+                  <td className="py-3.5 px-4 text-center font-bold text-slate-700 dark:text-slate-200">
+                    <span className="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
                       {po.lines?.length || 0} รายการ
                     </span>
                   </td>
 
                   {/* ยอดรวมสุทธิ */}
-                  <td className="py-3.5 px-4 text-right font-bold text-emerald-400 text-base font-mono">
+                  <td className="py-3.5 px-4 text-right font-bold text-emerald-600 dark:text-emerald-400 text-base font-mono">
                     {formatSatangToBaht(po.grandTotal ?? 0, { showUnit: true })}
                   </td>
 
@@ -197,7 +197,7 @@ export function PurchaseOrderTable({
                         <button
                           type="button"
                           onClick={() => onReceiveGoods(po)}
-                          className="px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md shadow-cyan-950/40 min-h-[44px] flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                          className="px-3 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md shadow-cyan-950/20 min-h-[44px] flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
                         >
                           <Icons.Barcode className="w-4 h-4" />
                           <span>ตรวจรับสินค้า</span>
@@ -220,7 +220,7 @@ export function PurchaseOrderTable({
                       <button
                         type="button"
                         onClick={() => onViewDetails(po)}
-                        className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs min-h-[44px] flex items-center gap-1 cursor-pointer"
+                        className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white font-semibold text-xs min-h-[44px] flex items-center gap-1 cursor-pointer transition-colors"
                         title="ดูรายละเอียดใบสั่งซื้อ"
                       >
                         <Icons.Search className="w-3.5 h-3.5" />
@@ -232,7 +232,7 @@ export function PurchaseOrderTable({
                         <button
                           type="button"
                           onClick={() => onCancelPO(po)}
-                          className="p-2.5 rounded-xl text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+                          className="p-2.5 rounded-xl text-rose-500 hover:bg-rose-500/10 hover:text-rose-600 dark:text-rose-400 dark:hover:text-rose-300 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer transition-colors"
                           title="ยกเลิกใบสั่งซื้อ"
                         >
                           <Icons.Trash2 className="w-4 h-4" />
@@ -249,17 +249,17 @@ export function PurchaseOrderTable({
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-3 bg-slate-950/60 border-t border-slate-800 text-sm">
-          <div className="text-slate-400 text-xs">
-            หน้า <span className="font-bold text-white">{currentPage}</span> จาก{' '}
-            <span className="font-bold text-white">{totalPages}</span> (ทั้งหมด {totalItems} รายการ)
+        <div className="flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950/60 border-t border-slate-200 dark:border-slate-800 text-sm">
+          <div className="text-slate-500 dark:text-slate-400 text-xs">
+            หน้า <span className="font-bold text-slate-800 dark:text-white">{currentPage}</span> จาก{' '}
+            <span className="font-bold text-slate-800 dark:text-white">{totalPages}</span> (ทั้งหมด {totalItems} รายการ)
           </div>
           <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage <= 1}
-              className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
               <Icons.ChevronLeft className="w-4 h-4" />
             </button>
@@ -267,7 +267,7 @@ export function PurchaseOrderTable({
               type="button"
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage >= totalPages}
-              className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
+              className="p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
             >
               <Icons.ChevronRight className="w-4 h-4" />
             </button>

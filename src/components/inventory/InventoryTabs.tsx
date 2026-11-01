@@ -57,7 +57,7 @@ export function InventoryTabs({
   ];
 
   return (
-    <div className="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl p-1.5 shadow-lg">
+    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur border border-slate-200 dark:border-slate-800 rounded-2xl p-1.5 shadow-sm">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1.5">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -70,8 +70,8 @@ export function InventoryTabs({
               onClick={() => onTabChange(tab.id)}
               className={`min-h-[52px] px-4 py-2.5 rounded-xl flex items-center justify-between sm:justify-start gap-3 transition-all duration-200 cursor-pointer ${
                 isActive
-                  ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-white font-bold shadow-md shadow-cyan-900/40 ring-1 ring-cyan-400/50'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60 font-medium'
+                  ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-white font-bold shadow-md shadow-cyan-900/20 ring-1 ring-cyan-400/50'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60 font-medium'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -79,7 +79,7 @@ export function InventoryTabs({
                   className={`p-2 rounded-lg ${
                     isActive
                       ? 'bg-white/20 text-white'
-                      : 'bg-slate-800 text-slate-400'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -90,7 +90,7 @@ export function InventoryTabs({
                   </div>
                   <div
                     className={`text-xs hidden md:block mt-0.5 ${
-                      isActive ? 'text-cyan-100' : 'text-slate-500'
+                      isActive ? 'text-cyan-100' : 'text-slate-400 dark:text-slate-500'
                     }`}
                   >
                     {tab.description}
@@ -104,7 +104,7 @@ export function InventoryTabs({
                   className={`ml-auto px-2 py-0.5 text-xs font-black rounded-full ${
                     isActive
                       ? 'bg-white text-cyan-700'
-                      : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                      : 'bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30'
                   }`}
                 >
                   {tab.badge}

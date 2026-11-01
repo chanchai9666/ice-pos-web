@@ -111,12 +111,12 @@ export function ImageUploader({
         onDrop={handleDrop}
         className={`relative flex items-center gap-4 p-3 rounded-xl border-2 border-dashed transition-all ${
           isDragging
-            ? 'border-cyan-400 bg-cyan-950/20'
-            : 'border-slate-700/80 bg-slate-900/60 hover:border-slate-600'
+            ? 'border-cyan-500 dark:border-cyan-400 bg-cyan-50 dark:bg-cyan-950/20'
+            : 'border-slate-300 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-900/60 hover:border-slate-400 dark:hover:border-slate-600'
         }`}
       >
         {/* Preview Frame */}
-        <div className="relative w-20 h-20 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+        <div className="relative w-20 h-20 rounded-lg bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
           {previewUrl ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -125,19 +125,19 @@ export function ImageUploader({
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center text-slate-500">
-              <Icons.Image className="w-7 h-7 text-slate-600" />
-              <span className="text-[10px] text-slate-600 mt-1 font-mono">ไม่มีรูป</span>
+            <div className="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
+              <Icons.Image className="w-7 h-7 text-slate-400 dark:text-slate-600" />
+              <span className="text-[10px] text-slate-400 dark:text-slate-600 mt-1 font-mono">ไม่มีรูป</span>
             </div>
           )}
         </div>
 
         {/* Action & Info */}
         <div className="flex-1 min-w-0 space-y-1.5">
-          <p className="text-xs font-medium text-slate-200">
+          <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
             {isDragging ? 'วางรูปภาพที่นี่เพื่ออัปโหลด' : 'ลากไฟล์รูปภาพมาวาง หรือคลิกเลือกไฟล์'}
           </p>
-          <p className="text-[11px] text-slate-400">
+          <p className="text-[11px] text-slate-500 dark:text-slate-400">
             รองรับ JPG, PNG, WebP ขนาดไม่เกิน 5MB
           </p>
 
@@ -146,10 +146,10 @@ export function ImageUploader({
               <button
                 type="button"
                 onClick={() => setIsCameraOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-950/70 hover:bg-cyan-900/80 active:scale-95 text-xs md:text-sm text-cyan-300 font-bold border-2 border-cyan-700/60 transition-all cursor-pointer min-h-[44px] shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-950/70 dark:hover:bg-cyan-900/80 active:scale-95 text-xs md:text-sm text-cyan-700 dark:text-cyan-300 font-bold border-2 border-cyan-300 dark:border-cyan-700/60 transition-all cursor-pointer min-h-[44px] shadow-sm"
                 title="เปิดกล้องเพื่อถ่ายภาพสินค้า"
               >
-                <Icons.Camera className="w-4 h-4 text-cyan-400 stroke-[2.2]" />
+                <Icons.Camera className="w-4 h-4 text-cyan-600 dark:text-cyan-400 stroke-[2.2]" />
                 <span>ถ่ายภาพด้วยกล้อง</span>
               </button>
             )}
@@ -157,9 +157,9 @@ export function ImageUploader({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-xs md:text-sm text-slate-200 font-medium border border-slate-700 transition-all cursor-pointer min-h-[44px]"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-xs md:text-sm text-slate-800 dark:text-slate-200 font-medium border border-slate-300 dark:border-slate-700 transition-all cursor-pointer min-h-[44px] shadow-xs"
             >
-              <Icons.Upload className="w-4 h-4 text-slate-300" />
+              <Icons.Upload className="w-4 h-4 text-slate-500 dark:text-slate-300" />
               <span>{previewUrl ? 'เลือกไฟล์ใหม่' : 'เลือกไฟล์ภาพ'}</span>
             </button>
 
@@ -167,7 +167,7 @@ export function ImageUploader({
               <button
                 type="button"
                 onClick={handleRemoveImage}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800/80 hover:bg-rose-950/40 text-xs md:text-sm text-rose-400 border border-slate-700/60 transition-all cursor-pointer min-h-[44px]"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-slate-800/80 dark:hover:bg-rose-950/40 text-xs md:text-sm text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-slate-700/60 transition-all cursor-pointer min-h-[44px]"
               >
                 <Icons.Trash className="w-4 h-4" />
                 <span>ลบรูป</span>
@@ -193,7 +193,7 @@ export function ImageUploader({
       />
 
       {errorMessage && (
-        <div className="flex items-center gap-1.5 text-xs text-rose-400 bg-rose-950/40 border border-rose-800/40 px-3 py-1.5 rounded-lg">
+        <div className="flex items-center gap-1.5 text-xs text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/40 px-3 py-1.5 rounded-lg">
           <Icons.AlertCircle className="w-4 h-4 shrink-0" />
           <span>{errorMessage}</span>
         </div>

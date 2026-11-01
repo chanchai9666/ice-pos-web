@@ -510,14 +510,14 @@ export default function InventoryPage() {
           <div
             className={`px-5 py-3 rounded-2xl shadow-2xl border-2 flex items-center gap-3 text-sm font-bold ${
               toastMessage.type === 'success'
-                ? 'bg-emerald-950/90 border-emerald-500/50 text-emerald-200'
-                : 'bg-rose-950/90 border-rose-500/50 text-rose-200'
+                ? 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/90 dark:border-emerald-500/50 dark:text-emerald-200'
+                : 'bg-rose-50 text-rose-800 border-rose-300 dark:bg-rose-950/90 dark:border-rose-500/50 dark:text-rose-200'
             }`}
           >
             {toastMessage.type === 'success' ? (
-              <Icons.Check className="w-5 h-5 text-emerald-400" />
+              <Icons.Check className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             ) : (
-              <Icons.AlertTriangle className="w-5 h-5 text-rose-400" />
+              <Icons.AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
             )}
             <span>{toastMessage.text}</span>
           </div>
@@ -527,13 +527,13 @@ export default function InventoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
               <Icons.Boxes className="w-6 h-6" />
             </span>
             <span>คลังและสต็อกสินค้า (Inventory & Procurement)</span>
           </h1>
-          <p className="mt-1 text-sm text-slate-400 font-medium">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 font-medium">
             จัดการยอดคงเหลือ สั่งซื้อสินค้า และตรวจรับสินค้าเข้าคลังสาขาอย่างครบวงจร
           </p>
         </div>

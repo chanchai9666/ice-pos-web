@@ -142,23 +142,23 @@ export function CreateStockTransferModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/95 shrink-0">
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white/95 dark:bg-slate-900/95 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <Icons.RotateCw className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">สร้างใบโอนย้ายสินค้าระหว่างสาขา</h3>
-              <p className="text-xs text-slate-400">ระบุสาขาต้นทาง ปลายทาง และรายการสินค้าที่ต้องการโอน</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">สร้างใบโอนย้ายสินค้าระหว่างสาขา</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">ระบุสาขาต้นทาง ปลายทาง และรายการสินค้าที่ต้องการโอน</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <Icons.X className="w-6 h-6" />
           </button>
@@ -168,8 +168,8 @@ export function CreateStockTransferModal({
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
             {errorMsg && (
-              <div className="p-3.5 bg-rose-500/20 border border-rose-500/40 rounded-xl text-xs sm:text-sm text-rose-300 flex items-center gap-2.5">
-                <Icons.AlertTriangle className="w-5 h-5 shrink-0 text-rose-400" />
+              <div className="p-3.5 bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 rounded-xl text-xs sm:text-sm text-rose-600 dark:text-rose-300 flex items-center gap-2.5">
+                <Icons.AlertTriangle className="w-5 h-5 shrink-0 text-rose-500 dark:text-rose-400" />
                 <span>{errorMsg}</span>
               </div>
             )}
@@ -177,13 +177,13 @@ export function CreateStockTransferModal({
             {/* สาขาต้นทางและปลายทาง */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-semibold text-slate-300 block mb-1.5">
-                  สาขาต้นทาง (ผู้ส่ง) <span className="text-rose-400">*</span>
+                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 block mb-1.5">
+                  สาขาต้นทาง (ผู้ส่ง) <span className="text-rose-500 dark:text-rose-400">*</span>
                 </label>
                 <select
                   value={fromBranchId}
                   onChange={(e) => setFromBranchId(e.target.value)}
-                  className="w-full h-11 px-3 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:border-cyan-500 focus:outline-none"
+                  className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:border-cyan-500 focus:outline-none"
                 >
                   <option value="">-- เลือกสาขาต้นทาง --</option>
                   {branches.map((b) => (
@@ -195,13 +195,13 @@ export function CreateStockTransferModal({
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-slate-300 block mb-1.5">
-                  สาขาปลายทาง (ผู้รับ) <span className="text-rose-400">*</span>
+                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 block mb-1.5">
+                  สาขาปลายทาง (ผู้รับ) <span className="text-rose-500 dark:text-rose-400">*</span>
                 </label>
                 <select
                   value={toBranchId}
                   onChange={(e) => setToBranchId(e.target.value)}
-                  className="w-full h-11 px-3 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:border-cyan-500 focus:outline-none"
+                  className="w-full h-11 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:border-cyan-500 focus:outline-none"
                 >
                   <option value="">-- เลือกสาขาปลายทาง --</option>
                   {branches.map((b) => (
@@ -216,13 +216,13 @@ export function CreateStockTransferModal({
             {/* รายการสินค้าที่ต้องการโอน */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-slate-200">
+                <label className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                   รายการสินค้าที่โอน ({lines.length} รายการ)
                 </label>
                 <button
                   type="button"
                   onClick={handleAddLine}
-                  className="text-xs px-2.5 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/30 font-medium flex items-center gap-1 cursor-pointer"
+                  className="text-xs px-2.5 py-1.5 rounded-lg bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 dark:hover:bg-cyan-500/30 font-medium flex items-center gap-1 cursor-pointer"
                 >
                   <Icons.Plus className="w-3.5 h-3.5" />
                   <span>เพิ่มสินค้า</span>
@@ -233,13 +233,13 @@ export function CreateStockTransferModal({
                 {lines.map((line, idx) => (
                   <div
                     key={idx}
-                    className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl flex items-center gap-2.5"
+                    className="p-3 bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center gap-2.5"
                   >
                     <div className="flex-1 min-w-0">
                       <select
                         value={line.productId}
                         onChange={(e) => handleLineChange(idx, 'productId', e.target.value)}
-                        className="w-full h-10 px-2.5 bg-slate-900 border border-slate-700 rounded-lg text-xs sm:text-sm text-white focus:border-cyan-500 focus:outline-none"
+                        className="w-full h-10 px-2.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-xs sm:text-sm text-slate-900 dark:text-white focus:border-cyan-500 focus:outline-none"
                       >
                         {products.map((p) => (
                           <option key={p.id} value={p.id}>
@@ -255,7 +255,7 @@ export function CreateStockTransferModal({
                         min="1"
                         value={line.quantity}
                         onChange={(e) => handleLineChange(idx, 'quantity', parseInt(e.target.value, 10) || 1)}
-                        className="w-full h-10 px-2 text-center bg-slate-900 border border-slate-700 rounded-lg text-sm font-bold text-cyan-400 focus:border-cyan-500 focus:outline-none"
+                        className="w-full h-10 px-2 text-center bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-sm font-bold text-cyan-600 dark:text-cyan-400 focus:border-cyan-500 focus:outline-none"
                       />
                     </div>
 
@@ -263,7 +263,7 @@ export function CreateStockTransferModal({
                       <button
                         type="button"
                         onClick={() => handleRemoveLine(idx)}
-                        className="p-2 text-slate-500 hover:text-rose-400 transition-colors cursor-pointer"
+                        className="p-2 text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors cursor-pointer"
                       >
                         <Icons.Trash className="w-4 h-4" />
                       </button>
@@ -275,12 +275,12 @@ export function CreateStockTransferModal({
           </div>
 
           {/* Footer Actions */}
-          <div className="p-4 border-t border-slate-800 bg-slate-900/95 flex justify-end gap-3 shrink-0">
+          <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-900/95 flex justify-end gap-3 shrink-0">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="min-h-[48px] px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm transition-colors cursor-pointer"
+              className="min-h-[48px] px-5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors cursor-pointer"
             >
               ยกเลิก
             </button>

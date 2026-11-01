@@ -151,18 +151,18 @@ export function PosPaymentQR({
   if (isLoadingQR) {
     return (
       <div className="flex flex-col items-center justify-center p-12 space-y-4 min-h-[400px]">
-        <Icons.Refresh className="w-10 h-10 animate-spin text-cyan-400" />
-        <p className="text-base text-slate-300 font-medium">กำลังสร้าง QR Code พร้อมเพย์...</p>
+        <Icons.Refresh className="w-10 h-10 animate-spin text-cyan-500 dark:text-cyan-400" />
+        <p className="text-base text-slate-700 dark:text-slate-300 font-medium">กำลังสร้าง QR Code พร้อมเพย์...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center p-6 sm:p-8 space-y-6 max-w-lg mx-auto animate-fadeIn text-slate-100">
+    <div className="flex flex-col items-center p-6 sm:p-8 space-y-6 max-w-lg mx-auto animate-fadeIn text-slate-800 dark:text-slate-100">
       {/* ส่วนหัวแสดงยอดเงินที่ต้องชำระ */}
       <div className="text-center space-y-1">
-        <span className="text-sm text-slate-400 font-medium">สแกนชำระผ่านพร้อมเพย์</span>
-        <div className="text-3xl sm:text-4xl font-black text-white">
+        <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">สแกนชำระผ่านพร้อมเพย์</span>
+        <div className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
           {formatSatangToBaht(grandTotalSatang)}
         </div>
       </div>
@@ -194,22 +194,22 @@ export function PosPaymentQR({
       {/* สถานะการตรวจสอบและเวลานับถอยหลัง */}
       <div className="w-full space-y-3">
         {!isTimedOut ? (
-          <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-800/80 border border-slate-700 text-sm">
+          <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm">
             <div className="flex items-center gap-2.5">
               <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
               </span>
-              <span className="text-slate-300 font-medium">กำลังรอการชำระเงินอัตโนมัติ...</span>
+              <span className="text-slate-700 dark:text-slate-300 font-medium">กำลังรอการชำระเงินอัตโนมัติ...</span>
             </div>
-            <div className="flex items-center gap-1.5 font-mono text-cyan-400 font-bold">
-              <Icons.Clock className="w-4 h-4 text-cyan-400" />
+            <div className="flex items-center gap-1.5 font-mono text-cyan-600 dark:text-cyan-400 font-bold">
+              <Icons.Clock className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
               <span>{timeString}</span>
             </div>
           </div>
         ) : (
-          <div className="p-3.5 rounded-xl bg-amber-950/50 border border-amber-500/50 text-amber-300 text-sm flex items-center gap-2.5">
-            <Icons.AlertTriangle className="w-5 h-5 text-amber-400 shrink-0" />
+          <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-500/50 text-amber-800 dark:text-amber-300 text-sm flex items-center gap-2.5">
+            <Icons.AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
             <span>หมดเวลาตรวจสอบอัตโนมัติ 5 นาที สามารถกดตรวจสอบอีกครั้งหรือสร้าง QR ใหม่</span>
           </div>
         )}
@@ -220,12 +220,12 @@ export function PosPaymentQR({
             type="button"
             onClick={() => qrData?.qrRef && checkStatus(qrData.qrRef, true)}
             disabled={isCheckingManual}
-            className="h-13 min-h-[50px] rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-cyan-700 border border-slate-700 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm disabled:opacity-60"
+            className="h-13 min-h-[50px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:bg-cyan-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm disabled:opacity-60 cursor-pointer"
           >
             {isCheckingManual ? (
-              <Icons.Refresh className="w-5 h-5 animate-spin text-cyan-400" />
+              <Icons.Refresh className="w-5 h-5 animate-spin text-cyan-600 dark:text-cyan-400" />
             ) : (
-              <Icons.Refresh className="w-5 h-5 text-cyan-400" />
+              <Icons.Refresh className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
             )}
             <span>ตรวจสอบอีกครั้ง</span>
           </button>
@@ -234,7 +234,7 @@ export function PosPaymentQR({
             type="button"
             onClick={generateQR}
             disabled={isLoadingQR}
-            className="h-13 min-h-[50px] rounded-xl bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-700 border border-cyan-400/50 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm"
+            className="h-13 min-h-[50px] rounded-xl bg-cyan-600 hover:bg-cyan-500 active:bg-cyan-700 border border-cyan-400/50 text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm cursor-pointer"
           >
             <Icons.RotateCcw className="w-5 h-5 text-white" />
             <span>สร้าง QR ใหม่</span>

@@ -397,21 +397,21 @@ export function PosCameraScannerModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in select-none">
-      <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+      <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
         {/* ส่วนหัวของ Modal */}
-        <div className="p-3.5 sm:p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/95 shrink-0">
+        <div className="p-3.5 sm:p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white/95 dark:bg-slate-900/95 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <Icons.Camera className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 สแกนบาร์โค้ดด้วยกล้อง
-                <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-semibold border border-cyan-500/30">
+                <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-xs font-semibold border border-cyan-500/30">
                   สแกนต่อเนื่อง
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 ส่องบาร์โค้ดในกรอบเล็ง หรือพิมพ์รหัสด้านล่าง
               </p>
             </div>
@@ -423,7 +423,7 @@ export function PosCameraScannerModal({
               type="button"
               onClick={toggleFacingMode}
               title="สลับกล้องหน้า/หลัง"
-              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer border border-slate-700"
+              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
             >
               <Icons.Refresh className="w-5 h-5" />
             </button>
@@ -432,7 +432,7 @@ export function PosCameraScannerModal({
             <button
               type="button"
               onClick={onClose}
-              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             >
               <Icons.X className="w-5 h-5" />
             </button>
@@ -440,36 +440,36 @@ export function PosCameraScannerModal({
         </div>
 
         {/* ส่วนการ์ดสรุปตัวนับ 2 ช่องคู่กัน (สแกนสำเร็จ vs ไม่พบสินค้า) */}
-        <div className="px-4 py-3 bg-slate-950/70 border-b border-slate-800/80 shrink-0">
+        <div className="px-4 py-3 bg-slate-50 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800/80 shrink-0">
           <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
             {/* กล่องสีเขียว: สแกนสำเร็จ */}
-            <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/30">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-500/30">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
                 <Icons.Check className="w-6 h-6 stroke-[3]" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-emerald-400">สแกนสำเร็จ</p>
+                <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">สแกนสำเร็จ</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-2xl sm:text-3xl font-black text-emerald-300 font-mono">
+                  <span className="text-2xl sm:text-3xl font-black text-emerald-800 dark:text-emerald-300 font-mono">
                     {successCount}
                   </span>
-                  <span className="text-xs text-emerald-400/80">ชิ้น</span>
+                  <span className="text-xs text-emerald-600/80 dark:text-emerald-400/80">ชิ้น</span>
                 </div>
               </div>
             </div>
 
             {/* กล่องสีแดง: ไม่พบสินค้า */}
-            <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-rose-950/40 border border-rose-500/30">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-500/30">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0">
                 <Icons.AlertTriangle className="w-6 h-6" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-rose-400">ไม่พบสินค้า</p>
+                <p className="text-xs font-semibold text-rose-700 dark:text-rose-400">ไม่พบสินค้า</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-2xl sm:text-3xl font-black text-rose-300 font-mono">
+                  <span className="text-2xl sm:text-3xl font-black text-rose-800 dark:text-rose-300 font-mono">
                     {failedCount}
                   </span>
-                  <span className="text-xs text-rose-400/80">ครั้ง</span>
+                  <span className="text-xs text-rose-600/80 dark:text-rose-400/80">ครั้ง</span>
                 </div>
               </div>
             </div>
@@ -661,7 +661,7 @@ export function PosCameraScannerModal({
         )}
 
         {/* ส่วนด้านล่าง: ป้อนรหัสสำรอง & ปุ่มเสร็จสิ้น */}
-        <div className="p-3 sm:p-4 bg-slate-950 border-t border-slate-800 space-y-3 shrink-0">
+        <div className="p-3 sm:p-4 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 space-y-3 shrink-0">
           {/* ฟอร์มป้อนรหัสบาร์โค้ดสำรอง (ความสูงอย่างน้อย 48px) */}
           <form onSubmit={handleManualSubmit} className="flex gap-2">
             <input
@@ -669,12 +669,12 @@ export function PosCameraScannerModal({
               value={manualCode}
               onChange={(e) => setManualCode(e.target.value)}
               placeholder="หรือพิมพ์รหัสบาร์โค้ดด้วยตนเอง..."
-              className="flex-1 min-h-[48px] px-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white text-base placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none font-mono"
+              className="flex-1 min-h-[48px] px-4 py-2 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-base placeholder-slate-400 dark:placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none font-mono"
             />
             <button
               type="submit"
               disabled={!manualCode.trim()}
-              className="min-h-[48px] px-5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white font-bold text-sm sm:text-base rounded-xl border border-slate-700 transition-colors cursor-pointer shrink-0"
+              className="min-h-[48px] px-5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50 text-slate-800 dark:text-white font-bold text-sm sm:text-base rounded-xl border border-slate-300 dark:border-slate-700 transition-colors cursor-pointer shrink-0"
             >
               เพิ่ม
             </button>

@@ -89,13 +89,13 @@ export default function CustomersPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-            <span className="p-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+            <span className="p-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
               <Icons.Users className="w-7 h-7" />
             </span>
             ลูกค้าและบัญชีเงินเชื่อ
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             บริหารจัดการข้อมูลลูกค้า กำหนดวงเงินเครดิต และบันทึกการชำระหนี้คงค้าง
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function CustomersPage() {
           <button
             type="button"
             onClick={() => setIsARAgingModalOpen(true)}
-            className="flex-1 sm:flex-none min-h-[48px] px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+            className="flex-1 sm:flex-none min-h-[48px] px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
             <Icons.BarChart3 className="w-5 h-5" />
             <span>รายงานลูกหนี้ (AR Aging)</span>
@@ -127,47 +127,47 @@ export default function CustomersPage() {
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+        <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
             <Icons.Users className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-slate-400 font-medium">ลูกค้าทั้งหมดในระบบ</span>
-            <div className="text-2xl font-black text-white mt-0.5">{totalCustomers} ราย</div>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">ลูกค้าทั้งหมดในระบบ</span>
+            <div className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">{totalCustomers} ราย</div>
           </div>
         </div>
 
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+        <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500/30 flex items-center justify-center text-rose-500 dark:text-rose-400 shrink-0">
             <Icons.AlertCircle className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-slate-400 font-medium">ยอดหนี้ค้างชำระรวม (Outstanding)</span>
-            <div className="text-2xl font-black text-rose-400 mt-0.5">฿{formatSatangToBaht(totalDebt)}</div>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">ยอดหนี้ค้างชำระรวม (Outstanding)</span>
+            <div className="text-2xl font-black text-rose-600 dark:text-rose-400 mt-0.5">฿{formatSatangToBaht(totalDebt)}</div>
           </div>
         </div>
 
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+        <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
             <Icons.CreditCard className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-xs text-slate-400 font-medium">วงเงินเครดิตรวมที่อนุมัติ</span>
-            <div className="text-2xl font-black text-amber-300 mt-0.5">฿{formatSatangToBaht(totalCreditLimit)}</div>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">วงเงินเครดิตรวมที่อนุมัติ</span>
+            <div className="text-2xl font-black text-amber-600 dark:text-amber-300 mt-0.5">฿{formatSatangToBaht(totalCreditLimit)}</div>
           </div>
         </div>
       </div>
 
       {/* Search Toolbar */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="relative w-full sm:w-96">
-          <Icons.Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Icons.Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="ค้นหาตามชื่อลูกค้า หรือเบอร์โทรศัพท์..."
-            className="w-full h-11 pl-10 pr-4 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-white focus:outline-none"
+            className="w-full h-11 pl-10 pr-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none"
           />
         </div>
 
@@ -176,7 +176,7 @@ export default function CustomersPage() {
             type="button"
             onClick={loadCustomers}
             disabled={isLoading}
-            className="h-11 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer"
+            className="h-11 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer"
           >
             <Icons.Refresh className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             <span>รีเฟรชข้อมูล</span>
@@ -186,7 +186,7 @@ export default function CustomersPage() {
 
       {/* Customer Responsive Data View */}
       {error ? (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 text-center text-rose-400 text-sm">
+        <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center text-rose-500 text-sm">
           {error}
         </div>
       ) : (
@@ -197,14 +197,14 @@ export default function CustomersPage() {
           loadingMessage="กำลังโหลดข้อมูลลูกค้า..."
           tableBreakpoint="lg"
           emptyState={
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl flex flex-col items-center justify-center py-16 text-slate-500 space-y-2">
+            <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl flex flex-col items-center justify-center py-16 text-slate-400 dark:text-slate-500 space-y-2">
               <Icons.Users className="w-12 h-12 stroke-[1.5]" />
-              <p className="text-base font-semibold">ไม่พบข้อมูลลูกค้า</p>
-              <p className="text-xs">คลิกที่ปุ่ม &quot;ลงทะเบียนลูกค้าใหม่&quot; เพื่อเริ่มต้นสร้างโปรไฟล์ลูกค้า</p>
+              <p className="text-base font-semibold text-slate-700 dark:text-slate-300">ไม่พบข้อมูลลูกค้า</p>
+              <p className="text-xs text-slate-500">คลิกที่ปุ่ม &quot;ลงทะเบียนลูกค้าใหม่&quot; เพื่อเริ่มต้นสร้างโปรไฟล์ลูกค้า</p>
             </div>
           }
           tableHeader={
-            <thead className="bg-slate-800/80 text-slate-300 font-semibold border-b border-slate-700">
+            <thead className="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
               <tr>
                 <th className="py-3.5 px-4">ชื่อลูกค้า / ร้านค้า</th>
                 <th className="py-3.5 px-4">เบอร์โทรศัพท์</th>
@@ -219,29 +219,29 @@ export default function CustomersPage() {
           renderRow={(c) => {
             const availableCredit = getAvailableCredit(c);
             return (
-              <tr key={c.id} className="hover:bg-slate-800/40 transition-colors">
-                <td className="py-3.5 px-4 font-semibold text-white">
+              <tr key={c.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                <td className="py-3.5 px-4 font-semibold text-slate-900 dark:text-white">
                   <div>{c.name}</div>
-                  {c.email && <div className="text-xs text-slate-500">{c.email}</div>}
+                  {c.email && <div className="text-xs text-slate-400 dark:text-slate-500">{c.email}</div>}
                 </td>
-                <td className="py-3.5 px-4 text-slate-300 font-mono">
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-mono">
                   {c.phone || '-'}
                 </td>
-                <td className="py-3.5 px-4 text-right font-medium text-white">
+                <td className="py-3.5 px-4 text-right font-medium text-slate-900 dark:text-white">
                   ฿{formatSatangToBaht(c.creditLimit)}
                 </td>
-                <td className="py-3.5 px-4 text-right font-bold text-rose-400">
+                <td className="py-3.5 px-4 text-right font-bold text-rose-500 dark:text-rose-400">
                   ฿{formatSatangToBaht(c.outstandingBalance)}
                 </td>
-                <td className="py-3.5 px-4 text-right font-semibold text-cyan-400">
+                <td className="py-3.5 px-4 text-right font-semibold text-cyan-600 dark:text-cyan-400">
                   ฿{formatSatangToBaht(availableCredit)}
                 </td>
                 <td className="py-3.5 px-4 text-center">
                   <span
                     className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
                       c.isActive !== false
-                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                        : 'bg-slate-700/50 text-slate-400 border-slate-600'
+                        ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border-emerald-500/30'
+                        : 'bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-600'
                     }`}
                   >
                     {c.isActive !== false ? 'เปิดใช้งาน' : 'ระงับ'}
@@ -257,7 +257,7 @@ export default function CustomersPage() {
                           setPayCustomer(c);
                           setIsPayModalOpen(true);
                         }}
-                        className="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px]"
+                        className="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer min-h-[44px]"
                         title="บันทึกรับชำระเงินตัดหนี้"
                       >
                         <Icons.Receipt className="w-3.5 h-3.5" />
@@ -272,7 +272,7 @@ export default function CustomersPage() {
                         setCreditCustomer(c);
                         setIsCreditModalOpen(true);
                       }}
-                      className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-amber-600 dark:text-amber-400 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                       title="ปรับเปลี่ยนวงเงินเครดิต"
                       aria-label="ปรับเปลี่ยนวงเงินเครดิต"
                     >
@@ -286,7 +286,7 @@ export default function CustomersPage() {
                         setEditingCustomer(c);
                         setIsFormModalOpen(true);
                       }}
-                      className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                       title="แก้ไขข้อมูลลูกค้า"
                       aria-label="แก้ไขข้อมูลลูกค้า"
                     >
@@ -297,7 +297,7 @@ export default function CustomersPage() {
                     <button
                       type="button"
                       onClick={() => handleDelete(c)}
-                      className="p-2 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                      className="p-2 rounded-lg bg-slate-100 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-rose-900/40 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
                       title="ลบข้อมูลลูกค้า"
                       aria-label="ลบข้อมูลลูกค้า"
                     >
@@ -311,12 +311,12 @@ export default function CustomersPage() {
           renderCard={(c) => {
             const availableCredit = getAvailableCredit(c);
             return (
-              <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-4 shadow-sm space-y-3">
+              <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xs dark:shadow-sm space-y-3">
                 {/* แถวบน: ชื่อลูกค้า และสถานะ */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <h4 className="font-bold text-base text-white truncate">{c.name}</h4>
-                    <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400 font-mono">
+                    <h4 className="font-bold text-base text-slate-900 dark:text-white truncate">{c.name}</h4>
+                    <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400 font-mono">
                       {c.phone && <span>โทร: {c.phone}</span>}
                       {c.email && (
                         <>
@@ -329,8 +329,8 @@ export default function CustomersPage() {
                   <span
                     className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-bold border ${
                       c.isActive !== false
-                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                        : 'bg-slate-700/50 text-slate-400 border-slate-600'
+                        ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border-emerald-500/30'
+                        : 'bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-600'
                     }`}
                   >
                     {c.isActive !== false ? 'เปิดใช้งาน' : 'ระงับ'}
@@ -338,29 +338,29 @@ export default function CustomersPage() {
                 </div>
 
                 {/* แถวกลาง: ข้อมูลการเงิน 3 ช่อง */}
-                <div className="grid grid-cols-3 gap-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-center">
+                <div className="grid grid-cols-3 gap-2 bg-slate-50 dark:bg-slate-950/70 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center">
                   <div>
-                    <span className="text-[11px] text-slate-400 block">วงเงินเครดิต</span>
-                    <span className="text-sm font-bold text-white font-mono">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block">วงเงินเครดิต</span>
+                    <span className="text-sm font-bold text-slate-900 dark:text-white font-mono">
                       ฿{formatSatangToBaht(c.creditLimit)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-[11px] text-slate-400 block">หนี้ค้างชำระ</span>
-                    <span className="text-sm font-bold text-rose-400 font-mono">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block">หนี้ค้างชำระ</span>
+                    <span className="text-sm font-bold text-rose-500 dark:text-rose-400 font-mono">
                       ฿{formatSatangToBaht(c.outstandingBalance)}
                     </span>
                   </div>
                   <div>
-                    <span className="text-[11px] text-slate-400 block">วงเงินคงเหลือ</span>
-                    <span className="text-sm font-bold text-cyan-400 font-mono">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 block">วงเงินคงเหลือ</span>
+                    <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400 font-mono">
                       ฿{formatSatangToBaht(availableCredit)}
                     </span>
                   </div>
                 </div>
 
                 {/* แถวล่าง: ปุ่มจัดการ Touch Target >= 44-48px */}
-                <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 gap-2">
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800/80 gap-2">
                   {c.outstandingBalance > 0 ? (
                     <button
                       type="button"
@@ -368,13 +368,13 @@ export default function CustomersPage() {
                         setPayCustomer(c);
                         setIsPayModalOpen(true);
                       }}
-                      className="min-h-[44px] px-3.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
+                      className="min-h-[44px] px-3.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-all cursor-pointer"
                     >
                       <Icons.Receipt className="w-4 h-4" />
                       <span>รับชำระหนี้</span>
                     </button>
                   ) : (
-                    <span className="text-xs text-slate-500 font-medium">ไม่มีหนี้ค้าง</span>
+                    <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">ไม่มีหนี้ค้าง</span>
                   )}
 
                   <div className="flex items-center gap-1.5">
@@ -384,7 +384,7 @@ export default function CustomersPage() {
                         setCreditCustomer(c);
                         setIsCreditModalOpen(true);
                       }}
-                      className="min-h-[44px] px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 text-xs font-bold flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                      className="min-h-[44px] px-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-amber-600 dark:text-amber-400 border border-slate-200 dark:border-slate-700 text-xs font-bold flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
                       title="ปรับวงเงิน"
                     >
                       <Icons.CreditCard className="w-4 h-4" />
@@ -397,7 +397,7 @@ export default function CustomersPage() {
                         setEditingCustomer(c);
                         setIsFormModalOpen(true);
                       }}
-                      className="min-h-[44px] w-11 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+                      className="min-h-[44px] w-11 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 flex items-center justify-center active:scale-95 transition-all cursor-pointer"
                       title="แก้ไขข้อมูลลูกค้า"
                       aria-label="แก้ไขข้อมูลลูกค้า"
                     >
@@ -407,7 +407,7 @@ export default function CustomersPage() {
                     <button
                       type="button"
                       onClick={() => handleDelete(c)}
-                      className="min-h-[44px] w-11 rounded-xl bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 border border-slate-700 flex items-center justify-center active:scale-95 transition-all cursor-pointer"
+                      className="min-h-[44px] w-11 rounded-xl bg-slate-100 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-rose-900/40 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 flex items-center justify-center active:scale-95 transition-all cursor-pointer"
                       title="ลบข้อมูลลูกค้า"
                       aria-label="ลบข้อมูลลูกค้า"
                     >

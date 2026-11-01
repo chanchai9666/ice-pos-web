@@ -160,25 +160,25 @@ export function StockAdjustmentModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-xl bg-slate-900 border-2 border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="relative w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="stock-adjustment-title"
       >
         {/* ส่วนหัว Modal */}
-        <div className="p-5 sm:p-6 border-b-2 border-slate-800 flex items-start justify-between bg-slate-950/60">
+        <div className="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-start justify-between bg-slate-50/80 dark:bg-slate-950/60">
           <div>
             <div className="flex items-center gap-2">
-              <span className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400">
+              <span className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-600 dark:text-cyan-400">
                 <Icons.Boxes className="w-5 h-5" />
               </span>
-              <h2 id="stock-adjustment-title" className="text-xl font-black text-white">
+              <h2 id="stock-adjustment-title" className="text-xl font-black text-slate-900 dark:text-white">
                 ปรับปรุงยอดสต็อกสินค้า
               </h2>
             </div>
-            <p className="mt-1.5 text-sm text-slate-400 font-medium">
+            <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400 font-medium">
               {product?.name || `รหัส: ${stock.productId}`}
               {product?.sku && <span className="ml-2 font-mono">({product.sku})</span>}
             </p>
@@ -188,7 +188,7 @@ export function StockAdjustmentModal({
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-slate-850 hover:bg-slate-800 text-slate-400 hover:text-white transition-all active:scale-90 cursor-pointer disabled:opacity-30"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-all active:scale-90 cursor-pointer disabled:opacity-30"
             aria-label="ปิดหน้าต่าง"
           >
             <Icons.Close className="w-5 h-5" />
@@ -198,23 +198,23 @@ export function StockAdjustmentModal({
         {/* เนื้อหาฟอร์ม */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
           {/* ข้อมูลสต็อกปัจจุบัน */}
-          <div className="bg-slate-950 p-4 rounded-2xl border-2 border-slate-800 flex items-center justify-between">
+          <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <div className="text-sm">
-              <span className="text-slate-400 block font-medium">ยอดคงเหลือปัจจุบัน</span>
-              <span className="text-xs text-slate-400">เกณฑ์เตือน: {product?.minStock ?? 5} {unitName}</span>
+              <span className="text-slate-500 dark:text-slate-400 block font-medium">ยอดคงเหลือปัจจุบัน</span>
+              <span className="text-xs text-slate-400 dark:text-slate-500">เกณฑ์เตือน: {product?.minStock ?? 5} {unitName}</span>
             </div>
             <div className="text-right">
-              <span className="text-2xl font-black text-cyan-400 font-mono">
+              <span className="text-2xl font-black text-cyan-600 dark:text-cyan-400 font-mono">
                 {currentQuantity.toLocaleString()}
               </span>
-              <span className="ml-1.5 text-sm font-bold text-slate-300">{unitName}</span>
+              <span className="ml-1.5 text-sm font-bold text-slate-700 dark:text-slate-300">{unitName}</span>
             </div>
           </div>
 
           {/* เลือกประเภทการปรับปรุง */}
           <div>
-            <label className="block text-sm font-bold text-slate-200 mb-2">
-              ประเภทการปรับปรุงสต็อก <span className="text-rose-400">*</span>
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">
+              ประเภทการปรับปรุงสต็อก <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {ADJUSTMENT_TYPES.map((item) => {
@@ -232,10 +232,10 @@ export function StockAdjustmentModal({
                       }
                       setErrorMessage(null);
                     }}
-                    className={`min-h-[50px] p-3 rounded-xl border-2 text-left transition-all cursor-pointer flex items-center gap-3 ${
+                    className={`min-h-[50px] p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-3 ${
                       isSelected
-                        ? `${item.badgeClass} ring-2 ring-cyan-400/30 font-bold shadow-md`
-                        : 'bg-slate-850 border-slate-750 text-slate-300 hover:border-slate-650'
+                        ? `${item.badgeClass} ring-2 ring-cyan-500/30 font-bold shadow-sm`
+                        : 'bg-slate-50 dark:bg-slate-850 border-slate-200 dark:border-slate-750 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-650'
                     }`}
                   >
                     <div className="flex-1">
@@ -249,13 +249,13 @@ export function StockAdjustmentModal({
 
           {/* ช่องกรอกจำนวน */}
           <div>
-            <label className="block text-sm font-bold text-slate-200 mb-2">
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">
               {type === 'AUDIT'
                 ? 'ยอดตรวจนับได้จริง (Physical Count)'
                 : type === 'IN'
                 ? 'จำนวนสินค้าที่รับเข้า (+)'
                 : 'จำนวนสินค้าที่ตัดออก (-)'}{' '}
-              <span className="text-rose-400">*</span>
+              <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <div className="relative">
               <input
@@ -265,7 +265,7 @@ export function StockAdjustmentModal({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder={type === 'AUDIT' ? 'กรอกยอดนับจริง...' : 'ระบุจำนวน...'}
-                className="w-full h-[52px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-lg font-bold text-white font-mono placeholder-slate-450 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                className="w-full h-[52px] px-4 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-lg font-bold text-slate-900 dark:text-white font-mono placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                 autoFocus
               />
               <span className="absolute inset-y-0 right-4 flex items-center text-sm font-bold text-slate-400 pointer-events-none">
@@ -274,27 +274,27 @@ export function StockAdjustmentModal({
             </div>
 
             {/* แสดงการคำนวณผลลัพธ์ Delta & New Stock */}
-            <div className="mt-3 p-3.5 bg-slate-850/80 rounded-xl border border-slate-750 text-sm flex items-center justify-between">
-              <span className="text-slate-300">
+            <div className="mt-3 p-3.5 bg-slate-50 dark:bg-slate-850/80 rounded-xl border border-slate-200 dark:border-slate-750 text-sm flex items-center justify-between">
+              <span className="text-slate-600 dark:text-slate-300">
                 ผลต่าง (Delta):{' '}
                 <strong
                   className={`font-mono font-bold text-base ${
                     quantityDelta > 0
-                      ? 'text-emerald-400'
+                      ? 'text-emerald-600 dark:text-emerald-400'
                       : quantityDelta < 0
-                      ? 'text-rose-400'
-                      : 'text-slate-400'
+                      ? 'text-rose-600 dark:text-rose-400'
+                      : 'text-slate-500 dark:text-slate-400'
                   }`}
                 >
                   {quantityDelta > 0 ? `+${quantityDelta}` : quantityDelta} {unitName}
                 </strong>
               </span>
 
-              <span className="text-slate-300">
+              <span className="text-slate-600 dark:text-slate-300">
                 สต็อกหลังปรับ:{' '}
                 <strong
                   className={`font-mono font-bold text-base ${
-                    newEstimatedStock <= 0 ? 'text-rose-400' : 'text-cyan-300'
+                    newEstimatedStock <= 0 ? 'text-rose-600 dark:text-rose-400' : 'text-cyan-600 dark:text-cyan-300'
                   }`}
                 >
                   {newEstimatedStock.toLocaleString()} {unitName}
@@ -303,7 +303,7 @@ export function StockAdjustmentModal({
             </div>
 
             {validationError && (
-              <p className="mt-2 text-xs font-semibold text-rose-400 flex items-center gap-1.5">
+              <p className="mt-2 text-xs font-semibold text-rose-500 dark:text-rose-400 flex items-center gap-1.5">
                 <Icons.AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>{validationError}</span>
               </p>
@@ -312,18 +312,18 @@ export function StockAdjustmentModal({
 
           {/* ช่องระบุเหตุผล (บังคับ) */}
           <div>
-            <label className="block text-sm font-bold text-slate-200 mb-2">
-              เหตุผลการปรับปรุงสต็อก <span className="text-rose-400">*</span>
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">
+              เหตุผลการปรับปรุงสต็อก <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <input
               type="text"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="เช่น นับรอบประจำสัปดาห์, สินค้าชำรุดจากการขนส่ง, ได้รับของแถม..."
-              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-sm font-medium text-white placeholder-slate-450 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+              className="w-full h-[50px] px-4 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
             />
             {trimmedReason.length > 0 && trimmedReason.length < 3 && (
-              <p className="mt-1 text-xs text-amber-400 font-medium">
+              <p className="mt-1 text-xs text-amber-500 dark:text-amber-400 font-medium">
                 กรุณาระบุเหตุผลอย่างน้อย 3 ตัวอักษร
               </p>
             )}
@@ -331,19 +331,19 @@ export function StockAdjustmentModal({
 
           {/* ข้อความแจ้งเตือนความผิดพลาดจาก Server */}
           {errorMessage && (
-            <div className="p-3.5 bg-rose-500/10 border-2 border-rose-500/30 rounded-xl text-rose-300 text-sm flex items-start gap-2.5">
-              <Icons.AlertTriangle className="w-5 h-5 shrink-0 text-rose-400 mt-0.5" />
+            <div className="p-3.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-600 dark:text-rose-300 text-sm flex items-start gap-2.5">
+              <Icons.AlertTriangle className="w-5 h-5 shrink-0 text-rose-500 dark:text-rose-400 mt-0.5" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           {/* ปุ่มบันทึกและยกเลิก */}
-          <div className="pt-3 border-t-2 border-slate-850 flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-850 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="min-h-[50px] px-5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 rounded-xl font-bold text-sm border-2 border-slate-700 transition-all cursor-pointer disabled:opacity-50"
+              className="min-h-[50px] px-5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-300 rounded-xl font-bold text-sm border border-slate-200 dark:border-slate-700 transition-all cursor-pointer disabled:opacity-50"
             >
               ยกเลิก
             </button>

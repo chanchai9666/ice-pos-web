@@ -39,9 +39,9 @@ export function RouteGuard({ children }: RouteGuardProps) {
 
   if (isLoading || !isAuthorized) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400 gap-3">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 gap-3">
         <div className="w-8 h-8 border-3 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-        <span className="text-sm">กำลังตรวจสอบสิทธิ์การเข้าใช้งาน...</span>
+        <span className="text-sm font-medium">กำลังตรวจสอบสิทธิ์การเข้าใช้งาน...</span>
       </div>
     );
   }

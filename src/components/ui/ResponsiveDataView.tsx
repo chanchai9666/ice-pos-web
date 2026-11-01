@@ -58,22 +58,22 @@ export function ResponsiveDataView<T>({
           {Array.from({ length: skeletonCount }).map((_, i) => (
             <div
               key={`skeleton-card-${i}`}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-4 animate-pulse space-y-3"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 animate-pulse space-y-3"
             >
               <div className="flex items-center justify-between">
-                <div className="h-5 bg-slate-800 rounded-md w-1/2" />
-                <div className="h-5 bg-slate-800 rounded-md w-1/4" />
+                <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded-md w-1/2" />
+                <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded-md w-1/4" />
               </div>
-              <div className="h-4 bg-slate-800/60 rounded-md w-3/4" />
-              <div className="h-8 bg-slate-800/40 rounded-xl w-full" />
+              <div className="h-4 bg-slate-100 dark:bg-slate-800/60 rounded-md w-3/4" />
+              <div className="h-8 bg-slate-100 dark:bg-slate-800/40 rounded-xl w-full" />
             </div>
           ))}
         </div>
 
         {/* Desktop Skeleton Table */}
-        <div className={`hidden ${tableBreakpoint === 'md' ? 'md:block' : tableBreakpoint === 'xl' ? 'xl:block' : 'lg:block'} bg-slate-900 border-2 border-slate-800 rounded-2xl p-8`}>
-          <div className="flex flex-col items-center justify-center space-y-3 text-slate-400">
-            <div className="w-8 h-8 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+        <div className={`hidden ${tableBreakpoint === 'md' ? 'md:block' : tableBreakpoint === 'xl' ? 'xl:block' : 'lg:block'} bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl p-8`}>
+          <div className="flex flex-col items-center justify-center space-y-3 text-slate-500 dark:text-slate-400">
+            <div className="w-8 h-8 border-3 border-cyan-500 dark:border-cyan-400 border-t-transparent rounded-full animate-spin" />
             <p className="text-sm font-semibold">{loadingMessage}</p>
           </div>
         </div>
@@ -87,9 +87,9 @@ export function ResponsiveDataView<T>({
       return <>{emptyState}</>;
     }
     return (
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center text-slate-400 space-y-3">
-        <Icons.Folder className="w-12 h-12 mx-auto text-slate-600" />
-        <h4 className="text-base font-bold text-slate-200">ไม่พบรายการข้อมูล</h4>
+      <div className="bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center text-slate-500 dark:text-slate-400 space-y-3">
+        <Icons.Folder className="w-12 h-12 mx-auto text-slate-400 dark:text-slate-600" />
+        <h4 className="text-base font-bold text-slate-800 dark:text-slate-200">ไม่พบรายการข้อมูล</h4>
         <p className="text-sm text-slate-500">ยังไม่มีรายการข้อมูลในระบบหรือเงื่อนไขการค้นหานี้</p>
       </div>
     );
@@ -121,11 +121,11 @@ export function ResponsiveDataView<T>({
       </div>
 
       {/* 2. Desktop Table View (แสดงบนหน้าจอใหญ่) */}
-      <div className={`${breakpointDesktopBlock} bg-slate-900 border-2 border-slate-800 rounded-2xl overflow-hidden shadow-md`}>
+      <div className={`${breakpointDesktopBlock} bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xs dark:shadow-md`}>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-base text-slate-200">
+          <table className="w-full text-left text-base text-slate-800 dark:text-slate-200">
             {tableHeader}
-            <tbody className="divide-y-2 divide-slate-800/80">
+            <tbody className="divide-y-2 divide-slate-100 dark:divide-slate-800/80">
               {data.map((item, index) => renderRow(item, index))}
             </tbody>
           </table>

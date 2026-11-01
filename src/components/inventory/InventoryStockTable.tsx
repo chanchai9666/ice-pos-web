@@ -62,31 +62,31 @@ export function InventoryStockTable({
   };
 
   return (
-    <div className="bg-slate-900 border-2 border-slate-800 rounded-2xl shadow-xl overflow-hidden flex flex-col">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col">
       {/* Loading Skeleton */}
       {isLoading ? (
         <div className="p-6 space-y-4">
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
-              className="h-16 bg-slate-850 border border-slate-800 rounded-xl animate-pulse flex items-center px-4 justify-between"
+              className="h-16 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl animate-pulse flex items-center px-4 justify-between"
             >
               <div className="space-y-2">
-                <div className="h-4 w-48 bg-slate-750 rounded" />
-                <div className="h-3 w-28 bg-slate-800 rounded" />
+                <div className="h-4 w-48 bg-slate-200 dark:bg-slate-750 rounded" />
+                <div className="h-3 w-28 bg-slate-100 dark:bg-slate-800 rounded" />
               </div>
-              <div className="h-8 w-24 bg-slate-750 rounded-lg" />
+              <div className="h-8 w-24 bg-slate-200 dark:bg-slate-750 rounded-lg" />
             </div>
           ))}
         </div>
       ) : items.length === 0 ? (
         /* Empty State */
         <div className="p-12 text-center flex flex-col items-center justify-center gap-3">
-          <div className="w-16 h-16 rounded-2xl bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-slate-500">
+          <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500">
             <Icons.Boxes className="w-8 h-8" />
           </div>
-          <h3 className="text-lg font-bold text-slate-200">ไม่พบรายการสต็อกสินค้า</h3>
-          <p className="text-sm text-slate-400 max-w-md">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">ไม่พบรายการสต็อกสินค้า</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md">
             ไม่พบข้อมูลสินค้าตรงตามเงื่อนไขค้นหา หรือยังไม่มีการบันทึกสต็อกในสาขานี้
           </p>
         </div>
@@ -96,7 +96,7 @@ export function InventoryStockTable({
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b-2 border-slate-800 bg-slate-950/60 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-950/60 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   <th className="py-4 px-4 sm:px-6">สินค้า / SKU / บาร์โค้ด</th>
                   <th className="py-4 px-4">หมวดหมู่</th>
                   <th className="py-4 px-4 text-center">หน่วยนับ</th>
@@ -106,7 +106,7 @@ export function InventoryStockTable({
                   <th className="py-4 px-4 sm:px-6 text-right">จัดการ</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/80">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                 {items.map((stock) => {
                   const product = stock.product;
                   const isWeightBased = product?.productType === 'BY_WEIGHT';
@@ -118,13 +118,13 @@ export function InventoryStockTable({
                   return (
                     <tr
                       key={stock.id || `${stock.branchId}-${stock.productId}`}
-                      className="hover:bg-slate-850/60 transition-colors"
+                      className="hover:bg-slate-50 dark:hover:bg-slate-850/60 transition-colors"
                     >
                       {/* ข้อมูลสินค้า */}
                       <td className="py-4 px-4 sm:px-6">
                         <div className="flex flex-col">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-slate-100 text-base">
+                            <span className="font-bold text-slate-900 dark:text-slate-100 text-base">
                               {product?.name || `รหัสสินค้า: ${stock.productId}`}
                             </span>
                             {isWeightBased && (
@@ -134,7 +134,7 @@ export function InventoryStockTable({
                               </span>
                             )}
                           </div>
-                          <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-400 font-mono">
+                          <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 dark:text-slate-400 font-mono">
                             {product?.sku && <span>SKU: {product.sku}</span>}
                             {product?.barcode && (
                               <>
@@ -148,14 +148,14 @@ export function InventoryStockTable({
 
                       {/* หมวดหมู่ */}
                       <td className="py-4 px-4">
-                        <span className="text-sm font-medium text-slate-300">
+                        <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
                           {product?.category?.name || '-'}
                         </span>
                       </td>
 
                       {/* หน่วยนับ */}
                       <td className="py-4 px-4 text-center">
-                        <span className="text-sm text-slate-300 font-medium">
+                        <span className="text-sm text-slate-600 dark:text-slate-300 font-medium">
                           {unitName}
                         </span>
                       </td>
@@ -163,17 +163,17 @@ export function InventoryStockTable({
                       {/* จำนวนคงเหลือ */}
                       <td className="py-4 px-4 text-right">
                         {isWeightBased ? (
-                          <span className="text-lg font-bold font-mono text-slate-500">
+                          <span className="text-lg font-bold font-mono text-slate-400 dark:text-slate-500">
                             -
                           </span>
                         ) : (
                           <span
                             className={`text-lg font-black font-mono ${
                               isOutOfStock
-                                ? 'text-rose-400'
+                                ? 'text-rose-600 dark:text-rose-400'
                                 : isLowStock
-                                ? 'text-amber-400'
-                                : 'text-emerald-400'
+                                ? 'text-amber-600 dark:text-amber-400'
+                                : 'text-emerald-600 dark:text-emerald-400'
                             }`}
                           >
                             {stock.quantity.toLocaleString()}
@@ -183,7 +183,7 @@ export function InventoryStockTable({
 
                       {/* เกณฑ์เตือน */}
                       <td className="py-4 px-4 text-center">
-                        <span className="text-sm font-mono text-slate-400">
+                        <span className="text-sm font-mono text-slate-500 dark:text-slate-400">
                           {isWeightBased ? '-' : minStock}
                         </span>
                       </td>
@@ -199,15 +199,15 @@ export function InventoryStockTable({
                           type="button"
                           onClick={() => onAdjustStock(stock)}
                           disabled={isWeightBased}
-                          className={`min-h-[48px] px-4 py-2 rounded-xl border-2 font-bold text-sm transition-all inline-flex items-center gap-2 shadow-sm ${
+                          className={`min-h-[48px] px-4 py-2 rounded-xl border font-bold text-sm transition-all inline-flex items-center gap-2 shadow-sm ${
                             isWeightBased
-                              ? 'bg-slate-850/80 border-slate-800 text-slate-500 cursor-not-allowed opacity-40'
-                              : 'bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white border-slate-700 hover:border-cyan-500 active:scale-95 cursor-pointer'
+                              ? 'bg-slate-100 dark:bg-slate-850/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-40'
+                              : 'bg-slate-100 hover:bg-cyan-600 dark:bg-slate-800 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border-slate-200 hover:border-cyan-500 dark:border-slate-700 dark:hover:border-cyan-500 active:scale-95 cursor-pointer'
                           }`}
                           title={isWeightBased ? 'สินค้าประเภทชั่งขายไม่จำเป็นต้องปรับสต็อก' : `ปรับยอดสต็อก ${product?.name || ''}`}
                           aria-label={`ปรับยอดสต็อก ${product?.name || ''}`}
                         >
-                          <Icons.Boxes className={`w-4 h-4 ${isWeightBased ? 'text-slate-500' : 'text-cyan-400 group-hover:text-white'}`} />
+                          <Icons.Boxes className={`w-4 h-4 ${isWeightBased ? 'text-slate-400 dark:text-slate-500' : 'text-cyan-600 dark:text-cyan-400 group-hover:text-white'}`} />
                           <span>ปรับสต็อก</span>
                         </button>
                       </td>
@@ -219,7 +219,7 @@ export function InventoryStockTable({
           </div>
 
           {/* Mobile Card Rows (Visible on small screens) */}
-          <div className="md:hidden divide-y divide-slate-800">
+          <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
             {items.map((stock) => {
               const product = stock.product;
               const isWeightBased = product?.productType === 'BY_WEIGHT';
@@ -231,12 +231,12 @@ export function InventoryStockTable({
               return (
                 <div
                   key={stock.id || `${stock.branchId}-${stock.productId}`}
-                  className="p-4 flex flex-col gap-3 hover:bg-slate-850/40 transition-colors"
+                  className="p-4 flex flex-col gap-3 hover:bg-slate-50 dark:hover:bg-slate-850/40 transition-colors"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-bold text-slate-100 text-base leading-tight">
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-base leading-tight">
                           {product?.name || `รหัส: ${stock.productId}`}
                         </h4>
                         {isWeightBased && (
@@ -246,7 +246,7 @@ export function InventoryStockTable({
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-400 font-mono mt-1">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-1">
                         {product?.barcode
                           ? `บาร์โค้ด: ${product.barcode}`
                           : product?.sku
@@ -257,8 +257,8 @@ export function InventoryStockTable({
                     <div>{getStockBadge(stock.quantity, product?.minStock, isWeightBased)}</div>
                   </div>
 
-                  <div className="flex items-center justify-between bg-slate-950/70 p-3 rounded-xl border border-slate-800">
-                    <div className="text-xs text-slate-400">
+                  <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-950/70 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                    <div className="text-xs text-slate-500 dark:text-slate-400">
                       <span>หมวด: {product?.category?.name || '-'}</span>
                       <span className="mx-1.5">•</span>
                       <span>
@@ -266,7 +266,7 @@ export function InventoryStockTable({
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-xs text-slate-400 block">คงเหลือ</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 block">คงเหลือ</span>
                       {isWeightBased ? (
                         <span className="text-base font-bold font-mono text-slate-400">
                           ชั่งขาย (ไม่นับสต็อก)
@@ -275,10 +275,10 @@ export function InventoryStockTable({
                         <span
                           className={`text-xl font-black font-mono ${
                             isOutOfStock
-                              ? 'text-rose-400'
+                              ? 'text-rose-600 dark:text-rose-400'
                               : isLowStock
-                              ? 'text-amber-400'
-                              : 'text-emerald-400'
+                              ? 'text-amber-600 dark:text-amber-400'
+                              : 'text-emerald-600 dark:text-emerald-400'
                           }`}
                         >
                           {stock.quantity.toLocaleString()} {unitName}
@@ -291,14 +291,14 @@ export function InventoryStockTable({
                     type="button"
                     onClick={() => onAdjustStock(stock)}
                     disabled={isWeightBased}
-                    className={`w-full min-h-[48px] py-2.5 px-4 rounded-xl border-2 font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm ${
+                    className={`w-full min-h-[48px] py-2.5 px-4 rounded-xl border font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm ${
                       isWeightBased
-                        ? 'bg-slate-850/80 border-slate-800 text-slate-500 cursor-not-allowed opacity-40'
-                        : 'bg-slate-800 hover:bg-cyan-600 text-slate-200 hover:text-white border-slate-700 hover:border-cyan-500 active:scale-95 cursor-pointer'
+                        ? 'bg-slate-100 dark:bg-slate-850/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-40'
+                        : 'bg-slate-100 hover:bg-cyan-600 dark:bg-slate-800 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border-slate-200 hover:border-cyan-500 dark:border-slate-700 dark:hover:border-cyan-500 active:scale-95 cursor-pointer'
                     }`}
                     title={isWeightBased ? 'สินค้าประเภทชั่งขายไม่จำเป็นต้องปรับสต็อก' : 'ปรับยอดสต็อก'}
                   >
-                    <Icons.Boxes className={`w-4 h-4 ${isWeightBased ? 'text-slate-500' : 'text-cyan-400'}`} />
+                    <Icons.Boxes className={`w-4 h-4 ${isWeightBased ? 'text-slate-400 dark:text-slate-500' : 'text-cyan-600 dark:text-cyan-400'}`} />
                     <span>{isWeightBased ? 'สินค้าชั่งขาย (ไม่นับสต็อก)' : 'ปรับยอดสต็อก'}</span>
                   </button>
                 </div>

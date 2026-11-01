@@ -59,7 +59,7 @@ export function AppBottomNav({ onToggleMenu }: AppBottomNavProps) {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800/90 shadow-2xl shadow-black/60 pb-[env(safe-area-inset-bottom)]"
+      className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800/90 shadow-2xl shadow-slate-300/40 dark:shadow-black/60 pb-[env(safe-area-inset-bottom)]"
       aria-label="แถบนำทางหลักด้านล่างสำหรับอุปกรณ์พกพา"
     >
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
@@ -72,8 +72,8 @@ export function AppBottomNav({ onToggleMenu }: AppBottomNavProps) {
               href={item.path}
               className={`flex-1 flex flex-col items-center justify-center min-h-[48px] py-1.5 px-2 rounded-xl transition-all ${
                 active
-                  ? 'text-cyan-400 font-bold bg-cyan-500/10'
-                  : 'text-slate-400 hover:text-slate-200 active:bg-slate-800/60 font-medium'
+                  ? 'text-cyan-700 dark:text-cyan-400 font-bold bg-cyan-50 dark:bg-cyan-500/10'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 active:bg-slate-100 dark:active:bg-slate-800/60 font-medium'
               }`}
             >
               <div className="relative">
@@ -91,7 +91,7 @@ export function AppBottomNav({ onToggleMenu }: AppBottomNavProps) {
           <button
             type="button"
             onClick={() => triggerCameraScanner(router, pathname)}
-            className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-cyan-400 to-blue-600 text-slate-950 flex flex-col items-center justify-center shadow-lg shadow-cyan-500/40 ring-4 ring-slate-900 hover:shadow-cyan-400/60 active:scale-95 transition-all duration-200 cursor-pointer group"
+            className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 via-cyan-400 to-blue-600 text-slate-950 flex flex-col items-center justify-center shadow-lg shadow-cyan-500/40 ring-4 ring-white dark:ring-slate-900 hover:shadow-cyan-400/60 active:scale-95 transition-all duration-200 cursor-pointer group"
             aria-label="สแกนสินค้าด้วยกล้อง"
           >
             <Icons.Camera className="w-6 h-6 text-slate-950 group-hover:scale-110 transition-transform" />
@@ -110,8 +110,8 @@ export function AppBottomNav({ onToggleMenu }: AppBottomNavProps) {
               href={item.path}
               className={`flex-1 flex flex-col items-center justify-center min-h-[48px] py-1.5 px-2 rounded-xl transition-all ${
                 active
-                  ? 'text-cyan-400 font-bold bg-cyan-500/10'
-                  : 'text-slate-400 hover:text-slate-200 active:bg-slate-800/60 font-medium'
+                  ? 'text-cyan-700 dark:text-cyan-400 font-bold bg-cyan-50 dark:bg-cyan-500/10'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 active:bg-slate-100 dark:active:bg-slate-800/60 font-medium'
               }`}
             >
               <div className="relative">
@@ -128,7 +128,7 @@ export function AppBottomNav({ onToggleMenu }: AppBottomNavProps) {
         <button
           type="button"
           onClick={onToggleMenu}
-          className="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1.5 px-2 rounded-xl text-slate-400 hover:text-slate-200 active:bg-slate-800/60 font-medium transition-all"
+          className="flex-1 flex flex-col items-center justify-center min-h-[48px] py-1.5 px-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 active:bg-slate-100 dark:active:bg-slate-800/60 font-medium transition-all"
           aria-label="เปิดเมนูทั้งหมด"
         >
           <Icons.Menu className="w-6 h-6" />

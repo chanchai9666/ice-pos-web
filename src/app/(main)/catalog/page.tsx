@@ -220,14 +220,14 @@ export default function CatalogPage() {
         <div
           className={`fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-xl shadow-2xl border text-sm font-medium animate-in fade-in slide-in-from-bottom-3 duration-200 ${
             toastMessage.type === 'success'
-              ? 'bg-emerald-950/90 text-emerald-200 border-emerald-500/40'
-              : 'bg-rose-950/90 text-rose-200 border-rose-500/40'
+              ? 'bg-emerald-50 dark:bg-emerald-950/90 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-500/40'
+              : 'bg-rose-50 dark:bg-rose-950/90 text-rose-900 dark:text-rose-200 border-rose-300 dark:border-rose-500/40'
           }`}
         >
           {toastMessage.type === 'success' ? (
-            <Icons.Check className="w-4 h-4 text-emerald-400" />
+            <Icons.Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           ) : (
-            <Icons.AlertCircle className="w-4 h-4 text-rose-400" />
+            <Icons.AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
           )}
           <span>{toastMessage.text}</span>
         </div>
@@ -236,11 +236,11 @@ export default function CatalogPage() {
       {/* Header ส่วนหัวของหน้า */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
-            <Icons.Package className="w-6 h-6 text-cyan-400" />
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
+            <Icons.Package className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
             จัดการแคตตาล็อกสินค้า (Product Catalog)
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             บริหารจัดการรายการสินค้า บาร์โค้ด ราคาขาย และโครงสร้างหมวดหมู่สินค้า
           </p>
         </div>

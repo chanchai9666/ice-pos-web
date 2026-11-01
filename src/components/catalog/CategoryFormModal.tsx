@@ -115,16 +115,16 @@ export function CategoryFormModal({
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-lg bg-slate-900 border-2 border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8 text-slate-100 z-10 animate-in fade-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between pb-5 border-b border-slate-800">
-          <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-3">
-            <Icons.Boxes className="w-7 h-7 text-cyan-400" />
+      <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8 text-slate-800 dark:text-slate-100 z-10 animate-in fade-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-slate-800">
+          <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+            <Icons.Boxes className="w-7 h-7 text-cyan-600 dark:text-cyan-400" />
             {isEditing ? 'แก้ไขหมวดหมู่สินค้า' : 'สร้างหมวดหมู่สินค้าใหม่'}
           </h3>
           <button
             type="button"
             onClick={onClose}
-            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 active:scale-95 transition-all cursor-pointer"
+            className="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-all cursor-pointer"
             aria-label="ปิดหน้าต่าง"
           >
             <Icons.X className="w-6 h-6" />
@@ -134,30 +134,30 @@ export function CategoryFormModal({
         <form onSubmit={handleSubmit} className="space-y-5 pt-5">
           {/* ชื่อหมวดหมู่ */}
           <div className="space-y-2">
-            <label className="block text-base font-bold text-slate-200">
-              ชื่อหมวดหมู่ <span className="text-rose-400">*</span>
+            <label className="block text-base font-bold text-slate-700 dark:text-slate-200">
+              ชื่อหมวดหมู่ <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="เช่น น้ำแข็งหลอด, น้ำดื่ม, เครื่องดื่ม"
-              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all"
+              className="w-full h-[50px] px-4 bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-base text-slate-900 dark:text-slate-100 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-400/30 outline-none transition-all"
             />
             {formErrors.name && (
-              <span className="text-sm font-semibold text-rose-400">{formErrors.name}</span>
+              <span className="text-sm font-semibold text-rose-500 dark:text-rose-400">{formErrors.name}</span>
             )}
           </div>
 
           {/* หมวดหมู่หลัก (Hierarchy) */}
           <div className="space-y-2">
-            <label className="block text-base font-bold text-slate-200">
+            <label className="block text-base font-bold text-slate-700 dark:text-slate-200">
               หมวดหมู่หลัก (ถ้าเป็นหมวดหมู่ย่อย)
             </label>
             <select
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
-              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none cursor-pointer"
+              className="w-full h-[50px] px-4 bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-base text-slate-800 dark:text-slate-100 focus:border-cyan-500 outline-none cursor-pointer"
             >
               <option value="">-- เป็นหมวดหมู่หลัก (ไม่มีหมวดหมู่แม่) --</option>
               {eligibleParents.map((p) => (
@@ -170,23 +170,23 @@ export function CategoryFormModal({
 
           {/* ลำดับจัดเรียง */}
           <div className="space-y-2">
-            <label className="block text-base font-bold text-slate-200">
+            <label className="block text-base font-bold text-slate-700 dark:text-slate-200">
               ลำดับการแสดงผล (Sort Order)
             </label>
             <input
               type="number"
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="w-full h-[50px] px-4 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none"
+              className="w-full h-[50px] px-4 bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-base text-slate-900 dark:text-slate-100 focus:border-cyan-500 outline-none"
             />
-            <p className="text-sm text-slate-400 font-medium">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
               ค่าน้อยจะแสดงก่อนในเมนูและหน้าจอขายหน้าร้าน (เช่น 1, 2, 3...)
             </p>
           </div>
 
           {/* คำอธิบาย */}
           <div className="space-y-2">
-            <label className="block text-base font-bold text-slate-200">
+            <label className="block text-base font-bold text-slate-700 dark:text-slate-200">
               คำอธิบายหมวดหมู่
             </label>
             <textarea
@@ -194,7 +194,7 @@ export function CategoryFormModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="ระบุคำอธิบายสั้นๆ..."
-              className="w-full px-4 py-3 bg-slate-950 border-2 border-slate-700 rounded-xl text-base text-slate-100 focus:border-cyan-400 outline-none resize-none"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-base text-slate-900 dark:text-slate-100 focus:border-cyan-500 outline-none resize-none"
             />
           </div>
 
@@ -205,19 +205,19 @@ export function CategoryFormModal({
                 type="checkbox"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="w-6 h-6 rounded-md bg-slate-950 border-2 border-slate-600 text-cyan-500 focus:ring-cyan-400 cursor-pointer"
+                className="w-6 h-6 rounded-md bg-slate-50 dark:bg-slate-950 border-2 border-slate-300 dark:border-slate-600 text-cyan-500 focus:ring-cyan-400 cursor-pointer"
               />
-              <span className="text-base font-bold text-slate-100">เปิดใช้งานหมวดหมู่นี้ทันที</span>
+              <span className="text-base font-bold text-slate-800 dark:text-slate-100">เปิดใช้งานหมวดหมู่นี้ทันที</span>
             </label>
           </div>
 
           {/* Footer Buttons */}
-          <div className="pt-5 border-t border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="min-h-[48px] px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 text-base font-bold border-2 border-slate-700 transition-all cursor-pointer"
+              className="min-h-[48px] px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 text-slate-700 dark:text-slate-200 text-base font-bold border-2 border-slate-200 dark:border-slate-700 transition-all cursor-pointer"
             >
               ยกเลิก
             </button>

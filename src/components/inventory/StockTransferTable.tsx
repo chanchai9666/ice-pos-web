@@ -74,17 +74,17 @@ export function StockTransferTable({ currentBranchId }: StockTransferTableProps)
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white/80 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
         {/* ค้นหา/รับสินค้าด้วย Transfer ID */}
         <div className="flex items-center gap-2 flex-1 max-w-md">
           <div className="relative flex-1">
-            <Icons.RotateCw className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Icons.RotateCw className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={receiveInputId}
               onChange={(e) => setReceiveInputId(e.target.value)}
               placeholder="ระบุรหัสใบโอนเพื่อรับเข้าคลัง (UUID)..."
-              className="w-full h-11 pl-9 pr-3 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-xs sm:text-sm text-white focus:outline-none"
+              className="w-full h-11 pl-9 pr-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-xs sm:text-sm text-slate-900 dark:text-white focus:outline-none"
             />
           </div>
           <button
@@ -114,10 +114,10 @@ export function StockTransferTable({ currentBranchId }: StockTransferTableProps)
       </div>
 
       {/* Transfers Table */}
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden">
+      <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-slate-950/80 text-xs font-semibold text-slate-400 border-b border-slate-800 uppercase tracking-wider">
+          <table className="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+            <thead className="bg-slate-50 dark:bg-slate-950/80 text-xs font-semibold text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 uppercase tracking-wider">
               <tr>
                 <th className="py-3.5 px-4">เลขที่ใบโอน</th>
                 <th className="py-3.5 px-4">สาขาต้นทาง</th>
@@ -127,40 +127,40 @@ export function StockTransferTable({ currentBranchId }: StockTransferTableProps)
                 <th className="py-3.5 px-4 text-right">การจัดการ</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
               {transfers.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-12 text-center text-slate-500">
-                    <Icons.Boxes className="w-10 h-10 mx-auto mb-2 text-slate-600 stroke-[1.5]" />
+                  <td colSpan={6} className="py-12 text-center text-slate-400 dark:text-slate-500">
+                    <Icons.Boxes className="w-10 h-10 mx-auto mb-2 text-slate-300 dark:text-slate-600 stroke-[1.5]" />
                     <p className="text-base font-medium">ยังไม่มีรายการโอนย้ายสินค้าในเซสชันนี้</p>
-                    <p className="text-xs text-slate-500 mt-1">
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
                       กดปุ่ม &quot;สร้างใบโอนสินค้า&quot; เพื่อส่งสินค้าไปยังสาขาอื่น หรือระบุรหัสใบโอนด้านบนเพื่อตรวจรับ
                     </p>
                   </td>
                 </tr>
               ) : (
                 transfers.map((t) => (
-                  <tr key={t.id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3.5 px-4 font-mono font-medium text-white">
+                  <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-850/40 transition-colors">
+                    <td className="py-3.5 px-4 font-mono font-medium text-slate-900 dark:text-white">
                       {t.transferNo || t.id.substring(0, 8)}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300">
+                    <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
                       {t.fromBranchId}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300">
+                    <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
                       {t.toBranchId}
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300">
+                    <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
                       {t.lines?.length || 0} รายการ
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       <span
                         className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
                           t.status === 'RECEIVED'
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
                             : t.status === 'CANCELLED'
-                            ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                            : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/30'
+                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30'
                         }`}
                       >
                         {t.status === 'RECEIVED'
@@ -176,7 +176,7 @@ export function StockTransferTable({ currentBranchId }: StockTransferTableProps)
                           type="button"
                           onClick={() => handleReceive(t.id)}
                           disabled={receivingId === t.id}
-                          className="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-600/40 font-semibold text-xs transition-colors cursor-pointer"
+                          className="px-3 py-1.5 rounded-xl bg-emerald-600/10 hover:bg-emerald-600/20 dark:bg-emerald-600/20 dark:hover:bg-emerald-600/30 text-emerald-600 dark:text-emerald-300 border border-emerald-600/40 font-semibold text-xs transition-colors cursor-pointer"
                         >
                           {receivingId === t.id ? 'กำลังรับ...' : 'รับเข้าคลัง'}
                         </button>

@@ -111,19 +111,19 @@ export default function ReportsPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-            <span className="p-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+            <span className="p-2 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
               <Icons.BarChart3 className="w-7 h-7" />
             </span>
             รายงานสรุปยอดขายและการวิเคราะห์
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             สรุปภาพรวมรายได้ กำไรขั้นต้น ต้นทุนขาย (COGS) และจัดอันดับสินค้าขายดี
           </p>
         </div>
 
         {/* Period Selector Tabs */}
-        <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 p-1 rounded-2xl w-full sm:w-auto overflow-x-auto">
+        <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 rounded-2xl w-full sm:w-auto overflow-x-auto shadow-xs">
           {(
             [
               { id: 'TODAY', label: 'วันนี้' },
@@ -139,7 +139,7 @@ export default function ReportsPage() {
               className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
                 period === t.id
                   ? 'bg-cyan-500 text-slate-950 shadow-sm'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               {t.label}
@@ -150,23 +150,23 @@ export default function ReportsPage() {
 
       {/* Custom Date Filters */}
       {period === 'CUSTOM' && (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center gap-3">
+        <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-wrap items-center gap-3 shadow-sm">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400">จากวันที่:</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">จากวันที่:</span>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="h-10 px-3 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-xs text-white focus:outline-none"
+              className="h-10 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none"
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400">ถึงวันที่:</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">ถึงวันที่:</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="h-10 px-3 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl text-xs text-white focus:outline-none"
+              className="h-10 px-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 focus:border-cyan-500 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none"
             />
           </div>
           <button
@@ -180,7 +180,7 @@ export default function ReportsPage() {
       )}
 
       {error && (
-        <div className="p-4 bg-rose-500/20 border border-rose-500/40 rounded-2xl text-rose-300 text-sm">
+        <div className="p-4 bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 rounded-2xl text-rose-600 dark:text-rose-300 text-sm">
           {error}
         </div>
       )}
@@ -188,79 +188,79 @@ export default function ReportsPage() {
       {/* Main KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Sales */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div className="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs text-slate-400 font-semibold block">ยอดขายรวม (Total Sales)</span>
-              <div className="text-2xl sm:text-3xl font-black text-cyan-400 mt-1">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold block">ยอดขายรวม (Total Sales)</span>
+              <div className="text-2xl sm:text-3xl font-black text-cyan-600 dark:text-cyan-400 mt-1">
                 ฿{formatSatangToBaht(summary?.totalSales ?? 0)}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
               <Icons.ShoppingCart className="w-5 h-5" />
             </div>
           </div>
-          <div className="mt-3 text-xs text-slate-500 flex items-center justify-between border-t border-slate-800/80 pt-2">
+          <div className="mt-3 text-xs text-slate-500 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-2">
             <span>จำนวนบิลขายทั้งหมด:</span>
-            <span className="font-bold text-slate-300">{summary?.totalBills ?? 0} บิล</span>
+            <span className="font-bold text-slate-700 dark:text-slate-300">{summary?.totalBills ?? 0} บิล</span>
           </div>
         </div>
 
         {/* Gross Profit */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div className="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs text-slate-400 font-semibold block">กำไรขั้นต้น (Gross Profit)</span>
-              <div className="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold block">กำไรขั้นต้น (Gross Profit)</span>
+              <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">
                 ฿{formatSatangToBaht(summary?.grossProfit ?? 0)}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <Icons.Sparkles className="w-5 h-5" />
             </div>
           </div>
-          <div className="mt-3 text-xs text-slate-500 flex items-center justify-between border-t border-slate-800/80 pt-2">
+          <div className="mt-3 text-xs text-slate-500 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-2">
             <span>อัตรากำไร (Margin):</span>
-            <span className="font-bold text-emerald-400">{profitMarginPercent}%</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">{profitMarginPercent}%</span>
           </div>
         </div>
 
         {/* Total Cost */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-xs">
+        <div className="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-xs text-slate-400 font-semibold block">ต้นทุนขายรวม (COGS)</span>
-              <div className="text-2xl sm:text-3xl font-black text-amber-400 mt-1">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold block">ต้นทุนขายรวม (COGS)</span>
+              <div className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 mt-1">
                 ฿{formatSatangToBaht(summary?.totalCost ?? 0)}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
               <Icons.Package className="w-5 h-5" />
             </div>
           </div>
-          <div className="mt-3 text-xs text-slate-500 flex items-center justify-between border-t border-slate-800/80 pt-2">
+          <div className="mt-3 text-xs text-slate-500 flex items-center justify-between border-t border-slate-100 dark:border-slate-800/80 pt-2">
             <span>ยอดขายเฉลี่ยต่อบิล:</span>
-            <span className="font-bold text-slate-300">฿{formatSatangToBaht(summary?.averageBillSize ?? 0)}</span>
+            <span className="font-bold text-slate-700 dark:text-slate-300">฿{formatSatangToBaht(summary?.averageBillSize ?? 0)}</span>
           </div>
         </div>
 
         {/* VAT & Discounts */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center text-xs text-slate-400 pb-2 border-b border-slate-800">
+            <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-800">
               <span>ภาษีมูลค่าเพิ่ม (VAT 7%):</span>
-              <span className="font-bold text-white text-sm">฿{formatSatangToBaht(summary?.totalVat ?? 0)}</span>
+              <span className="font-bold text-slate-900 dark:text-white text-sm">฿{formatSatangToBaht(summary?.totalVat ?? 0)}</span>
             </div>
-            <div className="flex justify-between items-center text-xs text-slate-400 pt-2">
+            <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 pt-2">
               <span>ส่วนลดรวมทั้งหมด:</span>
-              <span className="font-bold text-rose-400 text-sm">฿{formatSatangToBaht(summary?.totalDiscount ?? 0)}</span>
+              <span className="font-bold text-rose-600 dark:text-rose-400 text-sm">฿{formatSatangToBaht(summary?.totalDiscount ?? 0)}</span>
             </div>
           </div>
           <button
             type="button"
             onClick={loadReports}
             disabled={isLoading}
-            className="mt-3 w-full h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            className="mt-3 w-full h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-transparent"
           >
             <Icons.Refresh className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
             <span>อัปเดตข้อมูล</span>
@@ -269,32 +269,32 @@ export default function ReportsPage() {
       </div>
 
       {/* Top Best Selling Products */}
-      <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 space-y-4">
+      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-4 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
               <Icons.BarChart3 className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">อันดับสินค้าขายดี (Top 10 Best Sellers)</h3>
-              <p className="text-xs text-slate-400">จัดอันดับตามจำนวนชิ้นและยอดขายตามช่วงเวลาที่เลือก</p>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">อันดับสินค้าขายดี (Top 10 Best Sellers)</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">จัดอันดับตามจำนวนชิ้นและยอดขายตามช่วงเวลาที่เลือก</p>
             </div>
           </div>
         </div>
 
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12 gap-2 text-slate-400">
-            <Icons.Loader className="w-8 h-8 animate-spin text-cyan-400" />
+            <Icons.Loader className="w-8 h-8 animate-spin text-cyan-600 dark:text-cyan-400" />
             <span className="text-sm">กำลังโหลดอันดับสินค้า...</span>
           </div>
         ) : bestSellers.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-sm">
+          <div className="text-center py-12 text-slate-400 dark:text-slate-500 text-sm">
             ไม่มีข้อมูลการขายสินค้าในช่วงเวลานี้
           </div>
         ) : (
-          <div className="border border-slate-800 rounded-xl overflow-hidden">
+          <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-800/80 text-slate-300 font-semibold border-b border-slate-700">
+              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-700">
                 <tr>
                   <th className="py-3 px-4 w-16 text-center">อันดับ</th>
                   <th className="py-3 px-4">ชื่อสินค้า</th>
@@ -303,9 +303,9 @@ export default function ReportsPage() {
                   <th className="py-3 px-4 text-right">กำไรสุทธิ</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {bestSellers.map((item, idx) => (
-                  <tr key={item.productId || idx} className="hover:bg-slate-800/40 transition-colors">
+                  <tr key={item.productId || idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                     <td className="py-3 px-4 text-center">
                       <span
                         className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-black ${
@@ -321,19 +321,19 @@ export default function ReportsPage() {
                         {idx + 1}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-semibold text-white">
+                    <td className="py-3 px-4 font-semibold text-slate-900 dark:text-white">
                       <div>{item.productName}</div>
                       {item.productCode && (
-                        <div className="text-xs text-slate-500 font-mono">{item.productCode}</div>
+                        <div className="text-xs text-slate-400 dark:text-slate-500 font-mono">{item.productCode}</div>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-right font-bold text-white">
+                    <td className="py-3 px-4 text-right font-bold text-slate-800 dark:text-white">
                       {item.totalQtySold.toLocaleString()} ชิ้น
                     </td>
-                    <td className="py-3 px-4 text-right font-bold text-cyan-400">
+                    <td className="py-3 px-4 text-right font-bold text-cyan-600 dark:text-cyan-400">
                       ฿{formatSatangToBaht(item.totalRevenue)}
                     </td>
-                    <td className="py-3 px-4 text-right font-bold text-emerald-400">
+                    <td className="py-3 px-4 text-right font-bold text-emerald-600 dark:text-emerald-400">
                       ฿{formatSatangToBaht(item.totalProfit)}
                     </td>
                   </tr>

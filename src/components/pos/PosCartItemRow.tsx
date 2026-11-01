@@ -31,16 +31,16 @@ export function PosCartItemRow({
     <div
       className={`border rounded-xl p-3 flex flex-col gap-2.5 transition-all duration-300 ${
         isHighlighted
-          ? 'bg-cyan-950/40 border-cyan-500/80 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/50'
-          : 'bg-slate-900/90 border-slate-800 hover:border-slate-700'
+          ? 'bg-cyan-50 dark:bg-cyan-950/40 border-cyan-400 dark:border-cyan-500/80 shadow-md shadow-cyan-500/10 ring-1 ring-cyan-500/50'
+          : 'bg-slate-50/80 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
       }`}
     >
       {/* แถวบน: รูปภาพขนาดเล็ก ข้อมูลชื่อสินค้า และปุ่มลบ */}
       <div className="flex items-start justify-between gap-2.5">
         <div className="flex items-center gap-2.5 flex-1 min-w-0">
           {/* รูปภาพสินค้าขนาดเล็ก (Thumbnail 44x44px) */}
-          <div className="relative w-11 h-11 shrink-0 rounded-lg bg-slate-800 border border-slate-700/60 overflow-hidden flex items-center justify-center">
-            <Icons.Package className="w-5 h-5 text-slate-500 absolute pointer-events-none" />
+          <div className="relative w-11 h-11 shrink-0 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 overflow-hidden flex items-center justify-center">
+            <Icons.Package className="w-5 h-5 text-slate-400 dark:text-slate-500 absolute pointer-events-none" />
             {item.imageUrl && (
               <img
                 src={item.imageUrl}
@@ -55,10 +55,10 @@ export function PosCartItemRow({
           </div>
 
           <div className="flex-1 min-w-0">
-            <h4 className="text-base font-bold text-white leading-snug line-clamp-1">
+            <h4 className="text-base font-bold text-slate-900 dark:text-white leading-snug line-clamp-1">
               {item.name}
             </h4>
-            <p className="text-xs text-slate-400 font-mono mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">
               {formatSatangToBaht(item.price)} / {item.uomName}
             </p>
           </div>
@@ -69,22 +69,22 @@ export function PosCartItemRow({
           type="button"
           onClick={() => onRemoveItem(item.id)}
           aria-label={`ลบ ${item.name} ออกจากตะกร้า`}
-          className="min-w-[48px] min-h-[48px] -mr-1 -mt-1 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+          className="min-w-[48px] min-h-[48px] -mr-1 -mt-1 rounded-xl text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
         >
           <Icons.Trash className="w-5 h-5" />
         </button>
       </div>
 
       {/* แถวล่าง: ปุ่มปรับจำนวน (+/-) และยอดรวมแต่ละบรรทัด */}
-      <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
+      <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-200 dark:border-slate-800/60">
         {/* ตัวปรับจำนวนสินค้า */}
-        <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+        <div className="flex items-center gap-1.5 bg-white dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
           {/* ปุ่มลดจำนวน (-) */}
           <button
             type="button"
             onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
             aria-label="ลดจำนวน"
-            className="min-w-[48px] min-h-[48px] rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
+            className="min-w-[48px] min-h-[48px] rounded-lg bg-slate-100 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
           >
             <Icons.Minus className="w-5 h-5" />
           </button>
@@ -94,7 +94,7 @@ export function PosCartItemRow({
             type="button"
             onClick={() => onOpenQuantityModal(item)}
             title="แตะเพื่อพิมพ์ระบุจำนวนด้วยแป้นตัวเลข"
-            className="min-w-[48px] min-h-[48px] px-2.5 rounded-lg bg-slate-900 hover:bg-cyan-950/40 border border-slate-700/80 hover:border-cyan-500/60 text-white font-extrabold text-base flex items-center justify-center transition-all cursor-pointer"
+            className="min-w-[48px] min-h-[48px] px-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 border border-slate-200 dark:border-slate-700/80 hover:border-cyan-400 dark:hover:border-cyan-500/60 text-slate-900 dark:text-white font-extrabold text-base flex items-center justify-center transition-all cursor-pointer"
           >
             <span>{item.quantity}</span>
           </button>
@@ -104,7 +104,7 @@ export function PosCartItemRow({
             type="button"
             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
             aria-label="เพิ่มจำนวน"
-            className="min-w-[48px] min-h-[48px] rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
+            className="min-w-[48px] min-h-[48px] rounded-lg bg-slate-100 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-slate-600 text-slate-700 dark:text-slate-200 flex items-center justify-center font-bold text-lg transition-colors cursor-pointer"
           >
             <Icons.Plus className="w-5 h-5" />
           </button>
@@ -112,7 +112,7 @@ export function PosCartItemRow({
 
         {/* ยอดรวมของบรรทัดนี้ */}
         <div className="text-right">
-          <div className="text-lg font-extrabold text-cyan-400">
+          <div className="text-lg font-extrabold text-cyan-700 dark:text-cyan-400">
             {formatSatangToBaht(item.lineTotal)}
           </div>
         </div>

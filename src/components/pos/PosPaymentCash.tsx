@@ -17,6 +17,7 @@ import { Icons } from '@/components/ui/Icons';
 import { VirtualNumericKeypad } from '@/components/ui/VirtualNumericKeypad';
 import { toSatang, toBaht, formatSatangToBaht } from '@/utils/currencyHelper';
 import { getSmartCashSuggestions, THAI_ADDITIVE_BANKNOTES } from '@/utils/cashSuggestions';
+import { usePwa } from '@/hooks/usePwa';
 
 interface PosPaymentCashProps {
   grandTotalSatang: number;
@@ -33,6 +34,8 @@ export function PosPaymentCash({
   onSubmit,
   isSubmitting,
 }: PosPaymentCashProps) {
+  const { isOnline } = usePwa();
+
   // แปลงจำนวนเงินรับเป็นสตางค์
   const tenderedSatang = useMemo(() => {
     const num = parseFloat(tenderedString);
@@ -64,10 +67,10 @@ export function PosPaymentCash({
 
   // กดตกลงจากแป้นพิมพ์ตัวเลขสัมผัส
   const handleKeypadConfirm = useCallback(() => {
-    if (isEnough && !isSubmitting) {
+    if (isEnough && !isSubmitting && isOnline) {
       onSubmit();
     }
-  }, [isEnough, isSubmitting, onSubmit]);
+  }, [isEnough, isSubmitting, isOnline, onSubmit]);
 
   // รองรับการพิมพ์ผ่านแป้นพิมพ์จริง (Physical Keyboard)
   useEffect(() => {
@@ -82,7 +85,7 @@ export function PosPaymentCash({
       }
 
       if (e.key === 'Enter') {
-        if (isEnough && !isSubmitting) {
+        if (isEnough && !isSubmitting && isOnline) {
           e.preventDefault();
           onSubmit();
         }
@@ -109,41 +112,41 @@ export function PosPaymentCash({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isEnough, isSubmitting, onSubmit, tenderedString, onTenderedChange]);
+  }, [isEnough, isSubmitting, isOnline, onSubmit, tenderedString, onTenderedChange]);
 
   return (
-    <div className="flex flex-col bg-slate-900 text-slate-100">
+    <div className="flex flex-col bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
       {/* พื้นที่เนื้อหาหลัก (2 คอลัมน์บนจอใหญ่, 1 คอลัมน์บนจอมือถือ/iPad แนวตั้ง) */}
       <div className="p-3 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-start">
         {/* ฝั่งซ้าย (md:col-span-6): 3 แถวสรุปยอดเงิน, ปุ่มเงินด่วนอัจฉริยะ, และปุ่มบวกธนบัตร */}
         <div className="md:col-span-6 space-y-3 sm:space-y-4">
           {/* แถวที่ 1: ยอดรวมสุทธิที่ต้องชำระ */}
-          <div className="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-3.5 sm:p-4">
-            <span className="text-xs sm:text-sm text-slate-400 font-medium block">
+          <div className="bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-3.5 sm:p-4">
+            <span className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium block">
               ยอดที่ต้องชำระ
             </span>
-            <div className="text-2xl sm:text-3xl font-black text-white mt-1">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white mt-1">
               {formatSatangToBaht(grandTotalSatang)}
             </div>
           </div>
 
           {/* แถวที่ 2: จำนวนเงินสดที่รับจากลูกค้า พร้อมปุ่มล้างค่า */}
-          <div className="bg-slate-800 border-2 border-cyan-500/70 rounded-2xl p-3.5 sm:p-4 shadow-sm">
+          <div className="bg-slate-50 dark:bg-slate-800 border-2 border-cyan-500/70 rounded-2xl p-3.5 sm:p-4 shadow-sm">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-xs sm:text-sm text-cyan-300 font-semibold">
+              <span className="text-xs sm:text-sm text-cyan-700 dark:text-cyan-300 font-semibold">
                 เงินสดที่รับ
               </span>
               {tenderedString && (
                 <button
                   type="button"
                   onClick={() => onTenderedChange('')}
-                  className="text-xs text-slate-300 hover:text-white px-2.5 py-1 rounded-lg bg-slate-700/80 active:scale-95 transition-all cursor-pointer font-medium"
+                  className="text-xs text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-700/80 active:scale-95 transition-all cursor-pointer font-medium"
                 >
                   ล้างค่า
                 </button>
               )}
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-cyan-300 min-h-[36px] flex items-center">
+            <div className="text-2xl sm:text-3xl font-black text-cyan-700 dark:text-cyan-300 min-h-[36px] flex items-center">
               {tenderedString
                 ? `${parseFloat(tenderedString).toLocaleString('th-TH', {
                     minimumFractionDigits: 0,
@@ -157,8 +160,8 @@ export function PosPaymentCash({
           <div
             className={`rounded-2xl p-3.5 sm:p-4 border transition-colors ${
               isEnough
-                ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-300'
-                : 'bg-rose-950/30 border-rose-500/40 text-rose-300'
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-500/50 text-emerald-800 dark:text-emerald-300'
+                : 'bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-500/40 text-rose-800 dark:text-rose-300'
             }`}
           >
             <span className="text-xs sm:text-sm font-semibold block">
@@ -166,11 +169,11 @@ export function PosPaymentCash({
             </span>
             <div className="text-2xl sm:text-3xl font-black mt-1">
               {isEnough ? (
-                <span className="text-emerald-400">
+                <span className="text-emerald-600 dark:text-emerald-400">
                   {formatSatangToBaht(changeSatang)}
                 </span>
               ) : (
-                <span className="text-rose-400 text-lg sm:text-xl">
+                <span className="text-rose-600 dark:text-rose-400 text-lg sm:text-xl">
                   ยังขาดอีก {formatSatangToBaht(grandTotalSatang - tenderedSatang)}
                 </span>
               )}
@@ -185,10 +188,10 @@ export function PosPaymentCash({
               className={`w-full min-h-[48px] sm:min-h-[52px] rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-2 border-2 transition-all active:scale-[0.98] shadow-sm cursor-pointer ${
                 parseFloat(tenderedString) === grandTotalBaht
                   ? 'bg-cyan-600 text-white border-cyan-300 ring-2 ring-cyan-400/50 shadow-cyan-600/40'
-                  : 'bg-gradient-to-r from-cyan-900/60 to-emerald-900/60 hover:from-cyan-800/80 hover:to-emerald-800/80 border-cyan-500/50 text-cyan-200 hover:text-white'
+                  : 'bg-cyan-50 hover:bg-cyan-100 dark:bg-gradient-to-r dark:from-cyan-900/60 dark:to-emerald-900/60 dark:hover:from-cyan-800/80 dark:hover:to-emerald-800/80 border-cyan-300 dark:border-cyan-500/50 text-cyan-800 dark:text-cyan-200 hover:text-cyan-900 dark:hover:text-white'
               }`}
             >
-              <Icons.Check className="w-5 h-5 text-cyan-400" />
+              <Icons.Check className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
               <span>จ่ายพอดี ({formatSatangToBaht(grandTotalSatang)})</span>
             </button>
           </div>
@@ -197,12 +200,12 @@ export function PosPaymentCash({
           {smartSuggestions.length > 0 && (
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <span className="text-xs text-slate-300 font-semibold flex items-center gap-1.5">
-                  <Icons.Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold flex items-center gap-1.5">
+                  <Icons.Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
                   ยอดแนะนำที่พบบ่อย (แตะระบุทันที):
                 </span>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-3 gap-2">
                 {smartSuggestions.map((amount) => {
                   const isSelected = parseFloat(tenderedString) === amount;
                   return (
@@ -213,7 +216,7 @@ export function PosPaymentCash({
                       className={`min-h-[48px] rounded-xl font-black text-base border transition-all active:scale-95 flex flex-col items-center justify-center cursor-pointer ${
                         isSelected
                           ? 'bg-cyan-600 text-white border-cyan-300 ring-2 ring-cyan-400/50 shadow-md shadow-cyan-600/30'
-                          : 'bg-slate-800 hover:bg-slate-700 active:bg-cyan-700 border-slate-700 text-slate-100 hover:text-white'
+                          : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:bg-cyan-600 active:text-white border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       <span>฿{amount >= 1000 ? amount.toLocaleString('th-TH') : amount}</span>
@@ -227,8 +230,8 @@ export function PosPaymentCash({
           {/* ปุ่มบวกเงินสดสะสมตามธนบัตร (+Banknotes) */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <span className="text-xs text-slate-300 font-semibold flex items-center gap-1.5">
-                <Icons.Plus className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-xs text-slate-600 dark:text-slate-300 font-semibold flex items-center gap-1.5">
+                <Icons.Plus className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 บวกธนบัตรสะสม (รับแบงค์หลายใบ):
               </span>
             </div>
@@ -238,7 +241,7 @@ export function PosPaymentCash({
                   key={banknote}
                   type="button"
                   onClick={() => handleAddCash(banknote)}
-                  className="min-h-[46px] rounded-xl font-bold text-sm sm:text-base border border-emerald-500/40 bg-emerald-950/30 hover:bg-emerald-900/50 active:bg-emerald-600 active:text-white text-emerald-300 transition-all active:scale-95 flex items-center justify-center cursor-pointer"
+                  className="min-h-[46px] rounded-xl font-bold text-sm sm:text-base border border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 active:bg-emerald-600 active:text-white text-emerald-800 dark:text-emerald-300 transition-all active:scale-95 flex items-center justify-center cursor-pointer"
                   title={`บวกเงินสดเพิ่มอีก ฿${banknote}`}
                 >
                   +{banknote}
@@ -252,10 +255,15 @@ export function PosPaymentCash({
             <button
               type="button"
               onClick={onSubmit}
-              disabled={!isEnough || isSubmitting}
-              className="w-full min-h-[54px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-slate-800 disabled:text-slate-600 disabled:border-slate-800 text-white font-bold text-lg shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer disabled:cursor-not-allowed"
+              disabled={!isEnough || isSubmitting || !isOnline}
+              className="w-full min-h-[54px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:border-slate-300 dark:disabled:border-slate-800 text-white font-bold text-lg shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer disabled:cursor-not-allowed"
             >
-              {isSubmitting ? (
+              {!isOnline ? (
+                <>
+                  <Icons.WifiOff className="w-5 h-5 text-rose-400" />
+                  <span>ขาดการเชื่อมต่ออินเทอร์เน็ต (ออฟไลน์)</span>
+                </>
+              ) : isSubmitting ? (
                 <>
                   <Icons.Loader className="w-5 h-5 animate-spin text-white" />
                   <span>กำลังบันทึกการขาย...</span>
@@ -274,13 +282,12 @@ export function PosPaymentCash({
           </div>
         </div>
 
-        {/* ฝั่งขวา (md:col-span-6): แป้นตัวเลขสัมผัส (Virtual Numeric Keypad Dark Theme) */}
+        {/* ฝั่งขวา (md:col-span-6): แป้นตัวเลขสัมผัส (Virtual Numeric Keypad) */}
         <div className="md:col-span-6 flex flex-col justify-center">
           <VirtualNumericKeypad
             value={tenderedString}
             onChange={onTenderedChange}
             onConfirm={handleKeypadConfirm}
-            theme="dark"
             hideDisplay={true}
             hideHeader={true}
             allowDecimal={true}
@@ -290,37 +297,37 @@ export function PosPaymentCash({
       </div>
 
       {/* แถบสรุปยอดและยืนยันการขายแบบ Sticky Bottom Action Bar สำหรับ Mobile & iPad Portrait */}
-      <div className="md:hidden sticky bottom-0 z-20 bg-slate-900/95 backdrop-blur-md p-3 border-t border-slate-800 shadow-2xl space-y-2.5">
+      <div className="md:hidden sticky bottom-0 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-3 border-t border-slate-200 dark:border-slate-800 shadow-2xl space-y-2.5">
         {/* ส่วนสรุป 3 ยอดเงิน: ยอดที่ต้องชำระ, เงินสดที่รับ, สถานะยอดเงินรับ/เงินทอนที่ต้องคืน */}
         <div className="grid grid-cols-3 gap-2">
           {/* 1. ยอดที่ต้องชำระ */}
-          <div className="bg-slate-800/90 border border-slate-700/80 rounded-xl p-2 sm:p-2.5 text-center flex flex-col justify-center">
-            <span className="text-[11px] sm:text-xs text-slate-400 font-medium block leading-tight truncate">
+          <div className="bg-slate-100 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 rounded-xl p-2 sm:p-2.5 text-center flex flex-col justify-center">
+            <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium block leading-tight truncate">
               ยอดที่ต้องชำระ
             </span>
-            <div className="text-sm sm:text-base font-black text-white mt-0.5 truncate">
+            <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white mt-0.5 truncate">
               {formatSatangToBaht(grandTotalSatang)}
             </div>
           </div>
 
           {/* 2. เงินสดที่รับ พร้อมปุ่มล้างค่า */}
-          <div className="bg-slate-800 border-2 border-cyan-500/70 rounded-xl p-2 sm:p-2.5 text-center flex flex-col justify-center shadow-sm relative">
+          <div className="bg-slate-50 dark:bg-slate-800 border-2 border-cyan-500/70 rounded-xl p-2 sm:p-2.5 text-center flex flex-col justify-center shadow-sm relative">
             <div className="flex items-center justify-center gap-1">
-              <span className="text-[11px] sm:text-xs text-cyan-300 font-semibold block leading-tight truncate">
+              <span className="text-[11px] sm:text-xs text-cyan-700 dark:text-cyan-300 font-semibold block leading-tight truncate">
                 เงินสดที่รับ
               </span>
               {tenderedString && (
                 <button
                   type="button"
                   onClick={() => onTenderedChange('')}
-                  className="text-[10px] text-slate-300 hover:text-white px-1.5 py-0.2 rounded bg-slate-700/80 active:scale-95 transition-all cursor-pointer font-medium"
+                  className="text-[10px] text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white px-1.5 py-0.2 rounded bg-slate-200 dark:bg-slate-700/80 active:scale-95 transition-all cursor-pointer font-medium"
                   title="ล้างค่า"
                 >
                   ล้าง
                 </button>
               )}
             </div>
-            <div className="text-sm sm:text-base font-black text-cyan-300 mt-0.5 truncate">
+            <div className="text-sm sm:text-base font-black text-cyan-700 dark:text-cyan-300 mt-0.5 truncate">
               {tenderedString
                 ? `${parseFloat(tenderedString).toLocaleString('th-TH', {
                     minimumFractionDigits: 0,
@@ -334,8 +341,8 @@ export function PosPaymentCash({
           <div
             className={`rounded-xl p-2 sm:p-2.5 text-center border flex flex-col justify-center transition-colors ${
               isEnough
-                ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-300'
-                : 'bg-rose-950/30 border-rose-500/40 text-rose-300'
+                ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-500/50 text-emerald-800 dark:text-emerald-300'
+                : 'bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-500/40 text-rose-800 dark:text-rose-300'
             }`}
           >
             <span className="text-[11px] sm:text-xs font-semibold block leading-tight truncate">
@@ -343,11 +350,11 @@ export function PosPaymentCash({
             </span>
             <div className="text-sm sm:text-base font-black mt-0.5 truncate">
               {isEnough ? (
-                <span className="text-emerald-400">
+                <span className="text-emerald-600 dark:text-emerald-400">
                   {formatSatangToBaht(changeSatang)}
                 </span>
               ) : (
-                <span className="text-rose-400">
+                <span className="text-rose-600 dark:text-rose-400">
                   ขาด {formatSatangToBaht(grandTotalSatang - tenderedSatang)}
                 </span>
               )}
@@ -359,10 +366,15 @@ export function PosPaymentCash({
         <button
           type="button"
           onClick={onSubmit}
-          disabled={!isEnough || isSubmitting}
-          className="w-full min-h-[50px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:border-slate-800 text-white font-bold text-base sm:text-lg shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer disabled:cursor-not-allowed"
+          disabled={!isEnough || isSubmitting || !isOnline}
+          className="w-full min-h-[50px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-400 dark:disabled:text-slate-500 disabled:border-slate-300 dark:disabled:border-slate-800 text-white font-bold text-base sm:text-lg shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all active:scale-[0.98] border border-emerald-400/40 cursor-pointer disabled:cursor-not-allowed"
         >
-          {isSubmitting ? (
+          {!isOnline ? (
+            <>
+              <Icons.WifiOff className="w-5 h-5 text-rose-400" />
+              <span>ออฟไลน์ - ไม่สามารถส่งบิลได้</span>
+            </>
+          ) : isSubmitting ? (
             <>
               <Icons.Loader className="w-5 h-5 animate-spin text-white" />
               <span>กำลังบันทึกการขาย...</span>

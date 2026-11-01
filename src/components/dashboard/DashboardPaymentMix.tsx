@@ -17,31 +17,31 @@ const METHOD_CONFIG: Record<
 > = {
   CASH: {
     label: 'เงินสด',
-    color: 'text-emerald-400',
+    color: 'text-emerald-600 dark:text-emerald-400',
     barColor: 'bg-emerald-500',
     icon: <Icons.Banknote className="w-4 h-4" />,
   },
   QR_PROMPTPAY: {
     label: 'พร้อมเพย์ QR',
-    color: 'text-cyan-400',
+    color: 'text-cyan-600 dark:text-cyan-400',
     barColor: 'bg-cyan-500',
     icon: <Icons.QrCode className="w-4 h-4" />,
   },
   CREDIT: {
     label: 'เงินเชื่อ (ค้างชำระ)',
-    color: 'text-amber-400',
+    color: 'text-amber-600 dark:text-amber-400',
     barColor: 'bg-amber-500',
     icon: <Icons.CreditCard className="w-4 h-4" />,
   },
   TRANSFER: {
     label: 'เงินโอนธนาคาร',
-    color: 'text-blue-400',
+    color: 'text-blue-600 dark:text-blue-400',
     barColor: 'bg-blue-500',
     icon: <Icons.RotateCw className="w-4 h-4" />,
   },
   CARD: {
     label: 'บัตรเครดิต/เดบิต',
-    color: 'text-indigo-400',
+    color: 'text-indigo-600 dark:text-indigo-400',
     barColor: 'bg-indigo-500',
     icon: <Icons.CreditCard className="w-4 h-4" />,
   },
@@ -50,11 +50,11 @@ const METHOD_CONFIG: Record<
 export function DashboardPaymentMix({ payments = [], isLoading }: DashboardPaymentMixProps) {
   if (isLoading) {
     return (
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xs animate-pulse">
-        <div className="h-6 bg-slate-800 rounded w-1/2 mb-6" />
+      <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs animate-pulse">
+        <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-1/2 mb-6" />
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-10 bg-slate-800/40 rounded-xl w-full" />
+            <div key={i} className="h-10 bg-slate-100 dark:bg-slate-800/40 rounded-xl w-full" />
           ))}
         </div>
       </div>
@@ -67,29 +67,29 @@ export function DashboardPaymentMix({ payments = [], isLoading }: DashboardPayme
     : 0;
 
   return (
-    <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
+    <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
       {/* Header */}
       <div className="mb-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
-            <span className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
               <Icons.Wallet className="w-4 h-4" />
             </span>
             สัดส่วนการชำระเงิน
           </h2>
-          <span className="text-xs font-bold text-slate-400">
+          <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
             รวม ฿{formatSatangToBaht(totalAmount, { showUnit: false })}
           </span>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           แยกตามวิธีชำระเงินของบิลที่สำเร็จ
         </p>
       </div>
 
       {/* Content */}
       {!hasData ? (
-        <div className="h-44 flex flex-col items-center justify-center text-slate-500 rounded-xl bg-slate-950/40 border border-dashed border-slate-800/80">
-          <Icons.Receipt className="w-8 h-8 mb-2 stroke-1 text-slate-600" />
+        <div className="h-44 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 rounded-xl bg-slate-50 dark:bg-slate-950/40 border border-dashed border-slate-200 dark:border-slate-800/80">
+          <Icons.Receipt className="w-8 h-8 mb-2 stroke-1 text-slate-400 dark:text-slate-600" />
           <span className="text-sm">ไม่มีข้อมูลการชำระเงิน</span>
         </div>
       ) : (
@@ -97,7 +97,7 @@ export function DashboardPaymentMix({ payments = [], isLoading }: DashboardPayme
           {payments.map((item) => {
             const config = METHOD_CONFIG[item.method] || {
               label: item.methodLabel || item.method,
-              color: 'text-slate-300',
+              color: 'text-slate-600 dark:text-slate-300',
               barColor: 'bg-slate-500',
               icon: <Icons.Receipt className="w-4 h-4" />,
             };
@@ -106,28 +106,28 @@ export function DashboardPaymentMix({ payments = [], isLoading }: DashboardPayme
               <div key={item.method} className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className={`${config.color} p-1 rounded-md bg-slate-800/80`}>
+                    <span className={`${config.color} p-1 rounded-md bg-slate-100 dark:bg-slate-800/80`}>
                       {config.icon}
                     </span>
-                    <span className="font-semibold text-slate-200">
+                    <span className="font-semibold text-slate-700 dark:text-slate-200">
                       {item.methodLabel || config.label}
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
                       ({item.billCount} บิล)
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white">
+                    <span className="font-bold text-slate-900 dark:text-white">
                       ฿{formatSatangToBaht(item.amount)}
                     </span>
-                    <span className="text-xs font-bold text-slate-400 w-10 text-right">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 w-10 text-right">
                       {item.percentage.toFixed(1)}%
                     </span>
                   </div>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800/50">
+                <div className="h-2 w-full bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800/50">
                   <div
                     style={{ width: `${Math.min(Math.max(item.percentage, 0), 100)}%` }}
                     className={`h-full rounded-full transition-all duration-500 ${config.barColor}`}

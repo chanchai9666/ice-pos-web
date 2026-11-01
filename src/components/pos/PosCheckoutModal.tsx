@@ -253,16 +253,16 @@ export function PosCheckoutModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-4xl bg-slate-900 border-2 border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[96dvh]">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[96dvh]">
         {/* แถบด้านบน: หัวเรื่องและปุ่มปิด */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/60">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-600/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+            <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-600/20 border border-cyan-200 dark:border-cyan-500/40 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
               <Icons.CreditCard className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white">ชำระเงินหน้าร้าน</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">ชำระเงินหน้าร้าน</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 รายการสินค้า {items.length} รายการ • รวม {formatSatangToBaht(grandTotalSatang)}
               </p>
             </div>
@@ -273,7 +273,7 @@ export function PosCheckoutModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="w-12 h-12 min-h-[48px] min-w-[48px] rounded-2xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all"
+              className="w-12 h-12 min-h-[48px] min-w-[48px] rounded-2xl bg-slate-100 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 dark:active:bg-slate-600 border border-slate-200 dark:border-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white flex items-center justify-center transition-all cursor-pointer"
               title="ปิดหน้าต่าง"
             >
               <Icons.Close className="w-6 h-6" />
@@ -295,22 +295,22 @@ export function PosCheckoutModal({
           <>
             {/* ข้อความแจ้งเตือนข้อผิดพลาด (ถ้ามี) */}
             {errorMessage && (
-              <div className="mx-6 mt-4 p-4 rounded-xl bg-rose-950/60 border border-rose-500/60 flex items-center gap-3 text-rose-200">
-                <Icons.AlertTriangle className="w-6 h-6 text-rose-400 shrink-0" />
+              <div className="mx-6 mt-4 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-500/60 flex items-center gap-3 text-rose-800 dark:text-rose-200">
+                <Icons.AlertTriangle className="w-6 h-6 text-rose-500 dark:text-rose-400 shrink-0" />
                 <span className="text-sm font-semibold">{errorMessage}</span>
               </div>
             )}
 
             {/* แถบเลือกวิธีชำระเงิน (Tabs) */}
-            <div className="px-6 pt-4 pb-2 border-b border-slate-800">
+            <div className="px-6 pt-4 pb-2 border-b border-slate-200 dark:border-slate-800">
               <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('CASH')}
-                  className={`h-13 min-h-[50px] rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 border transition-all active:scale-[0.98] ${
+                  className={`h-13 min-h-[50px] rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 border transition-all active:scale-[0.98] cursor-pointer ${
                     paymentMethod === 'CASH'
                       ? 'bg-emerald-600 text-white border-emerald-400 shadow-md shadow-emerald-600/30'
-                      : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800'
+                      : 'bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800'
                   }`}
                 >
                   <Icons.Receipt className="w-5 h-5" />
@@ -320,10 +320,10 @@ export function PosCheckoutModal({
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('CREDIT')}
-                  className={`h-13 min-h-[50px] rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 border transition-all active:scale-[0.98] ${
+                  className={`h-13 min-h-[50px] rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 border transition-all active:scale-[0.98] cursor-pointer ${
                     paymentMethod === 'CREDIT'
                       ? 'bg-purple-600 text-white border-purple-400 shadow-md shadow-purple-600/30'
-                      : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800'
+                      : 'bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800'
                   }`}
                 >
                   <Icons.User className="w-5 h-5" />

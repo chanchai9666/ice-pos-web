@@ -44,17 +44,17 @@ export function DashboardQuickLinks() {
           href={link.href}
           className={`p-4 rounded-2xl bg-gradient-to-br ${link.color} border transition-all duration-200 group flex items-start gap-3.5 shadow-xs hover:shadow-md hover:-translate-y-0.5`}
         >
-          <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 shrink-0 group-hover:scale-105 transition-transform">
+          <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 shrink-0 group-hover:scale-105 transition-transform shadow-xs">
             {link.icon}
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
                 {link.title}
               </h3>
               <Icons.ArrowUpRight className="w-4 h-4 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
             </div>
-            <p className="text-xs text-slate-400 mt-1 line-clamp-1">
+            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 line-clamp-1">
               {link.desc}
             </p>
           </div>

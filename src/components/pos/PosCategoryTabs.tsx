@@ -24,7 +24,7 @@ export function PosCategoryTabs({
   isLoading = false,
 }: PosCategoryTabsProps) {
   return (
-    <div className="w-full overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-slate-900 select-none">
+    <div className="w-full overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700 select-none">
       <div className="flex items-center gap-2 min-w-max">
         {/* แท็บ "สินค้าทั้งหมด" */}
         <button
@@ -34,7 +34,7 @@ export function PosCategoryTabs({
           className={`min-h-[48px] px-5 py-2.5 rounded-xl text-base font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 border shadow-sm ${
             selectedCategoryId === 'ALL'
               ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-400/50 shadow-cyan-500/20'
-              : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700'
+              : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700'
           } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
         >
           <span>สินค้าทั้งหมด</span>
@@ -52,7 +52,7 @@ export function PosCategoryTabs({
               className={`min-h-[48px] px-5 py-2.5 rounded-xl text-base font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 border shadow-sm ${
                 isSelected
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-400/50 shadow-cyan-500/20'
-                  : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-700'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700'
               } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
             >
               <span>{category.name}</span>

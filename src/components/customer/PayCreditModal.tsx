@@ -105,22 +105,22 @@ export function PayCreditModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col my-auto">
+      <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col my-auto">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white/95 dark:bg-slate-900/90">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
               <Icons.Receipt className="w-5 h-5 stroke-[2.5]" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">รับชำระหนี้เงินเชื่อ</h3>
-              <p className="text-xs text-slate-400">{customer.name}</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">รับชำระหนี้เงินเชื่อ</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{customer.name}</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer"
+            className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
             <Icons.X className="w-6 h-6" />
           </button>
@@ -128,25 +128,25 @@ export function PayCreditModal({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
-          <div className="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/60 flex items-center justify-between">
+          <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 border border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
             <div>
-              <span className="text-xs text-slate-400 block">ยอดหนี้ค้างชำระปัจจุบัน</span>
-              <span className="text-2xl font-black text-rose-400">
+              <span className="text-xs text-slate-500 dark:text-slate-400 block">ยอดหนี้ค้างชำระปัจจุบัน</span>
+              <span className="text-2xl font-black text-rose-500 dark:text-rose-400">
                 ฿{formatSatangToBaht(customer.outstandingBalance)}
               </span>
             </div>
             <button
               type="button"
               onClick={handlePayAll}
-              className="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 text-xs font-bold transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-cyan-50 dark:bg-cyan-500/20 hover:bg-cyan-100 dark:hover:bg-cyan-500/30 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-500/40 text-xs font-bold transition-colors cursor-pointer"
             >
               ชำระเต็มจำนวน
             </button>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1.5">
-              จำนวนเงินที่รับชำระ (บาท) <span className="text-rose-400">*</span>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              จำนวนเงินที่รับชำระ (บาท) <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <div className="relative">
               <input
@@ -157,7 +157,7 @@ export function PayCreditModal({
                 value={amountBaht}
                 onChange={(e) => setAmountBaht(e.target.value)}
                 placeholder="0.00"
-                className="w-full h-14 pl-12 pr-4 bg-slate-950 border-2 border-slate-700 focus:border-emerald-500 rounded-2xl text-2xl font-bold text-emerald-400 focus:outline-none"
+                className="w-full h-14 pl-12 pr-4 bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-700 focus:border-emerald-500 rounded-2xl text-2xl font-bold text-emerald-600 dark:text-emerald-400 focus:outline-none"
               />
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg font-bold">
                 ฿
@@ -166,8 +166,8 @@ export function PayCreditModal({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-2">
-              ช่องทางการรับชำระเงิน <span className="text-rose-400">*</span>
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              ช่องทางการรับชำระเงิน <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <div className="grid grid-cols-2 gap-2">
               {PAYMENT_METHODS.map((pm) => (
@@ -177,8 +177,8 @@ export function PayCreditModal({
                   onClick={() => setMethod(pm.id)}
                   className={`h-12 px-3 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     method === pm.id
-                      ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-xs'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-emerald-500/20 border-emerald-500 text-emerald-700 dark:text-emerald-300 shadow-xs'
+                      : 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <span>{pm.label}</span>
@@ -188,7 +188,7 @@ export function PayCreditModal({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-300 mb-1">
+            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">
               หมายเหตุการชำระเงิน (ถ้ามี)
             </label>
             <input
@@ -196,12 +196,12 @@ export function PayCreditModal({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="เช่น โอนผ่านธนาคารกสิกรไทย, ชำระเงินสดหน้าร้าน"
-              className="w-full h-11 px-4 bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl text-sm text-white focus:outline-none"
+              className="w-full h-11 px-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-emerald-500 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none"
             />
           </div>
 
           {errorMessage && (
-            <div className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-xs text-rose-300">
+            <div className="p-3 bg-rose-500/10 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 rounded-xl text-xs text-rose-600 dark:text-rose-300">
               {errorMessage}
             </div>
           )}
@@ -211,7 +211,7 @@ export function PayCreditModal({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="flex-1 min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition-colors cursor-pointer"
+              className="flex-1 min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm transition-colors cursor-pointer"
             >
               ยกเลิก
             </button>

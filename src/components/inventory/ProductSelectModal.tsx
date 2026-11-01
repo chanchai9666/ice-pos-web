@@ -184,17 +184,17 @@ export function ProductSelectModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
+      <div className="relative w-full max-w-4xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4.5 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between">
+        <div className="px-6 py-4.5 bg-slate-50/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+            <span className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
               <Icons.Boxes className="w-6 h-6" />
             </span>
             <div>
-              <h2 className="text-xl font-black text-white tracking-tight">{title}</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">{title}</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 เลือกสินค้าเพื่อเพิ่มลงในรายการ (แสดงเฉพาะสินค้าแบบระบุชิ้น/แพ็ค และสต็อกคงเหลือ)
               </p>
             </div>
@@ -202,14 +202,14 @@ export function ProductSelectModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
+            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors"
           >
             <Icons.Close className="w-5 h-5" />
           </button>
         </div>
 
         {/* Search & Filter Toolbar */}
-        <div className="p-4 sm:p-6 bg-slate-900 border-b border-slate-800/80 space-y-3">
+        <div className="p-4 sm:p-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800/80 space-y-3">
           <div className="flex flex-col sm:flex-row gap-3">
             {/* กล่องค้นหา */}
             <div className="relative flex-1">
@@ -221,14 +221,14 @@ export function ProductSelectModal({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ค้นหาด้วยชื่อสินค้า, รหัส SKU, หรือบาร์โค้ด..."
-                className="w-full pl-11 pr-10 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[48px]"
+                className="w-full pl-11 pr-10 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 min-h-[48px]"
                 autoFocus
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 dark:hover:text-white cursor-pointer"
                 >
                   <Icons.Close className="w-4 h-4" />
                 </button>
@@ -241,7 +241,7 @@ export function ProductSelectModal({
                 <select
                   value={selectedCategoryId}
                   onChange={(e) => setSelectedCategoryId(e.target.value)}
-                  className="w-full h-[48px] min-h-[48px] px-3.5 py-0 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full h-[48px] min-h-[48px] px-3.5 py-0 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 >
                   <option value="ALL">-- ทุกหมวดหมู่สินค้า --</option>
                   {categories.map((cat) => (
@@ -256,10 +256,10 @@ export function ProductSelectModal({
 
           {/* แถบตัวเลือกด่วน */}
           <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <div className="text-xs text-slate-400 font-medium">
-              พบสินค้า <span className="font-bold text-cyan-400">{filteredProducts.length}</span> รายการ
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              พบสินค้า <span className="font-bold text-cyan-600 dark:text-cyan-400">{filteredProducts.length}</span> รายการ
               {selectedIds.size > 0 && (
-                <span className="ml-2 text-emerald-400 font-bold">
+                <span className="ml-2 text-emerald-600 dark:text-emerald-400 font-bold">
                   (เลือกแล้ว {selectedIds.size} รายการ)
                 </span>
               )}
@@ -270,7 +270,7 @@ export function ProductSelectModal({
                 type="button"
                 onClick={handleSelectAllFiltered}
                 disabled={filteredProducts.length === 0}
-                className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 เลือกทั้งหมดในหน้านี้
               </button>
@@ -278,7 +278,7 @@ export function ProductSelectModal({
                 <button
                   type="button"
                   onClick={handleDeselectAll}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-300 hover:text-rose-300 text-xs font-semibold cursor-pointer transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-rose-50 dark:bg-slate-800 dark:hover:bg-rose-900/40 text-slate-700 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-300 text-xs font-semibold cursor-pointer transition-colors"
                 >
                   ล้างที่เลือก ({selectedIds.size})
                 </button>
@@ -290,7 +290,7 @@ export function ProductSelectModal({
         {/* Product List Body */}
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 max-h-[50vh] space-y-2">
           {errorMessage && (
-            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-center gap-2">
+            <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-300 text-sm flex items-center gap-2">
               <Icons.AlertCircle className="w-5 h-5 shrink-0" />
               <span>{errorMessage}</span>
             </div>
@@ -298,16 +298,16 @@ export function ProductSelectModal({
 
           {isLoading ? (
             <div className="py-16 text-center text-slate-400 space-y-3">
-              <div className="inline-block animate-spin text-cyan-400">
+              <div className="inline-block animate-spin text-cyan-600 dark:text-cyan-400">
                 <Icons.RotateCw className="w-8 h-8" />
               </div>
               <p className="text-sm font-medium">กำลังโหลดข้อมูลสินค้าและสต็อกคงเหลือ...</p>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="py-16 text-center border-2 border-dashed border-slate-800 rounded-2xl bg-slate-950/40">
-              <Icons.Boxes className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-300 font-bold text-sm">ไม่พบรายการสินค้าที่ตรงกับคำค้นหา</p>
-              <p className="text-xs text-slate-500 mt-1">ลองเปลี่ยนคำค้นหา หรือเลือกหมวดหมู่อื่น</p>
+            <div className="py-16 text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl bg-slate-50/50 dark:bg-slate-950/40">
+              <Icons.Boxes className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto mb-3" />
+              <p className="text-slate-700 dark:text-slate-300 font-bold text-sm">ไม่พบรายการสินค้าที่ตรงกับคำค้นหา</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">ลองเปลี่ยนคำค้นหา หรือเลือกหมวดหมู่อื่น</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-2.5">
@@ -325,8 +325,8 @@ export function ProductSelectModal({
                     onClick={() => toggleSelectProduct(product.id)}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                       isSelected
-                        ? 'bg-cyan-950/30 border-cyan-500/80 ring-1 ring-cyan-500/50 shadow-md shadow-cyan-950/20'
-                        : 'bg-slate-950/60 hover:bg-slate-800/60 border-slate-800'
+                        ? 'bg-cyan-50 dark:bg-cyan-950/30 border-cyan-500 ring-1 ring-cyan-500/50 shadow-sm'
+                        : 'bg-slate-50/80 dark:bg-slate-950/60 hover:bg-slate-100 dark:hover:bg-slate-800/60 border-slate-200 dark:border-slate-800'
                     }`}
                   >
                     {/* Checkbox & Details */}
@@ -335,8 +335,8 @@ export function ProductSelectModal({
                       <div
                         className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                           isSelected
-                            ? 'bg-cyan-500 border-cyan-400 text-slate-950'
-                            : 'border-slate-600 bg-slate-900 text-transparent'
+                            ? 'bg-cyan-500 border-cyan-400 text-white dark:text-slate-950'
+                            : 'border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-transparent'
                         }`}
                       >
                         <Icons.Check className="w-4 h-4 stroke-[3]" />
@@ -345,34 +345,34 @@ export function ProductSelectModal({
                       {/* ข้อมูลสินค้า */}
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h4 className="text-sm font-bold text-white truncate">
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
                             {product.name}
                           </h4>
                           {isAlreadyInDoc && (
-                            <span className="px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-semibold">
+                            <span className="px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-300 text-[11px] font-semibold">
                               อยู่ในรายการแล้ว
                             </span>
                           )}
                           {product.category && (
-                            <span className="px-2 py-0.5 rounded-md bg-slate-800 text-slate-400 text-[11px]">
+                            <span className="px-2 py-0.5 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[11px]">
                               {product.category.name}
                             </span>
                           )}
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400 mt-1">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mt-1">
                           {product.sku && (
                             <span>
-                              SKU: <span className="text-slate-300 font-mono">{product.sku}</span>
+                              SKU: <span className="text-slate-700 dark:text-slate-300 font-mono">{product.sku}</span>
                             </span>
                           )}
                           {product.barcode && (
                             <span>
-                              บาร์โค้ด: <span className="text-slate-300 font-mono">{product.barcode}</span>
+                              บาร์โค้ด: <span className="text-slate-700 dark:text-slate-300 font-mono">{product.barcode}</span>
                             </span>
                           )}
                           <span>
-                            หน่วยนับ: <span className="text-slate-300">{product.baseUom?.name || 'ชิ้น'}</span>
+                            หน่วยนับ: <span className="text-slate-700 dark:text-slate-300">{product.baseUom?.name || 'ชิ้น'}</span>
                           </span>
                         </div>
                       </div>
@@ -386,8 +386,8 @@ export function ProductSelectModal({
                         <span
                           className={`inline-block px-2.5 py-0.5 rounded-lg text-xs font-bold ${
                             isOutOfStock
-                              ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
-                              : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                              ? 'bg-rose-500/10 text-rose-600 dark:text-rose-300 border border-rose-500/30'
+                              : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30'
                           }`}
                         >
                           {stockQty.toLocaleString()} {product.baseUom?.name || 'ชิ้น'}
@@ -397,7 +397,7 @@ export function ProductSelectModal({
                       {/* ต้นทุนต่อหน่วย */}
                       <div className="text-right hidden sm:block">
                         <span className="block text-[11px] text-slate-400 font-medium">ต้นทุนมาตรฐาน</span>
-                        <span className="text-sm font-bold text-white font-mono">
+                        <span className="text-sm font-bold text-slate-800 dark:text-white font-mono">
                           {formatBaht(costBaht)}
                         </span>
                       </div>
@@ -405,7 +405,7 @@ export function ProductSelectModal({
                       {/* ราคาขาย */}
                       <div className="text-right hidden md:block">
                         <span className="block text-[11px] text-slate-400 font-medium">ราคาขาย</span>
-                        <span className="text-sm font-bold text-cyan-400 font-mono">
+                        <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400 font-mono">
                           {formatBaht(sellPriceBaht)}
                         </span>
                       </div>
@@ -418,14 +418,14 @@ export function ProductSelectModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-slate-950/90 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-sm text-slate-300">
+        <div className="px-6 py-4 bg-slate-50/90 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-sm text-slate-600 dark:text-slate-300">
             {selectedIds.size > 0 ? (
               <span>
-                พร้อมเพิ่ม <strong className="text-cyan-400 font-black">{selectedIds.size}</strong> รายการลงในเอกสาร
+                พร้อมเพิ่ม <strong className="text-cyan-600 dark:text-cyan-400 font-black">{selectedIds.size}</strong> รายการลงในเอกสาร
               </span>
             ) : (
-              <span className="text-slate-500">ติ๊กเลือกสินค้าที่ต้องการเพื่อเพิ่มในรายการ</span>
+              <span className="text-slate-400 dark:text-slate-500">ติ๊กเลือกสินค้าที่ต้องการเพื่อเพิ่มในรายการ</span>
             )}
           </div>
 
@@ -433,7 +433,7 @@ export function ProductSelectModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm min-h-[44px] cursor-pointer transition-colors"
+              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-sm min-h-[44px] cursor-pointer transition-colors"
             >
               ยกเลิก
             </button>

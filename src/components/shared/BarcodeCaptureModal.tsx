@@ -240,15 +240,15 @@ export function BarcodeCaptureModal({
 
   return (
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in select-none">
-      <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
-        <div className="p-3.5 sm:p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/95 shrink-0">
+      <div className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+        <div className="p-3.5 sm:p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white/95 dark:bg-slate-900/95 shrink-0">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
               <Icons.Barcode className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-base sm:text-lg font-bold text-white truncate">{title}</h3>
-              <p className="text-xs text-slate-400">ส่องบาร์โค้ดในกรอบเล็ง — อ่านครั้งเดียวแล้วใส่ลงช่อง</p>
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white truncate">{title}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">ส่องบาร์โค้ดในกรอบเล็ง — อ่านครั้งเดียวแล้วใส่ลงช่อง</p>
             </div>
           </div>
 
@@ -257,7 +257,7 @@ export function BarcodeCaptureModal({
               type="button"
               onClick={toggleFacingMode}
               title="สลับกล้องหน้า/หลัง"
-              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer border border-slate-700"
+              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
             >
               <Icons.Refresh className="w-5 h-5" />
             </button>
@@ -265,7 +265,7 @@ export function BarcodeCaptureModal({
               type="button"
               onClick={onClose}
               aria-label="ปิดการสแกน"
-              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              className="min-w-[48px] min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer"
             >
               <Icons.X className="w-5 h-5" />
             </button>
@@ -317,11 +317,11 @@ export function BarcodeCaptureModal({
           )}
         </div>
 
-        <div className="p-4 border-t border-slate-800 shrink-0">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[48px] w-full rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700 cursor-pointer transition-colors"
+            className="min-h-[48px] w-full rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold border border-slate-200 dark:border-slate-700 cursor-pointer transition-colors"
           >
             ยกเลิก
           </button>

@@ -26,12 +26,12 @@ export function resolveProductStockPresentation(
       stockQuantity: 0,
       threshold: 0,
       status: 'IN_STOCK',
-      cardBorderClass: 'border-2 border-slate-800 hover:border-cyan-500/60 active:border-cyan-400',
+      cardBorderClass: 'border-2 border-slate-200 dark:border-slate-800 hover:border-cyan-500/60 active:border-cyan-400',
       cardShadowClass: 'shadow-md hover:shadow-cyan-500/10',
       badgeText: 'ชั่งขาย',
       badgeClass: 'bg-amber-500 text-slate-950 font-black shadow-md',
       detailStockText: 'สินค้าชั่งขาย',
-      detailStockColorClass: 'text-amber-400 font-semibold',
+      detailStockColorClass: 'text-amber-600 dark:text-amber-400 font-semibold',
     };
   }
 
@@ -79,11 +79,11 @@ export function resolveProductStockPresentation(
     stockQuantity,
     threshold,
     status: 'IN_STOCK',
-    cardBorderClass: 'border-2 border-slate-800 hover:border-cyan-500/60 active:border-cyan-400',
+    cardBorderClass: 'border-2 border-slate-200 dark:border-slate-800 hover:border-cyan-500/60 active:border-cyan-400',
     cardShadowClass: 'shadow-md hover:shadow-cyan-500/10',
     badgeText: `คงเหลือ: ${stockQuantity}`,
-    badgeClass: 'bg-slate-950/85 backdrop-blur-sm text-emerald-400 border border-emerald-500/40',
+    badgeClass: 'bg-white/95 dark:bg-slate-950/85 backdrop-blur-sm text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 dark:border-emerald-500/40',
     detailStockText: `คงเหลือ ${stockQuantity} ${unitName}`,
-    detailStockColorClass: 'text-slate-400',
+    detailStockColorClass: 'text-slate-600 dark:text-slate-400',
   };
 }

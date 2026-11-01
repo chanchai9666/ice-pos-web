@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </linearGradient>
+    <linearGradient id="ice" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0891b2" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect width="504" height="504" x="4" y="4" rx="108" fill="none" stroke="#1e293b" stroke-width="4"/>
+
+  <!-- Glowing background aura -->
+  <circle cx="256" cy="240" r="160" fill="url(#glow)" filter="url(#shadow)" opacity="0.3"/>
+
+  <!-- Ice Cube Isometric / Faceted Shape -->
+  <g filter="url(#shadow)" transform="translate(256, 215)">
+    <!-- Top Face -->
+    <polygon points="0,-110 110,-46 0,18 -110,-46" fill="#7dd3fc" opacity="0.95"/>
+    <polygon points="0,-110 110,-46 0,18 -110,-46" fill="url(#ice)" opacity="0.4"/>
+
+    <!-- Left Face -->
+    <polygon points="-110,-46 0,18 0,146 -110,82" fill="#0284c7" opacity="0.9"/>
+    
+    <!-- Right Face -->
+    <polygon points="0,18 110,-46 110,82 0,146" fill="#0369a1" opacity="0.95"/>
+
+    <!-- Inner POS Terminal Icon Highlight -->
+    <path d="M-45,30 L45,-22 L45,18 L-45,70 Z" fill="#bae6fd" opacity="0.6"/>
+  </g>
+
+  <!-- Ice Crystals / Sparkles -->
+  <path d="M 380 120 L 388 138 L 406 146 L 388 154 L 380 172 L 372 154 L 354 146 L 372 138 Z" fill="#67e8f9"/>
+  <path d="M 130 330 L 135 342 L 147 347 L 135 352 L 130 364 L 125 352 L 113 347 L 125 342 Z" fill="#38bdf8"/>
+
+  <!-- Text: ICE POS -->
+  <text x="256" y="440" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="48" letter-spacing="4" fill="#ffffff" text-anchor="middle">
+    ICE <tspan fill="#38bdf8">POS</tspan>
+  </text>
+</svg>
+
