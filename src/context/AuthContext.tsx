@@ -21,8 +21,10 @@ import {
 import {
   clearAuthSession,
   getCurrentBranch,
+  getLastBranchId,
   getUserProfile,
   setAuthSession,
+  setCurrentBranch,
 } from '@/utils/storage';
 
 interface AuthContextType {
@@ -86,21 +88,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, [handleSessionExpired]);
 
+  // ฟื้นฟูข้อมูลสาขาอัตโนมัติหากผู้ใช้เข้าสู่ระบบแล้วแต่ยังไม่มีสาขา (เช่น Admin เข้าสู่ระบบตรง)
+  useEffect(() => {
+    if (user && !branch) {
+      let isSubscribed = true;
+      authService
+        .getBranches()
+        .then((branches) => {
+          if (!isSubscribed || branches.length === 0) return;
+          const lastId = getLastBranchId();
+          const target =
+            (user.branchId && branches.find((b) => b.id === user.branchId)) ||
+            (lastId && branches.find((b) => b.id === lastId)) ||
+            branches[0];
+          if (target) {
+            setBranch(target);
+            setCurrentBranch(target);
+          }
+        })
+        .catch(() => {
+          // ละเว้นหากเชื่อมต่อดึงสาขาไม่ได้
+        });
+
+      return () => {
+        isSubscribed = false;
+      };
+    }
+  }, [user, branch]);
+
   const loginWithCredentials = useCallback(
     async (credentials: LoginRequest): Promise<AuthResponse> => {
       const auth = await authService.login(credentials);
 
       // เครเดนเชียลล็อกอินไม่มีข้อมูลสาขาแนบมาเหมือน PIN login
-      // จึงค้นหาสาขาประจำตัวผู้ใช้เพื่อให้หน้าจอ POS/เปิดกะใช้งานได้
+      // จึงค้นหาสาขาประจำตัวผู้ใช้ หรือสาขาสำรอง (Fallback) เพื่อให้หน้าจอ POS/เปิดกะใช้งานได้ทันที
       let branchInfo: Branch | null = null;
-      if (auth.user.branchId) {
-        try {
-          const branches = await authService.getBranches();
+      try {
+        const branches = await authService.getBranches();
+        if (auth.user.branchId) {
           branchInfo =
             branches.find((b) => b.id === auth.user.branchId) ?? null;
-        } catch {
-          // ดึงข้อมูลสาขาไม่สำเร็จ ไม่ควรทำให้การเข้าสู่ระบบล้มเหลว
         }
+        if (!branchInfo && branches.length > 0) {
+          const lastId = getLastBranchId();
+          branchInfo =
+            (lastId && branches.find((b) => b.id === lastId)) ||
+            branches[0] ||
+            null;
+        }
+      } catch {
+        // ดึงข้อมูลสาขาไม่สำเร็จ ไม่ควรทำให้การเข้าสู่ระบบล้มเหลว
       }
 
       setUser(auth.user);
@@ -143,6 +180,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const handleSetCurrentBranch = useCallback((newBranch: Branch) => {
     setBranch(newBranch);
+    setCurrentBranch(newBranch);
   }, []);
 
   return (

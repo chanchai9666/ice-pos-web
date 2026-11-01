@@ -140,7 +140,7 @@ export function StockTransferTable({ currentBranchId }: StockTransferTableProps)
                 </tr>
               ) : (
                 transfers.map((t) => (
-                  <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-850/40 transition-colors">
+                  <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                     <td className="py-3.5 px-4 font-mono font-medium text-slate-900 dark:text-white">
                       {t.transferNo || t.id.substring(0, 8)}
                     </td>

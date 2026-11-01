@@ -89,7 +89,7 @@ export function ProductTable({
 
   // Desktop Table Header
   const tableHeader = (
-    <thead className="bg-slate-100 dark:bg-slate-850 text-slate-700 dark:text-slate-300 uppercase text-sm font-bold border-b-2 border-slate-200 dark:border-slate-800">
+    <thead className="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 uppercase text-sm font-bold border-b-2 border-slate-200 dark:border-slate-700">
       <tr>
         <th scope="col" className="py-4 px-4">สินค้า</th>
         <th scope="col" className="py-4 px-4">SKU / บาร์โค้ด</th>

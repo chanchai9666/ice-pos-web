@@ -82,7 +82,7 @@ export function PosProductGrid({
             key={product.id}
             type="button"
             onClick={() => onSelectProduct(product)}
-            className={`group relative bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 active:bg-cyan-50 dark:active:bg-cyan-950/40 ${stockInfo.cardBorderClass} rounded-2xl p-3 sm:p-4 flex flex-col justify-between text-left transition-all duration-150 ${stockInfo.cardShadowClass} cursor-pointer overflow-hidden min-h-[170px] shadow-xs`}
+            className={`group relative bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/80 active:bg-cyan-50 dark:active:bg-cyan-950/40 ${stockInfo.cardBorderClass} rounded-2xl p-3 sm:p-4 flex flex-col justify-between text-left transition-all duration-150 ${stockInfo.cardShadowClass} cursor-pointer overflow-hidden min-h-[170px] shadow-xs`}
           >
             {/* ส่วนรูปภาพสินค้า */}
             <div className="relative w-full h-24 sm:h-28 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3 overflow-hidden border border-slate-200 dark:border-slate-700/60 group-hover:border-slate-300 dark:group-hover:border-slate-600">

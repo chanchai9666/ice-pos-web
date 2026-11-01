@@ -9,6 +9,7 @@
 
 import React, { useState } from 'react';
 import { shiftService } from '@/services/shift.service';
+import { ApiError } from '@/services/api';
 import { ShiftInfo } from '@/types/shift';
 import { VirtualNumericKeypad } from '@/components/ui/VirtualNumericKeypad';
 import { Icons } from '@/components/ui/Icons';
@@ -75,8 +76,42 @@ export function PosOpenShiftModal({
         playErrorBuzzer();
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
-      setErrorMessage(msg);
+      if (err instanceof ApiError) {
+        // กรณีมีกะการขายเปิดค้างอยู่แล้ว (HTTP 400 จาก Backend) ทำการฟื้นฟูกะอัตโนมัติ (Auto-Recovery)
+        const isShiftAlreadyOpen =
+          err.code === 400 ||
+          err.status === 400 ||
+          err.message.includes('มีกะ') ||
+          err.message.toLowerCase().includes('shift already');
+
+        if (isShiftAlreadyOpen) {
+          try {
+            const activeRes = await shiftService.getActiveShift(branchId);
+            if (activeRes.data && activeRes.data.status === 'OPEN') {
+              playSuccessBeep();
+              onSuccess(activeRes.data);
+              onClose();
+              return;
+            }
+          } catch {
+            // หากดึงกะเดิมไม่สำเร็จ ให้แสดงข้อความผิดพลาดเดิมต่อไป
+          }
+        }
+
+        let msg = err.message || 'เกิดข้อผิดพลาดในการเปิดกะ';
+        if (err.details && err.details.length > 0) {
+          const detailTexts = err.details
+            .map((d) => (d.field ? `${d.field}: ${d.message}` : d.message))
+            .filter(Boolean);
+          if (detailTexts.length > 0) {
+            msg += ` (${detailTexts.join(', ')})`;
+          }
+        }
+        setErrorMessage(msg);
+      } else {
+        const msg = err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+        setErrorMessage(msg);
+      }
       playErrorBuzzer();
     } finally {
       setIsSubmitting(false);

@@ -4,17 +4,23 @@
  */
 
 import { api, ApiError } from '@/services/api';
-import { ApiResponse } from '@/types/auth';
+import { ApiResponse, RequestOptions } from '@/types/auth';
 import { ShiftInfo, OpenShiftRequest, CloseShiftRequest } from '@/types/shift';
 
 export const shiftService = {
   /**
    * ตรวจสอบกะการขายที่กำลังเปิดใช้งานอยู่ปัจจุบันของสาขา
+   * ค่าเริ่มต้นใช้ silent: true เพื่อไม่ให้บล็อก Overlay ระหว่างตรวจสอบกะเบื้องหลัง
    */
-  async getActiveShift(branchId: string): Promise<ApiResponse<ShiftInfo | null>> {
+  async getActiveShift(
+    branchId: string,
+    options?: RequestOptions
+  ): Promise<ApiResponse<ShiftInfo | null>> {
     try {
       return await api.get<ShiftInfo | null>('/api/v1/shifts/active', {
-        params: { branchId },
+        silent: true,
+        ...options,
+        params: { branchId, ...options?.params },
       });
     } catch (error) {
       // สเปกประกาศว่า GET /shifts/active ตอบ 200 พร้อม data = null เมื่อยังไม่เปิดกะ

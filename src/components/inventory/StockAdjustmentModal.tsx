@@ -188,7 +188,7 @@ export function StockAdjustmentModal({
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-all active:scale-90 cursor-pointer disabled:opacity-30"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-all active:scale-90 cursor-pointer disabled:opacity-30"
             aria-label="ปิดหน้าต่าง"
           >
             <Icons.Close className="w-5 h-5" />
@@ -235,7 +235,7 @@ export function StockAdjustmentModal({
                     className={`min-h-[50px] p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-3 ${
                       isSelected
                         ? `${item.badgeClass} ring-2 ring-cyan-500/30 font-bold shadow-sm`
-                        : 'bg-slate-50 dark:bg-slate-850 border-slate-200 dark:border-slate-750 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-650'
+                        : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
                     <div className="flex-1">
@@ -274,7 +274,7 @@ export function StockAdjustmentModal({
             </div>
 
             {/* แสดงการคำนวณผลลัพธ์ Delta & New Stock */}
-            <div className="mt-3 p-3.5 bg-slate-50 dark:bg-slate-850/80 rounded-xl border border-slate-200 dark:border-slate-750 text-sm flex items-center justify-between">
+            <div className="mt-3 p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 text-sm flex items-center justify-between">
               <span className="text-slate-600 dark:text-slate-300">
                 ผลต่าง (Delta):{' '}
                 <strong
@@ -338,7 +338,7 @@ export function StockAdjustmentModal({
           )}
 
           {/* ปุ่มบันทึกและยกเลิก */}
-          <div className="pt-3 border-t border-slate-200 dark:border-slate-850 flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}

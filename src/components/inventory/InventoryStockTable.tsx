@@ -69,13 +69,13 @@ export function InventoryStockTable({
           {[...Array(5)].map((_, i) => (
             <div
               key={i}
-              className="h-16 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl animate-pulse flex items-center px-4 justify-between"
+              className="h-16 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl animate-pulse flex items-center px-4 justify-between"
             >
               <div className="space-y-2">
-                <div className="h-4 w-48 bg-slate-200 dark:bg-slate-750 rounded" />
-                <div className="h-3 w-28 bg-slate-100 dark:bg-slate-800 rounded" />
+                <div className="h-4 w-48 bg-slate-200 dark:bg-slate-700 rounded" />
+                <div className="h-3 w-28 bg-slate-100 dark:bg-slate-700/60 rounded" />
               </div>
-              <div className="h-8 w-24 bg-slate-200 dark:bg-slate-750 rounded-lg" />
+              <div className="h-8 w-24 bg-slate-200 dark:bg-slate-700 rounded-lg" />
             </div>
           ))}
         </div>
@@ -118,7 +118,7 @@ export function InventoryStockTable({
                   return (
                     <tr
                       key={stock.id || `${stock.branchId}-${stock.productId}`}
-                      className="hover:bg-slate-50 dark:hover:bg-slate-850/60 transition-colors"
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
                     >
                       {/* ข้อมูลสินค้า */}
                       <td className="py-4 px-4 sm:px-6">
@@ -201,7 +201,7 @@ export function InventoryStockTable({
                           disabled={isWeightBased}
                           className={`min-h-[48px] px-4 py-2 rounded-xl border font-bold text-sm transition-all inline-flex items-center gap-2 shadow-sm ${
                             isWeightBased
-                              ? 'bg-slate-100 dark:bg-slate-850/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-40'
+                              ? 'bg-slate-100 dark:bg-slate-800/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-40'
                               : 'bg-slate-100 hover:bg-cyan-600 dark:bg-slate-800 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border-slate-200 hover:border-cyan-500 dark:border-slate-700 dark:hover:border-cyan-500 active:scale-95 cursor-pointer'
                           }`}
                           title={isWeightBased ? 'สินค้าประเภทชั่งขายไม่จำเป็นต้องปรับสต็อก' : `ปรับยอดสต็อก ${product?.name || ''}`}
@@ -231,7 +231,7 @@ export function InventoryStockTable({
               return (
                 <div
                   key={stock.id || `${stock.branchId}-${stock.productId}`}
-                  className="p-4 flex flex-col gap-3 hover:bg-slate-50 dark:hover:bg-slate-850/40 transition-colors"
+                  className="p-4 flex flex-col gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -293,7 +293,7 @@ export function InventoryStockTable({
                     disabled={isWeightBased}
                     className={`w-full min-h-[48px] py-2.5 px-4 rounded-xl border font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm ${
                       isWeightBased
-                        ? 'bg-slate-100 dark:bg-slate-850/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-40'
+                        ? 'bg-slate-100 dark:bg-slate-800/80 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed opacity-40'
                         : 'bg-slate-100 hover:bg-cyan-600 dark:bg-slate-800 text-slate-700 hover:text-white dark:text-slate-200 dark:hover:text-white border-slate-200 hover:border-cyan-500 dark:border-slate-700 dark:hover:border-cyan-500 active:scale-95 cursor-pointer'
                     }`}
                     title={isWeightBased ? 'สินค้าประเภทชั่งขายไม่จำเป็นต้องปรับสต็อก' : 'ปรับยอดสต็อก'}

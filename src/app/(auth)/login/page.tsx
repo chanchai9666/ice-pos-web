@@ -4,22 +4,15 @@ import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
-import { AuthResponse } from '@/types/auth';
-
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isExpired = searchParams.get('expired') === '1';
   const isTimeout = searchParams.get('timeout') === '1';
 
-  const handleLoginSuccess = (auth: AuthResponse) => {
-    // หากเป็นแคชเชียร์ ให้นำทางไปยังหน้าขาย POS
-    // หากเป็นบทบาทอื่น (เช่น ADMIN, MANAGER) ให้นำทางไปยังหน้าจัดการสินค้าและหมวดหมู่
-    if (auth.user.role === 'CASHIER') {
-      router.push('/pos');
-    } else {
-      router.push('/catalog');
-    }
+  const handleLoginSuccess = () => {
+    // นำทางไปยังหน้าขายหน้าร้าน POS ทันทีหลังจากเข้าสู่ระบบสำเร็จ
+    router.push('/pos');
   };
 
   return (

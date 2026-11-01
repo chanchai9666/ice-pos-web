@@ -29,6 +29,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         <AppHeader
           onToggleSidebar={handleToggleSidebar}
           isSidebarCollapsed={isSidebarCollapsed}
+          onOpenSettings={() => setIsSettingsOpen(true)}
         />
 
         <div className="flex-1 flex overflow-hidden">
@@ -36,7 +37,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             isCollapsed={isSidebarCollapsed}
             isMobileOpen={isMobileOpen}
             onCloseMobile={() => setIsMobileOpen(false)}
-            onOpenSettings={() => setIsSettingsOpen(true)}
           />
 
           <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 bg-slate-100/70 dark:bg-slate-950/50 pb-24 lg:pb-6 pb-safe">

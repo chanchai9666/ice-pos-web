@@ -107,7 +107,12 @@ export function PosCartProvider({
       setIsLoadingShift(true);
       try {
         const res = await shiftService.getActiveShift(targetBranchId);
-        setActiveShift(res.data);
+        // ตรวจสอบสถานะว่าต้องเป็น 'OPEN' จริง จึงจะนับเป็นกะที่กำลังเปิดใช้งาน
+        if (res.data && res.data.status === 'OPEN') {
+          setActiveShift(res.data);
+        } else {
+          setActiveShift(null);
+        }
       } catch (err) {
         console.warn('Could not fetch active shift:', err);
       } finally {

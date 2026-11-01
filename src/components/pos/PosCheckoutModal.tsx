@@ -16,6 +16,7 @@ import { CustomerSummary, getAvailableCredit } from '@/types/customer';
 import { PosPaymentCash } from '@/components/pos/PosPaymentCash';
 import { PosPaymentCredit } from '@/components/pos/PosPaymentCredit';
 import { PosSuccessOverlay } from '@/components/pos/PosSuccessOverlay';
+import { PosSaleConfirmModal, SaleConfirmDetails } from '@/components/pos/PosSaleConfirmModal';
 import { salesService } from '@/services/sales.service';
 import { generateIdempotencyKey } from '@/utils/idempotency';
 import { playCheckoutSuccessChime, playErrorBuzzer } from '@/utils/audio';
@@ -54,6 +55,10 @@ export function PosCheckoutModal({
   const [idempotencyKey, setIdempotencyKey] = useState<string>('');
   // ข้อมูลบิลขายเมื่อบันทึกสำเร็จ (เพื่อแสดง Success Overlay)
   const [completedSale, setCompletedSale] = useState<SaleResponse | null>(null);
+  // สถานะเปิด/ปิดหน้าต่างยืนยันการขาย
+  const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false);
+  // ข้อมูลสำหรับแสดงในหน้าต่างยืนยันการขาย
+  const [confirmDetails, setConfirmDetails] = useState<SaleConfirmDetails | null>(null);
 
   // ยอดเงินรวมในหน่วยสตางค์ (summary.grandTotal อยู่ในหน่วยสตางค์อยู่แล้ว ไม่ต้องแปลงซ้ำ)
   const grandTotalSatang = summary.grandTotal;
@@ -68,19 +73,27 @@ export function PosCheckoutModal({
       setErrorMessage(null);
       setCompletedSale(null);
       setIsSubmitting(false);
+      setIsConfirmOpen(false);
+      setConfirmDetails(null);
     }
   }, [isOpen]);
 
-  // ปิด Modal ด้วยปุ่ม Escape เมื่อไม่ได้กำลังส่งข้อมูล
+  // ปิด Modal ด้วยปุ่ม Escape เมื่อไม่ได้กำลังส่งข้อมูลและไม่ได้เปิดหน้าต่างยืนยัน
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen && !isSubmitting && !completedSale) {
+      if (
+        e.key === 'Escape' &&
+        isOpen &&
+        !isSubmitting &&
+        !completedSale &&
+        !isConfirmOpen
+      ) {
         onClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, isSubmitting, completedSale, onClose]);
+  }, [isOpen, isSubmitting, completedSale, isConfirmOpen, onClose]);
 
   // จัดการเมื่อเริ่มบิลใหม่
   const handleNewSale = useCallback(() => {
@@ -99,8 +112,8 @@ export function PosCheckoutModal({
     });
   }, [items, completedSale, clearCart, onClose, onSaleSuccess, addToast]);
 
-  // การส่งคำขอบันทึกการขายด้วยเงินสด (CASH)
-  const handleCashSubmit = async () => {
+  // ตรวจสอบความถูกต้องและเปิดหน้าต่างยืนยันการขายเงินสด (CASH)
+  const handleCashSubmit = () => {
     if (!branchId) {
       setErrorMessage('ไม่พบข้อมูลสาขาปัจจุบัน กรุณาเข้าสู่ระบบใหม่');
       playErrorBuzzer();
@@ -129,57 +142,22 @@ export function PosCheckoutModal({
     }
 
     const changeSatang = tenderedSatang - grandTotalSatang;
-
-    setIsSubmitting(true);
     setErrorMessage(null);
 
-    const saleRequest: CreateSaleRequest = {
-      branchId,
-      idempotencyKey,
-      billDiscount: 0, // ปิดการใช้งานส่วนลดในเฟสนี้ตามที่ระบุใน Clarifications
-      lines: items.map((item) => ({
-        productId: item.productId,
-        uomId: item.uomId,
-        qty: item.quantity,
-        unitPrice: item.price,
-        lineDiscount: 0,
-      })),
-      payments: [
-        {
-          method: 'CASH',
-          amount: grandTotalSatang,
-          tenderedAmount: tenderedSatang,
-          changeAmount: changeSatang,
-        },
-      ],
-    };
-
-    try {
-      const response = await salesService.createSale(saleRequest, idempotencyKey);
-      if (response && response.data) {
-        setCompletedSale(response.data);
-        playCheckoutSuccessChime();
-        addToast({
-          type: 'SUCCESS',
-          title: 'ชำระเงินสดสำเร็จ',
-          message: `ออกบิลขาย ${response.data.saleNo || ''} สำเร็จ`,
-        });
-      } else {
-        throw new Error(response.message || 'บันทึกการขายไม่สำเร็จ');
-      }
-    } catch (err: unknown) {
-      const errorMsg =
-        err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
-      setErrorMessage(errorMsg);
-      playErrorBuzzer();
-      console.error('Sale submission failed:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
+    setConfirmDetails({
+      paymentMethod: 'CASH',
+      grandTotalSatang,
+      itemCount: items.length,
+      totalQty: items.reduce((acc, item) => acc + item.quantity, 0),
+      items,
+      tenderedSatang,
+      changeSatang,
+    });
+    setIsConfirmOpen(true);
   };
 
-  // การส่งคำขอบันทึกการขายด้วยเงินเชื่อลูกค้า (CREDIT)
-  const handleCreditSubmit = async () => {
+  // ตรวจสอบความถูกต้องและเปิดหน้าต่างยืนยันการขายเงินเชื่อ (CREDIT)
+  const handleCreditSubmit = () => {
     if (!branchId || items.length === 0) return;
 
     if (!selectedCustomer) {
@@ -188,7 +166,8 @@ export function PosCheckoutModal({
       return;
     }
 
-    if (getAvailableCredit(selectedCustomer) < grandTotalSatang) {
+    const availableCredit = getAvailableCredit(selectedCustomer);
+    if (availableCredit < grandTotalSatang) {
       setErrorMessage('วงเงินเครดิตคงเหลือของลูกค้าไม่เพียงพอสำหรับยอดบิลนี้');
       playErrorBuzzer();
       return;
@@ -202,48 +181,93 @@ export function PosCheckoutModal({
       return;
     }
 
+    setErrorMessage(null);
+
+    setConfirmDetails({
+      paymentMethod: 'CREDIT',
+      grandTotalSatang,
+      itemCount: items.length,
+      totalQty: items.reduce((acc, item) => acc + item.quantity, 0),
+      items,
+      customer: selectedCustomer,
+      remainingCreditSatang: availableCredit - grandTotalSatang,
+    });
+    setIsConfirmOpen(true);
+  };
+
+  // ดำเนินการส่งคำขอบันทึกการขายจริงไปยัง API หลังแคชเชียร์ยืนยัน
+  const handleExecuteSale = async () => {
+    if (!branchId || !confirmDetails || isSubmitting) return;
+
     setIsSubmitting(true);
     setErrorMessage(null);
 
-    const saleRequest: CreateSaleRequest = {
-      branchId,
-      customerId: selectedCustomer.id,
-      idempotencyKey,
-      billDiscount: 0,
-      lines: items.map((item) => ({
-        productId: item.productId,
-        uomId: item.uomId,
-        qty: item.quantity,
-        unitPrice: item.price,
-        lineDiscount: 0,
-      })),
-      payments: [
-        {
-          method: 'CREDIT',
-          amount: grandTotalSatang,
-        },
-      ],
-    };
+    let saleRequest: CreateSaleRequest;
+
+    if (confirmDetails.paymentMethod === 'CASH') {
+      saleRequest = {
+        branchId,
+        idempotencyKey,
+        billDiscount: 0,
+        lines: items.map((item) => ({
+          productId: item.productId,
+          uomId: item.uomId,
+          qty: item.quantity,
+          unitPrice: item.price,
+          lineDiscount: 0,
+        })),
+        payments: [
+          {
+            method: 'CASH',
+            amount: grandTotalSatang,
+            tenderedAmount: confirmDetails.tenderedSatang ?? grandTotalSatang,
+            changeAmount: confirmDetails.changeSatang ?? 0,
+          },
+        ],
+      };
+    } else {
+      saleRequest = {
+        branchId,
+        customerId: confirmDetails.customer?.id,
+        idempotencyKey,
+        billDiscount: 0,
+        lines: items.map((item) => ({
+          productId: item.productId,
+          uomId: item.uomId,
+          qty: item.quantity,
+          unitPrice: item.price,
+          lineDiscount: 0,
+        })),
+        payments: [
+          {
+            method: 'CREDIT',
+            amount: grandTotalSatang,
+          },
+        ],
+      };
+    }
 
     try {
       const response = await salesService.createSale(saleRequest, idempotencyKey);
       if (response && response.data) {
+        setIsConfirmOpen(false);
         setCompletedSale(response.data);
         playCheckoutSuccessChime();
         addToast({
           type: 'SUCCESS',
-          title: 'บันทึกรายการเงินเชื่อสำเร็จ',
-          message: `ออกบิลขาย ${response.data.saleNo || ''} เรียบร้อย`,
+          title: confirmDetails.paymentMethod === 'CASH' ? 'ชำระเงินสดสำเร็จ' : 'บันทึกรายการเงินเชื่อสำเร็จ',
+          message: `ออกบิลขาย ${response.data.saleNo || ''} สำเร็จ`,
         });
       } else {
         throw new Error(response.message || 'บันทึกการขายไม่สำเร็จ');
       }
     } catch (err: unknown) {
+      setIsConfirmOpen(false);
       const errorMsg =
         err instanceof Error ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
       setErrorMessage(errorMsg);
       playErrorBuzzer();
-      console.error('Credit Sale submission failed:', err);
+      console.error('Sale submission failed:', err);
     } finally {
       setIsSubmitting(false);
     }
@@ -357,6 +381,15 @@ export function PosCheckoutModal({
             </div>
           </>
         )}
+
+        {/* หน้าต่างยืนยันการขายก่อนทำรายการ (Sale Confirmation Modal) */}
+        <PosSaleConfirmModal
+          isOpen={isConfirmOpen}
+          details={confirmDetails}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={handleExecuteSale}
+          isSubmitting={isSubmitting}
+        />
       </div>
     </div>
   );

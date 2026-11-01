@@ -98,7 +98,7 @@ export function CategoryList({
                 <col className="w-[9%] min-w-[110px]" />
               </colgroup>
               <thead>
-                <tr className="border-b-2 border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-850 text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider text-sm">
+                <tr className="border-b-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider text-sm">
                   <th className="py-4 px-4 text-center">ลำดับ</th>
                   <th className="py-4 px-4">ชื่อหมวดหมู่</th>
                   <th className="py-4 px-4">หมวดหมู่หลัก (Parent)</th>

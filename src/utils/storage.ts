@@ -49,6 +49,12 @@ export function setAuthSession(auth: AuthResponse, branch?: Branch | null): void
   }
 }
 
+export function setCurrentBranch(branch: Branch): void {
+  if (!isBrowser()) return;
+  localStorage.setItem(STORAGE_KEYS.CURRENT_BRANCH, JSON.stringify(branch));
+  localStorage.setItem(STORAGE_KEYS.LAST_BRANCH_ID, branch.id);
+}
+
 export function clearAuthSession(preserveBranch: boolean = true): void {
   if (!isBrowser()) return;
   localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
