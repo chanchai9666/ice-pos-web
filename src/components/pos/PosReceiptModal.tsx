@@ -41,8 +41,10 @@ export function PosReceiptModal({
     setIsLoading(true);
     setError('');
 
+    const targetReceiptNo = receiptNo.startsWith('RCP-') ? receiptNo : `RCP-${receiptNo}`;
+
     receiptService
-      .getReceiptByNo(receiptNo)
+      .getReceiptByNo(targetReceiptNo)
       .then((res) => {
         if (!isMounted) return;
         if (res.data) {
@@ -78,6 +80,39 @@ export function PosReceiptModal({
   };
 
   const isReprint = receipt && receipt.printCount > 1;
+
+  const rawLines = Array.isArray(parsedContent?.items)
+    ? parsedContent.items
+    : Array.isArray((parsedContent as Record<string, unknown> | null)?.lines)
+      ? ((parsedContent as Record<string, unknown>).lines as Array<Record<string, unknown>>)
+      : [];
+
+  const receiptItems = rawLines.map((item) => {
+    const itemObj = item as Record<string, unknown>;
+    const productObj = itemObj.product as Record<string, unknown> | undefined;
+    const name =
+      (typeof itemObj.name === 'string' && itemObj.name) ||
+      (typeof itemObj.productName === 'string' && itemObj.productName) ||
+      (typeof productObj?.name === 'string' && productObj.name) ||
+      `สินค้า #${String(itemObj.productId || '').substring(0, 8)}`;
+    const qty = typeof itemObj.qty === 'number' ? itemObj.qty : 1;
+    const unitPrice = typeof itemObj.unitPrice === 'number' ? itemObj.unitPrice : 0;
+    const lineTotal =
+      typeof itemObj.lineTotal === 'number'
+        ? itemObj.lineTotal
+        : typeof itemObj.netTotal === 'number'
+          ? itemObj.netTotal
+          : typeof itemObj.grossTotal === 'number'
+            ? itemObj.grossTotal
+            : qty * unitPrice;
+    const uomName =
+      (typeof itemObj.uomName === 'string' && itemObj.uomName) ||
+      (typeof (itemObj.uom as Record<string, unknown>)?.name === 'string' &&
+        String((itemObj.uom as Record<string, unknown>).name)) ||
+      'ชิ้น';
+
+    return { name, qty, unitPrice, lineTotal, uomName };
+  });
 
   return (
     <div className="fixed inset-0 z-70 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in overflow-y-auto print:p-0 print:bg-white print:static">
@@ -179,13 +214,13 @@ export function PosReceiptModal({
                   <span>รายการ</span>
                   <span>รวม (บาท)</span>
                 </div>
-                {parsedContent?.items && parsedContent.items.length > 0 ? (
-                  parsedContent.items.map((item, idx) => (
+                {receiptItems && receiptItems.length > 0 ? (
+                  receiptItems.map((item, idx) => (
                     <div key={idx} className="space-y-0.5">
                       <div className="font-semibold text-slate-800">{item.name}</div>
                       <div className="flex justify-between text-[11px] text-slate-600 pl-2">
                         <span>
-                          {item.qty} {item.uomName || 'ชิ้น'} x ฿{formatSatangToBaht(item.unitPrice)}
+                          {item.qty} {item.uomName} x ฿{formatSatangToBaht(item.unitPrice)}
                         </span>
                         <span className="font-bold text-slate-900">฿{formatSatangToBaht(item.lineTotal)}</span>
                       </div>

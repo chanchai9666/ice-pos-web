@@ -15,7 +15,7 @@ interface PosSuccessOverlayProps {
   sale: SaleResponse;
   cashierName?: string;
   onNewSale: () => void;
-  onPrintReceipt?: (saleNo: string) => void;
+  onPrintReceipt?: (receiptNo: string) => void;
 }
 
 export function PosSuccessOverlay({
@@ -26,6 +26,10 @@ export function PosSuccessOverlay({
 }: PosSuccessOverlayProps) {
   const primaryPayment = sale.payments?.[0];
   const isCash = primaryPayment?.method === 'CASH';
+  const receiptIdentifier =
+    sale.receiptNo ||
+    sale.receipt?.receiptNo ||
+    (sale.saleNo?.startsWith('RCP-') ? sale.saleNo : `RCP-${sale.saleNo}`);
 
   return (
     <div className="flex flex-col items-center justify-between p-6 sm:p-8 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-[480px] h-full animate-fadeIn">
@@ -88,7 +92,7 @@ export function PosSuccessOverlay({
         {onPrintReceipt && (
           <button
             type="button"
-            onClick={() => onPrintReceipt(sale.saleNo || sale.id)}
+            onClick={() => onPrintReceipt(receiptIdentifier || sale.saleNo || sale.id)}
             className="w-full h-12 min-h-[48px] rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-cyan-600 dark:text-cyan-300 font-bold text-base border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
           >
             <Icons.Receipt className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />

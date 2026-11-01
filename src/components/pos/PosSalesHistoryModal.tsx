@@ -19,7 +19,7 @@ interface PosSalesHistoryModalProps {
   isOpen: boolean;
   branchId?: string;
   onClose: () => void;
-  onReprintReceipt?: (saleNo: string) => void;
+  onReprintReceipt?: (receiptNo: string) => void;
   onVoidSuccess?: () => void;
 }
 
@@ -290,7 +290,15 @@ export function PosSalesHistoryModal({
                     {onReprintReceipt && (
                       <button
                         type="button"
-                        onClick={() => onReprintReceipt(selectedSale.saleNo)}
+                        onClick={() => {
+                          const receiptIdentifier =
+                            selectedSale.receiptNo ||
+                            selectedSale.receipt?.receiptNo ||
+                            (selectedSale.saleNo?.startsWith('RCP-')
+                              ? selectedSale.saleNo
+                              : `RCP-${selectedSale.saleNo}`);
+                          onReprintReceipt(receiptIdentifier || selectedSale.saleNo);
+                        }}
                         className="flex-1 min-h-[48px] rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer"
                       >
                         <Icons.Receipt className="w-4 h-4" />

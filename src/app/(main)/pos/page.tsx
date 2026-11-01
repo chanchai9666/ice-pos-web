@@ -522,7 +522,7 @@ function PosTerminalInner() {
         branchId={effectiveBranchId}
         cashierName={user?.name || user?.username}
         onSaleSuccess={handleSaleSuccess}
-        onPrintReceipt={(saleNo) => setReprintReceiptNo(saleNo)}
+        onPrintReceipt={(receiptNo) => setReprintReceiptNo(receiptNo)}
       />
 
       {/* หน้าต่างพิมพ์และพิมพ์ซ้ำใบเสร็จรับเงิน */}

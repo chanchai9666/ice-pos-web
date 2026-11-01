@@ -105,6 +105,15 @@ export interface SaleResponse {
   version?: number;
   lines: SaleLineResponse[];        // รายการสินค้า
   payments: SalePaymentResponse[];  // รายการการชำระเงิน
+  receiptNo?: string;               // เลขที่ใบเสร็จรับเงิน (เช่น "RCP-BR-000104")
+  receipt?: {
+    id?: string;
+    receiptNo?: string;
+    type?: string;
+    printCount?: number;
+    createdAt?: string;
+    [key: string]: unknown;
+  };
   createdAt: string;                // วันเวลาที่สร้างบิล
 }
 

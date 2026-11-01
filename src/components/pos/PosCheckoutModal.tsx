@@ -28,7 +28,7 @@ interface PosCheckoutModalProps {
   branchId?: string;
   cashierName?: string;
   onSaleSuccess?: (soldItems: CartItem[], sale: SaleResponse) => void;
-  onPrintReceipt?: (saleNo: string) => void;
+  onPrintReceipt?: (receiptNo: string) => void;
 }
 
 export function PosCheckoutModal({
